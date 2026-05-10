@@ -45,7 +45,22 @@ Matching is two-phase Jaccard on token sets (chapter→chapter, then item→item
 ## Architecture (non-obvious bits)
 
 ### Synchronized folders (Xcode 26+)
-The project uses `PBXFileSystemSynchronizedRootGroup`. **Any file dropped in `Adhkar/` auto-bundles** as either source or resource based on extension. Don't edit `project.pbxproj` to add files — drop them in and they appear.
+The project uses `PBXFileSystemSynchronizedRootGroup`. **Any file dropped anywhere under `Adhkar/` auto-bundles** as either source or resource based on extension — the walk is recursive. Don't edit `project.pbxproj` to add files or folders — drop them in and they appear.
+
+### Source layout
+```
+Adhkar/
+  Adhkar.entitlements           ← stays at root (hardcoded in pbxproj CODE_SIGN_ENTITLEMENTS)
+  PrivacyInfo.xcprivacy          ← stays at root by convention
+  App/            Entry point + root tab navigation
+  Models/         Pure data types (categories, types, sections, LocalizedText, DhikrProgress)
+  Services/       Side-effect managers (DataProvider, AudioPlayer, FavoritesStore, NotificationManager)
+  Localization/   L10n.swift
+  Views/          SwiftUI screens and feature views
+  Design/         Visual primitives (colors, fonts, patterns, button styles, decorative backgrounds)
+  Resources/      adhkar.json, Amiri TTFs, Assets.xcassets
+```
+Drop new files in the matching subfolder — the synchronized group picks them up automatically.
 
 ### Cross-platform constraints (iOS + macOS + visionOS)
 - **No `import UIKit`** — fails on macOS native (`SUPPORTED_PLATFORMS = iphoneos iphonesimulator macosx xros xrsimulator`).
