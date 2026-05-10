@@ -8,6 +8,19 @@ Targets **iOS 18.4 / macOS 15.4 / visionOS** from a single codebase.
 
 ---
 
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/home.png"      width="210" alt="Home" />
+  <img src="docs/screenshots/detail.png"    width="210" alt="Dhikr detail" />
+  <img src="docs/screenshots/favorites.png" width="210" alt="Favorites" />
+  <img src="docs/screenshots/settings.png"  width="210" alt="Settings" />
+</p>
+
+<p align="center"><sub>Home · Dhikr detail with counter · Favorites · Settings</sub></p>
+
+---
+
 ## Features
 
 - **133 categories / ~294 items** from *Hisn al-Muslim* (rn0x + wafaaelmaandy sources)
