@@ -1,0 +1,352 @@
+//
+//  AdhkarDetailsView.swift
+//  Adhkar
+//
+//  Created by Achraf Trabelsi on 19/04/2025.
+//
+
+import SwiftUI
+import SwiftData
+
+struct AdhkarDetailsView: View {
+    let adhkar: AdhkarCategory
+    @State private var resetToken = UUID()
+    @State private var selectedIndex: Int = 0
+    @Environment(\.modelContext) private var modelContext
+    @Environment(AudioPlayer.self) private var audio
+
+    private var accent: Color { (adhkar.section ?? .other).accentColor }
+
+    var body: some View {
+        ZStack {
+            AdaptiveBackground(decorated: true)
+            TabView(selection: $selectedIndex) {
+                ForEach(Array(adhkar.adhkarList.enumerated()), id: \.element.id) { index, dhikr in
+                    DhikrPageView(
+                        category: adhkar,
+                        dhikr: dhikr,
+                        position: index + 1,
+                        total: adhkar.adhkarList.count,
+                        accent: accent
+                    )
+                    .id("\(dhikr.id)-\(resetToken)")
+                    .tag(index)
+                }
+            }
+            .tabViewStyle(.page)
+            .indexViewStyle(.page(backgroundDisplayMode: .always))
+        }
+        .navigationTitle(adhkar.displayTitle)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    resetAllCounters()
+                } label: {
+                    Image(systemName: "arrow.counterclockwise")
+                }
+                .tint(accent)
+            }
+        }
+        .onChange(of: selectedIndex) { _, _ in
+            audio.stop()
+        }
+        .onDisappear {
+            audio.stop()
+        }
+    }
+
+    private func resetAllCounters() {
+        let ids = adhkar.adhkarList.map(\.id)
+        let descriptor = FetchDescriptor<DhikrProgress>(
+            predicate: #Predicate<DhikrProgress> { ids.contains($0.itemId) }
+        )
+        if let existing = try? modelContext.fetch(descriptor) {
+            for progress in existing {
+                progress.count = 0
+                progress.lastUpdated = .now
+            }
+        }
+        resetToken = UUID()
+    }
+}
+
+private struct DhikrPageView: View {
+    let category: AdhkarCategory
+    let dhikr: Adhkar
+    let position: Int
+    let total: Int
+    let accent: Color
+
+    @Environment(\.modelContext) private var modelContext
+    @Environment(AudioPlayer.self) private var audio
+
+    @State private var counter: Int = 0
+    @State private var transliterationExpanded = false
+    @State private var pulseScale: CGFloat = 1.0
+
+    private var isCompleted: Bool { counter >= dhikr.count }
+    private var progress: Double {
+        guard dhikr.count > 0 else { return 0 }
+        return min(Double(counter) / Double(dhikr.count), 1)
+    }
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 20) {
+                positionPill
+
+                Text(dhikr.dhikr)
+                    .font(.amiri(size: 28))
+                    .multilineTextAlignment(.center)
+                    .lineSpacing(14)
+                    .padding(.horizontal, 4)
+                    .padding(.vertical, 8)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.cardBackground)
+                    .clipShape(.rect(cornerRadius: 18))
+
+                if let translation = dhikr.translation?.resolved(), !translation.isEmpty {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(L10n.translation.resolved())
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(.secondary)
+                            .textCase(.uppercase)
+                        Text(translation)
+                            .font(.callout)
+                            .foregroundStyle(.primary)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(14)
+                    .background(Color.cardBackground)
+                    .clipShape(.rect(cornerRadius: 14))
+                }
+
+                if let translit = dhikr.transliteration?.resolved(), !translit.isEmpty {
+                    DisclosureSection(title: L10n.transliteration.resolved(), expanded: $transliterationExpanded) {
+                        Text(translit)
+                            .font(.callout.italic())
+                            .foregroundStyle(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                }
+
+                if !dhikr.source.isEmpty {
+                    Text(dhikr.source)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                }
+
+                counterButton
+
+                actionRow
+            }
+            .padding()
+            .padding(.bottom, 40)
+        }
+        .onAppear { loadOrResetCounter() }
+    }
+
+    private var positionPill: some View {
+        Text("\(position) / \(total)")
+            .font(.caption.monospacedDigit().weight(.semibold))
+            .foregroundStyle(accent)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 4)
+            .background(accent.opacity(0.15))
+            .clipShape(Capsule())
+    }
+
+    private var counterButton: some View {
+        Button {
+            guard !isCompleted else { return }
+            counter += 1
+            saveCounter()
+        } label: {
+            ZStack {
+                Circle()
+                    .fill(
+                        RadialGradient(
+                            colors: [accent.opacity(0.18), accent.opacity(0.05)],
+                            center: .center,
+                            startRadius: 5,
+                            endRadius: 95
+                        )
+                    )
+                Circle()
+                    .stroke(accent.opacity(0.20), lineWidth: 10)
+                Circle()
+                    .trim(from: 0, to: progress)
+                    .stroke(accent, style: StrokeStyle(lineWidth: 10, lineCap: .round))
+                    .rotationEffect(.degrees(-90))
+                    .animation(.easeOut(duration: 0.2), value: progress)
+
+                VStack(spacing: 4) {
+                    Text("\(counter)")
+                        .font(.system(size: 50, weight: .bold, design: .rounded))
+                        .foregroundStyle(accent)
+                        .contentTransition(.numericText())
+                    Text("/ \(dhikr.count)")
+                        .font(.callout.weight(.medium))
+                        .foregroundStyle(.secondary)
+                    if isCompleted {
+                        Text(L10n.done.resolved())
+                            .font(.caption.bold())
+                            .foregroundStyle(accent)
+                            .padding(.top, 2)
+                    } else if counter == 0 {
+                        Label(L10n.tapToCount.resolved(), systemImage: "hand.tap.fill")
+                            .font(.caption2.weight(.semibold))
+                            .foregroundStyle(accent.opacity(0.75))
+                            .padding(.top, 2)
+                    }
+                }
+            }
+            .frame(width: 190, height: 190)
+            .shadow(color: accent.opacity(0.25), radius: 14, x: 0, y: 6)
+            .scaleEffect(pulseScale)
+        }
+        .buttonStyle(.plain)
+        .disabled(isCompleted)
+        .sensoryFeedback(.impact(weight: .light), trigger: counter)
+        .sensoryFeedback(.success, trigger: isCompleted) { _, new in new }
+        .onAppear { startPulseIfNeeded() }
+        .onChange(of: counter) { _, newValue in
+            if newValue > 0 {
+                withAnimation(.easeOut(duration: 0.25)) { pulseScale = 1.0 }
+            }
+        }
+    }
+
+    private func startPulseIfNeeded() {
+        guard counter == 0 else { return }
+        withAnimation(.easeInOut(duration: 1.3).repeatForever(autoreverses: true)) {
+            pulseScale = 1.04
+        }
+    }
+
+    @ViewBuilder
+    private var actionRow: some View {
+        HStack(spacing: 12) {
+            if let audioURL = dhikrAudioURL {
+                audioButton(url: audioURL)
+            }
+            ShareLink(item: shareText) {
+                Label(L10n.share.resolved(), systemImage: "square.and.arrow.up")
+                    .font(.subheadline)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                    .background(Color.cardBackground)
+                    .clipShape(Capsule())
+            }
+            .tint(accent)
+        }
+    }
+
+    private func audioButton(url: URL) -> some View {
+        let playing = audio.isPlaying(itemId: dhikr.id)
+        return Button {
+            audio.toggle(itemId: dhikr.id, url: url)
+        } label: {
+            Label(playing ? L10n.pause.resolved() : L10n.listen.resolved(),
+                  systemImage: playing ? "pause.fill" : "play.fill")
+                .font(.subheadline.weight(.semibold))
+                .padding(.horizontal, 16)
+                .padding(.vertical, 10)
+                .background(playing ? accent.opacity(0.2) : Color.cardBackground)
+                .foregroundStyle(accent)
+                .clipShape(Capsule())
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var dhikrAudioURL: URL? {
+        guard let s = dhikr.audio, !s.isEmpty else { return nil }
+        return URL(string: s)
+    }
+
+    private var shareText: String {
+        var parts: [String] = [dhikr.dhikr]
+        if let t = dhikr.translation?.resolved(), !t.isEmpty { parts.append(t) }
+        if !dhikr.source.isEmpty { parts.append("— \(dhikr.source)") }
+        return parts.joined(separator: "\n\n")
+    }
+
+    // MARK: - Persistence
+
+    private func loadOrResetCounter() {
+        let id = dhikr.id
+        let descriptor = FetchDescriptor<DhikrProgress>(
+            predicate: #Predicate<DhikrProgress> { $0.itemId == id }
+        )
+        guard let existing = (try? modelContext.fetch(descriptor))?.first else {
+            counter = 0
+            return
+        }
+        if Calendar.current.isDateInToday(existing.lastUpdated) {
+            counter = existing.count
+        } else {
+            existing.count = 0
+            existing.lastUpdated = .now
+            counter = 0
+        }
+    }
+
+    private func saveCounter() {
+        let id = dhikr.id
+        let descriptor = FetchDescriptor<DhikrProgress>(
+            predicate: #Predicate<DhikrProgress> { $0.itemId == id }
+        )
+        if let existing = (try? modelContext.fetch(descriptor))?.first {
+            existing.count = counter
+            existing.lastUpdated = .now
+        } else {
+            modelContext.insert(DhikrProgress(itemId: id, count: counter, lastUpdated: .now))
+        }
+    }
+}
+
+private struct DisclosureSection<Content: View>: View {
+    let title: String
+    @Binding var expanded: Bool
+    @ViewBuilder var content: () -> Content
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Button {
+                withAnimation(.easeInOut(duration: 0.2)) { expanded.toggle() }
+            } label: {
+                HStack {
+                    Text(title)
+                        .font(.subheadline.weight(.semibold))
+                    Spacer()
+                    Image(systemName: "chevron.down")
+                        .font(.caption)
+                        .rotationEffect(.degrees(expanded ? 0 : -90))
+                }
+                .foregroundStyle(.primary)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+
+            if expanded {
+                content()
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+            }
+        }
+        .padding(14)
+        .background(Color.cardBackground)
+        .clipShape(.rect(cornerRadius: 14))
+    }
+}
+
+#Preview {
+    NavigationStack {
+        AdhkarDetailsView(adhkar: DataProvider.adharCategories.first!)
+    }
+    .environment(FavoritesStore())
+    .environment(AudioPlayer())
+    .modelContainer(for: DhikrProgress.self, inMemory: true)
+}
