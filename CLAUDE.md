@@ -44,7 +44,7 @@ Matching is two-phase Jaccard on token sets (chapter→chapter, then item→item
 
 ## Architecture (non-obvious bits)
 
-### Synchronized folders (Xcode 16+)
+### Synchronized folders (Xcode 26+)
 The project uses `PBXFileSystemSynchronizedRootGroup`. **Any file dropped in `Adhkar/` auto-bundles** as either source or resource based on extension. Don't edit `project.pbxproj` to add files — drop them in and they appear.
 
 ### Cross-platform constraints (iOS + macOS + visionOS)
@@ -54,7 +54,7 @@ The project uses `PBXFileSystemSynchronizedRootGroup`. **Any file dropped in `Ad
 - For iOS-only APIs (e.g. `AVAudioSession`), guard with `#if canImport(UIKit) && os(iOS)`.
 
 ### Asset symbols collide with manual statics
-Xcode 16 auto-generates `Color.cardBackground` from `Assets.xcassets/CardBackground.colorset`. **Never redeclare** `static let cardBackground` in `Color+Extension.swift` — it produces `error: invalid redeclaration`. The asset is the source of truth (white in light, deep navy in dark).
+Xcode 26 auto-generates `Color.cardBackground` from `Assets.xcassets/CardBackground.colorset`. **Never redeclare** `static let cardBackground` in `Color+Extension.swift` — it produces `error: invalid redeclaration`. The asset is the source of truth (white in light, deep navy in dark).
 
 ### Font registration is runtime, not Info.plist
 `INFOPLIST_KEY_UIAppFonts` is NOT one of the Xcode-mapped Info.plist keys, so adding it to build settings has no effect. We register fonts at app launch via `FontRegistrar.registerBundledFonts()` (CoreText `CTFontManagerRegisterFontsForURL`). Three bundled TTFs: `Amiri-Regular`, `Amiri-Bold`, `AmiriQuran` (the last is tuned for Quranic verses with full diacritics).

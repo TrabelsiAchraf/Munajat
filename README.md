@@ -31,7 +31,7 @@ Targets **iOS 18.4 / macOS 15.4 / visionOS** from a single codebase.
 
 ## Architecture highlights
 
-- **Xcode 16 synchronized folders** (`PBXFileSystemSynchronizedRootGroup`): any file dropped in `Adhkar/` auto-bundles
+- **Xcode 26 synchronized folders** (`PBXFileSystemSynchronizedRootGroup`): any file dropped in `Adhkar/` auto-bundles
 - **Single accent color** (orange) across every section to keep the visual language coherent
 - **`LocalizedText`** reads `UserDefaults` `AppleLanguages` rather than `Locale.current`, so launch flags (`-AppleLanguages "(fr)"`) and per-app language settings are honored
 - **Crescent shapes** use `Path.subtracting(_:)` (iOS 16+) instead of the naive `addEllipse + eoFill` ring which notches when the inner disk sticks out of the outer
