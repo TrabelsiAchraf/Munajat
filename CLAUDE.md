@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Personal iOS SwiftUI app showing Islamic adhkar (daily remembrances). Single Xcode project, no Swift Package or external dependencies. Targets iOS 18.4 / macOS 15.4 / visionOS — code must compile for **all three** platforms.
+Personal iOS SwiftUI app showing Islamic adhkar (daily remembrances). Single Xcode project, no Swift Package or external dependencies. Two targets: the main `Adhkar` app (iOS / macOS / visionOS — code must compile for **all three** platforms) and a `MunajatWidget` Widget Extension (iOS-only).
 
 ## Build & run
 
@@ -23,7 +23,7 @@ xcodebuild -project Adhkar.xcodeproj -scheme Adhkar \
   -destination 'generic/platform=iOS Simulator' -configuration Debug build
 ```
 
-No test target exists yet — adding one requires Xcode UI (File → New → Target) because the `.pbxproj` is fragile to edit by hand.
+No test target exists yet. Adding new Xcode targets is fragile to do by hand on the pbxproj — use the `xcodeproj` Ruby gem (already used for the widget setup; see `scripts/setup_widget_target.rb` and `scripts/share_files_with_widget.rb`).
 
 ## Regenerating content & assets
 
@@ -49,24 +49,44 @@ The project uses `PBXFileSystemSynchronizedRootGroup`. **Any file dropped anywhe
 
 ### Source layout
 ```
-Adhkar/
-  Adhkar.entitlements           ← stays at root (hardcoded in pbxproj CODE_SIGN_ENTITLEMENTS)
+Adhkar/                          ← main app target (synchronized root group)
+  Adhkar.entitlements            ← app sandbox + App Group group.com.tadevv.Munajat
   PrivacyInfo.xcprivacy          ← stays at root by convention
-  App/            Entry point + root tab navigation
-  Models/         Pure data types (categories, types, sections, LocalizedText, DhikrProgress)
-  Services/       Side-effect managers (DataProvider, AudioPlayer, FavoritesStore, NotificationManager)
-  Localization/   L10n.swift
-  Views/          SwiftUI screens and feature views
-  Design/         Visual primitives (colors, fonts, patterns, button styles, decorative backgrounds)
-  Resources/      adhkar.json, Amiri TTFs, Assets.xcassets
+  App/                           Entry point + root tab navigation + deep-link routing
+  Models/                        Pure data types (AdhkarCategory/Type/Section, LocalizedText,
+                                 DhikrProgress, DailyActivity)
+  Services/                      DataProvider, AudioPlayer, FavoritesStore,
+                                 NotificationManager, StreakService
+  Localization/                  L10n.swift
+  Views/                         SwiftUI screens + ShareableDhikrCard + StreakCard +
+                                 CompletionOverlay
+  Design/                        Visual primitives (colors, fonts, patterns, button styles,
+                                 decorative backgrounds)
+  Resources/                     adhkar.json, Amiri TTFs, Assets.xcassets
+
+MunajatWidget/                   ← Widget Extension target (iOS-only, synchronized root group)
+  MunajatWidgetBundle.swift      @main + FontRegistrar call so the widget process has Amiri
+  CurrentPeriodWidget.swift      Timeline provider, small + medium layouts
+
+MunajatWidget-SupportingFiles/   ← outside the sync group on purpose (Info.plist would
+                                   collide as a resource otherwise)
+  Info.plist                     NSExtensionPointIdentifier = widgetkit-extension +
+                                 CFBundle* template keys
+  MunajatWidget.entitlements     App Group group.com.tadevv.Munajat
+
+Adhkar-SupportingFiles/          ← INFOPLIST_FILE merge on the main app
+  Adhkar-URLTypes.plist          CFBundleURLTypes for munajat:// — merges with the
+                                 auto-generated Info.plist when GENERATE_INFOPLIST_FILE = YES
 ```
-Drop new files in the matching subfolder — the synchronized group picks them up automatically.
+Drop new files in the matching subfolder of either `Adhkar/` or `MunajatWidget/` — the synchronized root group picks them up automatically. Files in `*-SupportingFiles/` are referenced explicitly via build settings (no synced group).
 
 ### Cross-platform constraints (iOS + macOS + visionOS)
 - **No `import UIKit`** — fails on macOS native (`SUPPORTED_PLATFORMS = iphoneos iphonesimulator macosx xros xrsimulator`).
 - Use `.sensoryFeedback(.impact, trigger:)` instead of `UIImpactFeedbackGenerator`.
 - Use `Color("CardBackground")` (asset catalog) instead of `Color(.secondarySystemBackground)`.
 - For iOS-only APIs (e.g. `AVAudioSession`), guard with `#if canImport(UIKit) && os(iOS)`.
+- **iOS-only SwiftUI modifiers** need `#if os(iOS) || os(visionOS)`: `.searchable(placement: .navigationBarDrawer(...))`, `TabView.tabViewStyle(.page)`, `.indexViewStyle(.page(...))`, `.navigationBarTitleDisplayMode(.inline)`. `ToolbarItemPlacement.topBarTrailing` is also iOS-only — use `.primaryAction` instead for the cross-platform path.
+- **Image rendering for share** uses `ImageRenderer.cgImage` + `Image(decorative:scale:orientation:)` + a `Transferable` PNG wrapper (`ShareableDhikrImage`). No `UIImage` / `UIActivityViewController`.
 
 ### Asset symbols collide with manual statics
 Xcode 26 auto-generates `Color.cardBackground` from `Assets.xcassets/CardBackground.colorset`. **Never redeclare** `static let cardBackground` in `Color+Extension.swift` — it produces `error: invalid redeclaration`. The asset is the source of truth (white in light, deep navy in dark).
@@ -92,6 +112,9 @@ JSON schema highlights:
 - **Counters**: SwiftData `DhikrProgress(@Attribute(.unique) itemId, count, lastUpdated)`. Auto-reset on day change via `Calendar.current.isDateInToday(lastUpdated)` check in `DhikrPageView.onAppear`.
 - **Favorites**: `FavoritesStore` (`@Observable`) backed by `UserDefaults` array under key `favoriteCategoryIds`. Migrates legacy `favorite_<id>` Bool keys from Phase 1.
 - **Notification prefs**: `NotificationManager` persists per-slot enable + hour/minute in `UserDefaults`.
+- **Streak history**: SwiftData `DailyActivity(@Attribute(.unique) dayKey, itemsRead, firstOpen)`. `dayKey` is `yyyy-MM-dd` in `Calendar(identifier: .gregorian)` + local TZ so device-set Islamic locales don't reshuffle the day boundaries.
+- **Streak counters**: `StreakService` (`@Observable @MainActor`) mirrors `currentStreak` / `bestStreak` to `UserDefaults(suiteName: "group.com.tadevv.Munajat")` (App Group) so the widget can read without spinning up SwiftData. Calls `WidgetCenter.shared.reloadTimelines(ofKind: "CurrentPeriodWidget")` after each recompute. The init takes a `nonisolated static func makeSharedDefaults()` default — keep that pattern when reading the suite from non-actor contexts.
+- **Celebration shown**: per-category `celebration.lastShown.<categoryId>` timestamp in `UserDefaults.standard` — used by `AdhkarDetailsView` to fire the completion overlay at most once per day per category.
 
 ### Visual language
 - **Forced dark mode**: `RootTabView` has `.preferredColorScheme(.dark)`. Light-mode code paths in `AdaptiveBackground` still exist but are dead — keep them for now in case the user toggles back.
@@ -99,11 +122,23 @@ JSON schema highlights:
 - **Tab tint**: `.tint(.orange)` on `RootTabView`'s `TabView`.
 - **Pattern**: `CrescentStarPattern` (gold metallic crescents + 5-point stars, `Path.subtracting()` for the crescent shape) drawn via `Canvas`. Applied as background **only** on home and dhikr-detail (`AdaptiveBackground(decorated: true)`); Favorites/Search/Settings stay quiet. Static — no animation.
 
+### Widget extension
+- iOS-only target, lives in `MunajatWidget/` (synced source) + `MunajatWidget-SupportingFiles/` (Info.plist + entitlements outside the sync group so the build system doesn't double-process them as resources).
+- `MunajatWidgetBundle` is `@main` and re-runs `FontRegistrar.registerBundledFonts()` in its `init` (widget extensions are a separate process from the host app, so the app's launch-time registration doesn't reach them).
+- `CurrentPeriodWidget` uses a `TimelineProvider` that emits entries at next 04:00 / 12:00 / 19:00 transitions, matching `AdhkarType.forCurrentHour(now:)`. Reads `streak.current` from the App Group suite.
+- Embedded into the main app via "Embed Foundation Extensions" copy phase with a **platform filter** restricted to iOS so macOS/visionOS builds don't fail trying to embed the iOS-only extension. Without that filter the macOS build errors with "embedded content built for the iOS platform".
+- Source files **shared** with the widget target (models, services, L10n, fonts, JSON, design helpers) are NOT duplicated — they're listed in a `PBXFileSystemSynchronizedBuildFileExceptionSet` attached to the `Adhkar/` sync group with `target = MunajatWidget`. Edit the list via `scripts/share_files_with_widget.rb`.
+
+### URL scheme + deep linking
+- The app registers the scheme `munajat://` for tap-from-widget deep links. `CFBundleURLTypes` lives in `Adhkar-SupportingFiles/Adhkar-URLTypes.plist`, set as `INFOPLIST_FILE` while `GENERATE_INFOPLIST_FILE = YES` stays on — Xcode 14+ **merges** the custom keys into the generated Info.plist. (A `Run Script` phase using PlistBuddy was tried first and blocked by `ENABLE_USER_SCRIPT_SANDBOXING`; the merge approach is what works.)
+- Routing: widget `widgetURL(URL("munajat://category/<id>"))` → `AdhkarApp.onOpenURL` parses scheme/host/path → sets `@State pendingDeepLinkCategoryId` → `RootTabView.onChange` switches to `.home` tab, resets `homePath` to `NavigationPath()`, then `.append(category)`. The path is reset before append so repeated widget taps don't stack duplicates.
+
 ### Important gotchas
 - The naive crescent `addEllipse + addEllipse + eoFill` produces a ring with a notch if the inner disk sticks out of the outer (`innerR + offset > outerR`). Use `Path.subtracting(_:)` (iOS 16+) for proper boolean subtraction.
-- `Calendar.current` may be a non-Gregorian calendar on user devices (Islamic locale). For hour-of-day comparisons that drive UI logic (e.g. featured-card time window), explicitly use `Calendar(identifier: .gregorian)`.
+- `Calendar.current` may be a non-Gregorian calendar on user devices (Islamic locale). For hour-of-day comparisons that drive UI logic (e.g. featured-card time window) AND for streak/celebration day keys, explicitly use `Calendar(identifier: .gregorian)`.
 - `AdhkarSection` cases used in JSON section field must match the Swift enum cases. New section = update both.
 - `AdhkarType` enum has ~144 cases but only 133 have entries in `TYPE_TO_TITLE` (the manual map in `scripts/build_adhkar.py`). The extra 11 cases produce icons but no JSON content — they're invisible in the grid until added to the script's mapping.
+- `AdhkarDetailsView.body` is **dense** — modifiers extracted into named computed properties (`baseContent`, `resetToolbarItem`, `celebrationOverlay`) to keep SourceKit's type-checker under 7s. Adding more chained modifiers directly to the body brings back the "unable to type-check this expression in reasonable time" warning.
 
 ### Phase history
-The app went through 7 explicit phases (bug fixes → JSON migration → content import → UX refonte → SwiftData/audio → notifications/i18n → polish/icon). The plan file under `~/.claude/plans/` references these phases and the rationale for each architectural choice.
+The app went through 7 explicit phases (bug fixes → JSON migration → content import → UX refonte → SwiftData/audio → notifications/i18n → polish/icon), then a store-readiness pass (streak + share-as-image + a11y + privacy/support links + macOS cross-platform fixes), then Phase 0/4 (Widget Extension via `xcodeproj` gem + deep linking), then completion progress bar + celebration overlay. The plan file under `~/.claude/plans/` references these phases and the rationale for each architectural choice.

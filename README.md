@@ -27,27 +27,42 @@ Targets **iOS 18.4 / macOS 15.4 / visionOS** from a single codebase.
 - **Trilingual UI**: Arabic, French, English — switchable at launch via `AppleLanguages`
 - **Streaming audio** for each dhikr (hisnmuslim.com), upgraded to HTTPS at play time to clear iOS ATS
 - **Per-item counters** persisted with SwiftData, auto-reset on day change
+- **Per-category progress bar** at the top of each dhikr screen, live-updated as counters reach their targets
+- **Completion celebration**: once-per-day overlay with "ما شاء الله", gold halo, sparkles and success haptic when every dhikr in a category is done
+- **Daily streak**: SwiftData history of opens + best-record tracking, surfaced on the home screen and the widget
+- **Home-screen widget** (iOS) — small + medium, shows the suggested dhikr for the current time of day and the live streak count, tap → deep-links into the right category via `munajat://`
+- **Share dhikr as image**: each detail view exports a 1080×1920 PNG card (gradient + crescent pattern + Amiri body + translation + footer) via `ImageRenderer` + a `Transferable` wrapper, no UIKit
 - **Favorites** with UserDefaults migration from the legacy per-key Bool format
 - **Daily reminders** (morning / evening / sleep) via `UNCalendarNotificationTrigger`
 - **Time-aware home**: surfaces the right category for the current hour as a featured card
+- **Accessibility**: every interactive element has a localized `.accessibilityLabel`, `.accessibilityHint`, `.accessibilityValue`; decorative patterns hidden from VoiceOver
+- **Privacy-first**: zero analytics, zero tracking, App Sandbox + minimal entitlements (App Group only for app↔widget streak sharing)
 - **Custom Arabic typography**: Amiri Regular/Bold for body, AmiriQuran for verses (full diacritics, registered at runtime via `CTFontManager`)
 - **Islamic visual language**: gold crescents + 8-point stars over a deep-navy theme, drawn with `Canvas` and `Path.subtracting` for clean shapes
 
 ## Tech stack
 
 - **SwiftUI** with `@Observable` state, `NavigationStack`, `TabView`
-- **SwiftData** for the dhikr counter
+- **SwiftData** for the dhikr counter and the daily streak history
+- **WidgetKit** with a `TimelineProvider` rotating at 04:00 / 12:00 / 19:00 local
+- **App Group** (`group.com.tadevv.Munajat`) UserDefaults suite so the widget reads streak data without spinning up SwiftData
+- **Deep linking** via `munajat://category/<id>` (`onOpenURL` → lifted `NavigationPath`)
 - **AVFoundation** for audio streaming with `.spokenAudio` session
 - **CoreText** for runtime font registration (no `UIAppFonts` in Info.plist)
 - **UserNotifications** for daily reminders
-- Cross-platform: no `import UIKit`, asset-catalog colors instead of `UIColor.secondarySystemBackground`, `.sensoryFeedback` instead of `UIImpactFeedbackGenerator`
+- **ImageRenderer + Transferable** for sharing dhikr cards as PNG, cross-platform
+- Cross-platform: no `import UIKit`, asset-catalog colors instead of `UIColor.secondarySystemBackground`, `.sensoryFeedback` instead of `UIImpactFeedbackGenerator`, iOS-only modifiers wrapped behind `#if os(iOS) || os(visionOS)`
 
 ## Architecture highlights
 
-- **Xcode 26 synchronized folders** (`PBXFileSystemSynchronizedRootGroup`): any file dropped in `Adhkar/` auto-bundles
+- **Xcode 26 synchronized folders** (`PBXFileSystemSynchronizedRootGroup`): any file dropped in `Adhkar/` or `MunajatWidget/` auto-bundles
+- **Two-target project** wired entirely via the `xcodeproj` Ruby gem (see `scripts/setup_widget_target.rb`, `scripts/share_files_with_widget.rb`) — no manual pbxproj editing. Shared source files are attached to the widget via a `PBXFileSystemSynchronizedBuildFileExceptionSet` so they aren't duplicated.
+- **Widget embed is iOS-only**: a `platformFilter` on the "Embed Foundation Extensions" build file keeps macOS / visionOS builds from choking on the iOS-only widget.
+- **URL scheme injection without rebuilding Info.plist**: `Adhkar-SupportingFiles/Adhkar-URLTypes.plist` is set as `INFOPLIST_FILE` while `GENERATE_INFOPLIST_FILE = YES` stays on — Xcode 14+ merges the custom keys into the generated file.
 - **Single accent color** (orange) across every section to keep the visual language coherent
 - **`LocalizedText`** reads `UserDefaults` `AppleLanguages` rather than `Locale.current`, so launch flags (`-AppleLanguages "(fr)"`) and per-app language settings are honored
 - **Crescent shapes** use `Path.subtracting(_:)` (iOS 16+) instead of the naive `addEllipse + eoFill` ring which notches when the inner disk sticks out of the outer
+- **Streak day boundaries** use `Calendar(identifier: .gregorian)` explicitly so devices set to a Hijri locale don't reshuffle the day window
 
 ## Build & run
 
@@ -88,14 +103,17 @@ The merge uses two-phase Jaccard matching on token sets (chapter → chapter, th
 ## Project layout
 
 ```
-Adhkar/                     # SwiftUI sources (auto-bundled via synchronized folder)
-  adhkar.json               # Bundled corpus
-  Amiri*.ttf                # Three bundled Arabic fonts
-  Assets.xcassets/          # App icon, accent color, CardBackground
+Adhkar/                          # Main app sources (auto-bundled via synchronized folder)
+  Resources/                     # adhkar.json corpus + Amiri TTFs + Assets.xcassets
+MunajatWidget/                   # iOS widget extension (synchronized folder)
+MunajatWidget-SupportingFiles/   # Widget Info.plist + entitlements (outside sync group)
+Adhkar-SupportingFiles/          # Main app Info.plist merge file (CFBundleURLTypes)
 scripts/
-  build_adhkar.py           # Hisn al-Muslim merger
-  make_icon.py              # Icon renderer
-CLAUDE.md                   # Project guide (architecture, gotchas, conventions)
+  build_adhkar.py                # Hisn al-Muslim merger
+  make_icon.py                   # Icon renderer
+  setup_widget_target.rb         # Idempotent widget-target wiring via xcodeproj gem
+  share_files_with_widget.rb     # Attach shared source files to the widget target
+CLAUDE.md                        # Project guide (architecture, gotchas, conventions)
 ```
 
 ## Credits
@@ -108,4 +126,4 @@ CLAUDE.md                   # Project guide (architecture, gotchas, conventions)
 
 ## Status
 
-Personal project, not yet on the App Store. Built across seven explicit phases (bug fixes → JSON migration → content import → UX redesign → SwiftData/audio → notifications/i18n → polish/icon).
+Personal project, getting close to App Store submission. Built across seven explicit phases (bug fixes → JSON migration → content import → UX redesign → SwiftData/audio → notifications/i18n → polish/icon), then a store-readiness pass (streak, share-as-image, accessibility, privacy links, macOS cross-platform fixes), Phase 0/4 (Widget Extension + `munajat://` deep links wired via the `xcodeproj` Ruby gem) and finally a completion progress bar + celebration overlay. Open items before submission: hosting the privacy/support pages, registering the App Group in the Developer Portal, capturing App Store screenshots (iPhone 6.9" + iPad 13" × AR/FR/EN), and writing the listing copy.
