@@ -8,6 +8,7 @@
 import Foundation
 import Observation
 import SwiftData
+import WidgetKit
 
 /// Tracks a daily-open streak. The streak increments by one each day the user
 /// opens the app at least once; it resets to 1 if a calendar day was skipped.
@@ -43,7 +44,15 @@ final class StreakService {
         return f
     }()
 
-    init(defaults: UserDefaults = .standard) {
+    /// App Group suite shared with `MunajatWidget` so the widget can read
+    /// the streak without spinning up SwiftData. Falls back to `.standard`
+    /// only if the suite somehow can't be opened (shouldn't happen in
+    /// release builds since the entitlement is part of the bundle).
+    nonisolated static func makeSharedDefaults() -> UserDefaults {
+        UserDefaults(suiteName: "group.com.tadevv.Munajat") ?? .standard
+    }
+
+    init(defaults: UserDefaults = StreakService.makeSharedDefaults()) {
         self.defaults = defaults
         bestStreak = defaults.integer(forKey: bestKey)
         currentStreak = defaults.integer(forKey: currentKey)
@@ -105,6 +114,10 @@ final class StreakService {
 
         defaults.set(currentStreak, forKey: currentKey)
         defaults.set(bestStreak, forKey: bestKey)
+
+        // Nudge the widget to re-render with the fresh streak. Cheap: WidgetKit
+        // coalesces requests and only re-runs the timeline provider if needed.
+        WidgetCenter.shared.reloadTimelines(ofKind: "CurrentPeriodWidget")
     }
 
     private static func dayKey(for date: Date) -> String {
