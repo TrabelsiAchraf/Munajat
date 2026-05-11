@@ -64,59 +64,64 @@ struct AdhkarDetailsView: View {
     }
 
     var body: some View {
+        baseContent
+            .toolbar { resetToolbarItem }
+            .onChange(of: selectedIndex) { _, _ in audio.stop() }
+            .onChange(of: completedCount) { oldValue, newValue in
+                handleProgressChange(old: oldValue, new: newValue)
+            }
+            .sensoryFeedback(.success, trigger: showCelebration) { _, new in new }
+            .overlay { celebrationOverlay }
+            .onDisappear { audio.stop() }
+    }
+
+    private var baseContent: some View {
         ZStack {
             AdaptiveBackground(decorated: true)
             pagedDhikrList
         }
-        .safeAreaInset(edge: .top, spacing: 0) {
-            progressHeader
-        }
+        .safeAreaInset(edge: .top, spacing: 0) { progressHeader }
         .navigationTitle(adhkar.displayTitle)
         #if os(iOS) || os(visionOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button {
-                    resetAllCounters()
-                } label: {
-                    Image(systemName: "arrow.counterclockwise")
+    }
+
+    private var resetToolbarItem: some ToolbarContent {
+        ToolbarItem(placement: .primaryAction) {
+            Button {
+                resetAllCounters()
+            } label: {
+                Image(systemName: "arrow.counterclockwise")
+            }
+            .tint(accent)
+            .accessibilityLabel(L10n.a11yResetCounters.resolved())
+            .accessibilityHint(L10n.a11yResetCountersHint.resolved())
+        }
+    }
+
+    @ViewBuilder
+    private var celebrationOverlay: some View {
+        if showCelebration {
+            CompletionOverlay(accent: accent) {
+                withAnimation(.easeOut(duration: 0.25)) {
+                    showCelebration = false
                 }
-                .tint(accent)
-                .accessibilityLabel(L10n.a11yResetCounters.resolved())
-                .accessibilityHint(L10n.a11yResetCountersHint.resolved())
             }
+            .transition(.opacity.combined(with: .scale(scale: 0.92)))
+            .zIndex(1)
         }
-        .onChange(of: selectedIndex) { _, _ in
-            audio.stop()
-        }
-        .onChange(of: completedCount) { oldValue, newValue in
-            guard newValue == totalCount,
-                  totalCount > 0,
-                  oldValue < totalCount,
-                  !celebrationAlreadyShownToday()
-            else { return }
-            markCelebrationShown()
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
-                showCelebration = true
-            }
-        }
-        .sensoryFeedback(.success, trigger: showCelebration) { _, newValue in
-            newValue
-        }
-        .overlay {
-            if showCelebration {
-                CompletionOverlay(accent: accent) {
-                    withAnimation(.easeOut(duration: 0.25)) {
-                        showCelebration = false
-                    }
-                }
-                .transition(.opacity.combined(with: .scale(scale: 0.92)))
-                .zIndex(1)
-            }
-        }
-        .onDisappear {
-            audio.stop()
+    }
+
+    private func handleProgressChange(old: Int, new: Int) {
+        guard new == totalCount,
+              totalCount > 0,
+              old < totalCount,
+              !celebrationAlreadyShownToday()
+        else { return }
+        markCelebrationShown()
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+            showCelebration = true
         }
     }
 
