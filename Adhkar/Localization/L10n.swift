@@ -101,4 +101,11 @@ enum L10n {
         fr: "{completed} sur {total} dhikr complétés",
         en: "{completed} of {total} dhikr completed"
     )
+
+    // Completion celebration overlay
+    static let celebrationSubtitle = LocalizedText(
+        ar: "أتممت قراءة جميع أذكار هذه الفئة",
+        fr: "Tu as lu tous les adhkar de cette catégorie",
+        en: "You read every dhikr in this category"
+    )
 }

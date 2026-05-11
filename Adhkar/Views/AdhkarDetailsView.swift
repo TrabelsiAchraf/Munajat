@@ -12,6 +12,7 @@ struct AdhkarDetailsView: View {
     let adhkar: AdhkarCategory
     @State private var resetToken = UUID()
     @State private var selectedIndex: Int = 0
+    @State private var showCelebration = false
     @Environment(\.modelContext) private var modelContext
     @Environment(AudioPlayer.self) private var audio
     @Environment(StreakService.self) private var streak
@@ -45,6 +46,23 @@ struct AdhkarDetailsView: View {
         return min(Double(completedCount) / Double(totalCount), 1)
     }
 
+    /// One-shot-per-day-per-category flag. Persisted to `UserDefaults` so the
+    /// celebration doesn't re-fire if the user closes and re-opens the app,
+    /// or resets and re-completes the same category in the same day.
+    private var celebrationStorageKey: String {
+        "celebration.lastShown.\(adhkar.id)"
+    }
+
+    private func celebrationAlreadyShownToday() -> Bool {
+        let ts = UserDefaults.standard.double(forKey: celebrationStorageKey)
+        guard ts > 0 else { return false }
+        return Calendar.current.isDateInToday(Date(timeIntervalSince1970: ts))
+    }
+
+    private func markCelebrationShown() {
+        UserDefaults.standard.set(Date.now.timeIntervalSince1970, forKey: celebrationStorageKey)
+    }
+
     var body: some View {
         ZStack {
             AdaptiveBackground(decorated: true)
@@ -71,6 +89,31 @@ struct AdhkarDetailsView: View {
         }
         .onChange(of: selectedIndex) { _, _ in
             audio.stop()
+        }
+        .onChange(of: completedCount) { oldValue, newValue in
+            guard newValue == totalCount,
+                  totalCount > 0,
+                  oldValue < totalCount,
+                  !celebrationAlreadyShownToday()
+            else { return }
+            markCelebrationShown()
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+                showCelebration = true
+            }
+        }
+        .sensoryFeedback(.success, trigger: showCelebration) { _, newValue in
+            newValue
+        }
+        .overlay {
+            if showCelebration {
+                CompletionOverlay(accent: accent) {
+                    withAnimation(.easeOut(duration: 0.25)) {
+                        showCelebration = false
+                    }
+                }
+                .transition(.opacity.combined(with: .scale(scale: 0.92)))
+                .zIndex(1)
+            }
         }
         .onDisappear {
             audio.stop()
@@ -484,11 +527,114 @@ private struct DisclosureSection<Content: View>: View {
     }
 }
 
+/// Full-screen congratulatory overlay shown once per day per category when
+/// every dhikr counter has reached its target. Sober, no confetti — a gold
+/// ring with a crescent + star halo, "ما شاء الله" in Amiri, and a localized
+/// subtitle. Tap anywhere to dismiss, or it auto-dismisses after a few
+/// seconds via the `.task` modifier.
+private struct CompletionOverlay: View {
+    let accent: Color
+    var onDismiss: () -> Void
+
+    @State private var scale: CGFloat = 0.4
+    @State private var rotation: Double = -20
+    @State private var glowOpacity: Double = 0
+    @State private var sparkleRotation: Double = 0
+
+    private let gold1 = Color(hex: "#FFE9A6")
+    private let gold2 = Color(hex: "#D4A857")
+
+    var body: some View {
+        ZStack {
+            Color.black.opacity(0.55)
+                .ignoresSafeArea()
+                .contentShape(Rectangle())
+                .onTapGesture { onDismiss() }
+
+            VStack(spacing: 22) {
+                ZStack {
+                    Circle()
+                        .fill(accent.opacity(0.45))
+                        .frame(width: 220, height: 220)
+                        .blur(radius: 36)
+                        .opacity(glowOpacity)
+
+                    ForEach(0..<6) { i in
+                        Image(systemName: "sparkle")
+                            .font(.system(size: 18, weight: .bold))
+                            .foregroundStyle(gold1.opacity(0.85))
+                            .offset(y: -78)
+                            .rotationEffect(.degrees(Double(i) * 60 + sparkleRotation))
+                    }
+
+                    Circle()
+                        .stroke(
+                            LinearGradient(
+                                colors: [gold1, gold2],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ),
+                            lineWidth: 4
+                        )
+                        .frame(width: 140, height: 140)
+
+                    Image(systemName: "moon.stars.fill")
+                        .font(.system(size: 64, weight: .bold))
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [gold1, gold2],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .rotationEffect(.degrees(rotation))
+                }
+
+                Text("ما شاء الله")
+                    .font(.amiri(size: 40, bold: true))
+                    .foregroundStyle(.white)
+
+                Text(L10n.celebrationSubtitle.resolved())
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.white.opacity(0.85))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 24)
+            }
+            .padding(32)
+            .background(
+                RoundedRectangle(cornerRadius: 28)
+                    .fill(.ultraThinMaterial)
+            )
+            .scaleEffect(scale)
+            .accessibilityElement(children: .combine)
+            .accessibilityAddTraits(.isModal)
+            .onTapGesture { onDismiss() }
+        }
+        .onAppear {
+            withAnimation(.spring(response: 0.55, dampingFraction: 0.65)) {
+                scale = 1.0
+                rotation = 0
+            }
+            withAnimation(.easeOut(duration: 0.9)) {
+                glowOpacity = 1.0
+            }
+            withAnimation(.linear(duration: 12).repeatForever(autoreverses: false)) {
+                sparkleRotation = 360
+            }
+        }
+        .task {
+            try? await Task.sleep(for: .seconds(3))
+            onDismiss()
+        }
+    }
+}
+
 #Preview {
     NavigationStack {
         AdhkarDetailsView(adhkar: DataProvider.adharCategories.first!)
     }
     .environment(FavoritesStore())
     .environment(AudioPlayer())
+    .environment(StreakService())
     .modelContainer(for: DhikrProgress.self, inMemory: true)
 }
