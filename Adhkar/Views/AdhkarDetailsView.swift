@@ -16,12 +16,42 @@ struct AdhkarDetailsView: View {
     @Environment(AudioPlayer.self) private var audio
     @Environment(StreakService.self) private var streak
 
+    /// All persisted counters. We filter to the current category in code so we
+    /// don't need a dynamic SwiftData predicate, and we re-check
+    /// `isDateInToday(lastUpdated)` so a category fully completed yesterday
+    /// reads as 0/N this morning (counters auto-reset on first visit per page).
+    @Query private var allProgress: [DhikrProgress]
+
     private var accent: Color { (adhkar.section ?? .other).accentColor }
+
+    private var totalCount: Int { adhkar.adhkarList.count }
+
+    private var completedCount: Int {
+        let progressById = Dictionary(
+            uniqueKeysWithValues: allProgress.map { ($0.itemId, $0) }
+        )
+        let calendar = Calendar.current
+        return adhkar.adhkarList.reduce(into: 0) { acc, dhikr in
+            guard let p = progressById[dhikr.id],
+                  calendar.isDateInToday(p.lastUpdated),
+                  p.count >= dhikr.count
+            else { return }
+            acc += 1
+        }
+    }
+
+    private var progressFraction: Double {
+        guard totalCount > 0 else { return 0 }
+        return min(Double(completedCount) / Double(totalCount), 1)
+    }
 
     var body: some View {
         ZStack {
             AdaptiveBackground(decorated: true)
             pagedDhikrList
+        }
+        .safeAreaInset(edge: .top, spacing: 0) {
+            progressHeader
         }
         .navigationTitle(adhkar.displayTitle)
         #if os(iOS) || os(visionOS)
@@ -45,6 +75,37 @@ struct AdhkarDetailsView: View {
         .onDisappear {
             audio.stop()
         }
+    }
+
+    /// Slim accent-coloured bar showing how many dhikr in this category the
+    /// user has completed today (counter reached its target), with a
+    /// `completed / total` label on the right.
+    private var progressHeader: some View {
+        HStack(spacing: 10) {
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Capsule()
+                        .fill(accent.opacity(0.18))
+                    Capsule()
+                        .fill(accent)
+                        .frame(width: geo.size.width * progressFraction)
+                        .animation(.easeOut(duration: 0.35), value: progressFraction)
+                }
+            }
+            .frame(height: 5)
+            Text("\(completedCount)/\(totalCount)")
+                .font(.caption.monospacedDigit().weight(.semibold))
+                .foregroundStyle(accent)
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 6)
+        .background(.ultraThinMaterial)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(
+            L10n.a11yProgressHeader.resolved()
+                .replacingOccurrences(of: "{completed}", with: "\(completedCount)")
+                .replacingOccurrences(of: "{total}", with: "\(totalCount)")
+        )
     }
 
     /// Paged TabView on iOS / visionOS; plain vertical scroll on macOS where

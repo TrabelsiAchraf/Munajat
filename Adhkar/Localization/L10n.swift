@@ -95,4 +95,10 @@ enum L10n {
     static let a11yFavorite            = LocalizedText(ar: "مفضل",            fr: "Favori",        en: "Favorite")
     static let a11yCategoryCardHint    = LocalizedText(ar: "افتح هذه الفئة",  fr: "Ouvrir cette catégorie", en: "Open this category")
     static let a11yDecorativePattern   = LocalizedText(ar: "زخرفة",           fr: "Décoration",     en: "Decoration")
+    /// `{completed}` and `{total}` are placeholders replaced at call site.
+    static let a11yProgressHeader      = LocalizedText(
+        ar: "{completed} من {total} ذكر",
+        fr: "{completed} sur {total} dhikr complétés",
+        en: "{completed} of {total} dhikr completed"
+    )
 }
