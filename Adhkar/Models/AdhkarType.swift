@@ -279,4 +279,21 @@ enum AdhkarType: String, Codable, Hashable {
         case .duaaVisitingGraves: Image(systemName: "rectangle.grid.3x2")
         }
     }
+
+    /// Maps the current wall-clock hour to the corresponding adhkar period.
+    /// Shared between the home screen's "Suggested for now" card and the
+    /// widget's timeline provider so both stay in sync.
+    /// Uses a `.gregorian` calendar explicitly because a device set to an
+    /// Islamic locale otherwise reports Hijri hour components which don't
+    /// align with the morning/evening/sleep windows we want to test.
+    static func forCurrentHour(now: Date = .now) -> AdhkarType {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = .current
+        let hour = calendar.component(.hour, from: now)
+        switch hour {
+        case 4..<12:  return .morningAdhkar
+        case 12..<19: return .eveningAdhkar
+        default:       return .sleepAdhkar
+        }
+    }
 }

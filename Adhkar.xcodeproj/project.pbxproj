@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5B8DDF50899A54DAA0716CEF /* MunajatWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 77C1C60B13211E97703D7121 /* MunajatWidget.appex */; platformFilters = (ios, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5B8DDF50899A54DAA0716CEF /* MunajatWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 77C1C60B13211E97703D7121 /* MunajatWidget.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C247824A7AF076AC722F620A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0755300B7D2AF93A0C90710C /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -41,17 +41,39 @@
 		77C1C60B13211E97703D7121 /* MunajatWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MunajatWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		3E82AB61AEFA71A58A3222C5 /* Exceptions for "Adhkar" folder in "MunajatWidget" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Design/Color+Extension.swift",
+				Design/CrescentStarPattern.swift,
+				"Design/Font+Arabic.swift",
+				Design/IslamicPattern.swift,
+				Localization/L10n.swift,
+				Models/AdhkarCategory.swift,
+				"Models/AdhkarSection+Display.swift",
+				Models/AdhkarType.swift,
+				Models/LocalizedText.swift,
+				Resources/adhkar.json,
+				"Resources/Amiri-Bold.ttf",
+				"Resources/Amiri-Regular.ttf",
+				Resources/AmiriQuran.ttf,
+				Services/DataProvider.swift,
+			);
+			target = 8B27475F206607E77B14D888 /* MunajatWidget */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		51D90147447D5D064B5A0941 /* MunajatWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = MunajatWidget;
 			sourceTree = "<group>";
 		};
 		6FE853BA2DB165D700410740 /* Adhkar */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				3E82AB61AEFA71A58A3222C5 /* Exceptions for "Adhkar" folder in "MunajatWidget" target */,
 			);
 			path = Adhkar;
 			sourceTree = "<group>";

@@ -10,6 +10,10 @@ import SwiftUI
 struct HomeView: View {
     private let allCategories = DataProvider.adharCategories
 
+    /// Navigation path lifted up to `RootTabView` so widget deep links can
+    /// push a category from outside this view.
+    @Binding var path: NavigationPath
+
     private var sections: [(section: AdhkarSection, categories: [AdhkarCategory])] {
         AdhkarSection.displayOrder.compactMap { sec in
             let cats = allCategories.filter { $0.section == sec }
@@ -18,7 +22,7 @@ struct HomeView: View {
     }
 
     private var featured: AdhkarCategory? {
-        let target: AdhkarType = currentTimeAdhkarType()
+        let target = AdhkarType.forCurrentHour()
         return allCategories.first { $0.type == target }
     }
 
@@ -27,7 +31,7 @@ struct HomeView: View {
     ]
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             ZStack {
                 AdaptiveBackground(decorated: true)
                 ScrollView {
@@ -74,16 +78,6 @@ struct HomeView: View {
         }
     }
 
-    private func currentTimeAdhkarType() -> AdhkarType {
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = .current
-        let hour = calendar.component(.hour, from: Date())
-        switch hour {
-        case 4..<12:  return .morningAdhkar
-        case 12..<19: return .eveningAdhkar
-        default:       return .sleepAdhkar
-        }
-    }
 }
 
 private struct FeaturedSection: View {
