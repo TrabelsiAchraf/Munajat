@@ -23,9 +23,11 @@ struct AdaptiveBackground: View {
             )
             if decorated {
                 CrescentStarPattern(intensity: patternIntensity, spacing: 95)
+                    .accessibilityHidden(true)
             }
         }
         .ignoresSafeArea()
+        .accessibilityHidden(true)
     }
 
     private var gradientColors: [Color] {

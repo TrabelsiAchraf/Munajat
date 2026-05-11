@@ -21,5 +21,9 @@ struct AdhkarCardView: View {
                 accent: (category.section ?? .other).accentColor
             )
         )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(category.displayTitle)
+        .accessibilityHint(L10n.a11yCategoryCardHint.resolved())
+        .accessibilityAddTraits(.isButton)
     }
 }

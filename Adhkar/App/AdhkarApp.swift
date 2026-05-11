@@ -13,6 +13,7 @@ struct AdhkarApp: App {
     @State private var favorites = FavoritesStore()
     @State private var audio = AudioPlayer()
     @State private var notifications = NotificationManager()
+    @State private var streak = StreakService()
 
     init() {
         FontRegistrar.registerBundledFonts()
@@ -24,8 +25,9 @@ struct AdhkarApp: App {
                 .environment(favorites)
                 .environment(audio)
                 .environment(notifications)
+                .environment(streak)
                 .preferredColorScheme(.dark)
         }
-        .modelContainer(for: DhikrProgress.self)
+        .modelContainer(for: [DhikrProgress.self, DailyActivity.self])
     }
 }

@@ -65,4 +65,34 @@ enum L10n {
     static let notifTitleEvening = LocalizedText(ar: "وقت أذكار المساء", fr: "C'est l'heure des adhkar du soir", en: "Time for evening adhkar")
     static let notifTitleSleep   = LocalizedText(ar: "وقت أذكار النوم",  fr: "C'est l'heure des adhkar du coucher", en: "Time for sleep adhkar")
     static let notifBody         = LocalizedText(ar: "خذ لحظة لذكر الله.", fr: "Prends un moment pour le rappel d'Allah.", en: "Take a moment for the remembrance of Allah.")
+
+    // Streak
+    static let streakTitle      = LocalizedText(ar: "السلسلة اليومية", fr: "Série quotidienne", en: "Daily streak")
+    static let streakDays       = LocalizedText(ar: "يوم متتالٍ",       fr: "jours consécutifs", en: "day streak")
+    static let streakBest       = LocalizedText(ar: "أفضل سلسلة",       fr: "Meilleur record",   en: "Best streak")
+    static let streakStartToday = LocalizedText(ar: "ابدأ سلسلتك اليوم", fr: "Commence ta série aujourd'hui", en: "Start your streak today")
+
+    // Widget
+    static let widgetDisplayName = LocalizedText(ar: "ذكر اليوم", fr: "Dhikr du moment", en: "Today's dhikr")
+    static let widgetDescription = LocalizedText(
+        ar: "يعرض الذكر المقترح لوقت اليوم الحالي (صباحًا، مساءً، أو قبل النوم).",
+        fr: "Affiche le dhikr suggéré pour le moment de la journée (matin, soir ou coucher).",
+        en: "Shows the dhikr suggested for the current time of day (morning, evening or sleep)."
+    )
+
+    // Share card
+    static let shareCardFooter = LocalizedText(ar: "مناجاة · munajat.app", fr: "Munajat · munajat.app", en: "Munajat · munajat.app")
+
+    // Settings — privacy / support
+    static let privacyPolicy = LocalizedText(ar: "سياسة الخصوصية", fr: "Politique de confidentialité", en: "Privacy policy")
+    static let support       = LocalizedText(ar: "الدعم",          fr: "Support",                       en: "Support")
+    static let settingsLegal = LocalizedText(ar: "قانوني",         fr: "Mentions légales",              en: "Legal")
+
+    // Accessibility helpers
+    static let a11yCounterLabel        = LocalizedText(ar: "العدّاد",        fr: "Compteur",      en: "Counter")
+    static let a11yResetCounters       = LocalizedText(ar: "إعادة العدّ",     fr: "Réinitialiser",  en: "Reset counters")
+    static let a11yResetCountersHint   = LocalizedText(ar: "إعادة كل العدّادات إلى الصفر", fr: "Remet tous les compteurs à zéro", en: "Resets all counters to zero")
+    static let a11yFavorite            = LocalizedText(ar: "مفضل",            fr: "Favori",        en: "Favorite")
+    static let a11yCategoryCardHint    = LocalizedText(ar: "افتح هذه الفئة",  fr: "Ouvrir cette catégorie", en: "Open this category")
+    static let a11yDecorativePattern   = LocalizedText(ar: "زخرفة",           fr: "Décoration",     en: "Decoration")
 }

@@ -33,6 +33,7 @@ struct HomeView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 28) {
                         HeroHeader()
+                        StreakCard()
                         if let featured {
                             FeaturedSection(category: featured)
                         }
@@ -112,12 +113,17 @@ private struct FeaturedSection: View {
                 Spacer()
                 Image(systemName: "chevron.right")
                     .foregroundStyle(.tertiary)
+                    .accessibilityHidden(true)
             }
             .padding(14)
             .background(Color.cardBackground)
             .clipShape(.rect(cornerRadius: 18))
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(featuredCaption). \(category.displayTitle). \(category.adhkarList.count) \(itemsWord)")
+        .accessibilityHint(L10n.a11yCategoryCardHint.resolved())
+        .accessibilityAddTraits(.isButton)
     }
 
     private var featuredCaption: String { L10n.suggestedForNow.resolved() }

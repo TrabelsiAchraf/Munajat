@@ -18,6 +18,7 @@ struct HeroHeader: View {
         ZStack {
             LinearGradient(colors: gradient, startPoint: .topLeading, endPoint: .bottomTrailing)
             IslamicPattern(color: .white, opacity: 0.13, tileSize: 56)
+                .accessibilityHidden(true)
 
             VStack(spacing: 10) {
                 Text("وَٱذْكُرُوا۟ ٱللَّهَ كَثِيرًا")
@@ -39,6 +40,7 @@ struct HeroHeader: View {
         .frame(minHeight: 170)
         .clipShape(.rect(cornerRadius: 24))
         .shadow(color: .black.opacity(0.12), radius: 12, x: 0, y: 6)
+        .accessibilityElement(children: .combine)
     }
 
     private var gradient: [Color] {

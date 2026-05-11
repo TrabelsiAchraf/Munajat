@@ -14,38 +14,29 @@ struct AdhkarDetailsView: View {
     @State private var selectedIndex: Int = 0
     @Environment(\.modelContext) private var modelContext
     @Environment(AudioPlayer.self) private var audio
+    @Environment(StreakService.self) private var streak
 
     private var accent: Color { (adhkar.section ?? .other).accentColor }
 
     var body: some View {
         ZStack {
             AdaptiveBackground(decorated: true)
-            TabView(selection: $selectedIndex) {
-                ForEach(Array(adhkar.adhkarList.enumerated()), id: \.element.id) { index, dhikr in
-                    DhikrPageView(
-                        category: adhkar,
-                        dhikr: dhikr,
-                        position: index + 1,
-                        total: adhkar.adhkarList.count,
-                        accent: accent
-                    )
-                    .id("\(dhikr.id)-\(resetToken)")
-                    .tag(index)
-                }
-            }
-            .tabViewStyle(.page)
-            .indexViewStyle(.page(backgroundDisplayMode: .always))
+            pagedDhikrList
         }
         .navigationTitle(adhkar.displayTitle)
+        #if os(iOS) || os(visionOS)
         .navigationBarTitleDisplayMode(.inline)
+        #endif
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItem(placement: .primaryAction) {
                 Button {
                     resetAllCounters()
                 } label: {
                     Image(systemName: "arrow.counterclockwise")
                 }
                 .tint(accent)
+                .accessibilityLabel(L10n.a11yResetCounters.resolved())
+                .accessibilityHint(L10n.a11yResetCountersHint.resolved())
             }
         }
         .onChange(of: selectedIndex) { _, _ in
@@ -54,6 +45,47 @@ struct AdhkarDetailsView: View {
         .onDisappear {
             audio.stop()
         }
+    }
+
+    /// Paged TabView on iOS / visionOS; plain vertical scroll on macOS where
+    /// `tabViewStyle(.page)` is unavailable.
+    @ViewBuilder
+    private var pagedDhikrList: some View {
+        #if os(iOS) || os(visionOS)
+        TabView(selection: $selectedIndex) {
+            ForEach(Array(adhkar.adhkarList.enumerated()), id: \.element.id) { index, dhikr in
+                DhikrPageView(
+                    category: adhkar,
+                    dhikr: dhikr,
+                    position: index + 1,
+                    total: adhkar.adhkarList.count,
+                    accent: accent,
+                    onCompletion: { streak.recordDhikrCompleted(context: modelContext) }
+                )
+                .id("\(dhikr.id)-\(resetToken)")
+                .tag(index)
+            }
+        }
+        .tabViewStyle(.page)
+        .indexViewStyle(.page(backgroundDisplayMode: .always))
+        #else
+        ScrollView {
+            VStack(spacing: 24) {
+                ForEach(Array(adhkar.adhkarList.enumerated()), id: \.element.id) { index, dhikr in
+                    DhikrPageView(
+                        category: adhkar,
+                        dhikr: dhikr,
+                        position: index + 1,
+                        total: adhkar.adhkarList.count,
+                        accent: accent,
+                        onCompletion: { streak.recordDhikrCompleted(context: modelContext) }
+                    )
+                    .id("\(dhikr.id)-\(resetToken)")
+                }
+            }
+            .padding(.vertical)
+        }
+        #endif
     }
 
     private func resetAllCounters() {
@@ -77,6 +109,9 @@ private struct DhikrPageView: View {
     let position: Int
     let total: Int
     let accent: Color
+    /// Called the first time `counter` reaches `dhikr.count` during this page's
+    /// lifetime — used to bump the daily activity for streak history.
+    var onCompletion: () -> Void = {}
 
     @Environment(\.modelContext) private var modelContext
     @Environment(AudioPlayer.self) private var audio
@@ -84,6 +119,7 @@ private struct DhikrPageView: View {
     @State private var counter: Int = 0
     @State private var transliterationExpanded = false
     @State private var pulseScale: CGFloat = 1.0
+    @State private var completionFired = false
 
     private var isCompleted: Bool { counter >= dhikr.count }
     private var progress: Double {
@@ -164,6 +200,10 @@ private struct DhikrPageView: View {
             guard !isCompleted else { return }
             counter += 1
             saveCounter()
+            if isCompleted, !completionFired {
+                completionFired = true
+                onCompletion()
+            }
         } label: {
             ZStack {
                 Circle()
@@ -212,6 +252,11 @@ private struct DhikrPageView: View {
         .disabled(isCompleted)
         .sensoryFeedback(.impact(weight: .light), trigger: counter)
         .sensoryFeedback(.success, trigger: isCompleted) { _, new in new }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(L10n.a11yCounterLabel.resolved())
+        .accessibilityValue("\(counter) / \(dhikr.count)")
+        .accessibilityHint(isCompleted ? L10n.done.resolved() : L10n.tapToCount.resolved())
+        .accessibilityAddTraits(isCompleted ? [] : .isButton)
         .onAppear { startPulseIfNeeded() }
         .onChange(of: counter) { _, newValue in
             if newValue > 0 {
@@ -233,16 +278,51 @@ private struct DhikrPageView: View {
             if let audioURL = dhikrAudioURL {
                 audioButton(url: audioURL)
             }
-            ShareLink(item: shareText) {
-                Label(L10n.share.resolved(), systemImage: "square.and.arrow.up")
-                    .font(.subheadline)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
-                    .background(Color.cardBackground)
-                    .clipShape(Capsule())
+            shareButton
+        }
+    }
+
+    @ViewBuilder
+    private var shareButton: some View {
+        if let shareable = makeShareableImage() {
+            ShareLink(
+                item: shareable,
+                preview: SharePreview(
+                    category.displayTitle,
+                    image: Image(decorative: shareable.cgImage, scale: 3, orientation: .up)
+                )
+            ) {
+                shareLabel
             }
             .tint(accent)
+            .accessibilityLabel(L10n.share.resolved())
+        } else {
+            ShareLink(item: shareText) { shareLabel }
+                .tint(accent)
+                .accessibilityLabel(L10n.share.resolved())
         }
+    }
+
+    private var shareLabel: some View {
+        Label(L10n.share.resolved(), systemImage: "square.and.arrow.up")
+            .font(.subheadline)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
+            .background(Color.cardBackground)
+            .clipShape(Capsule())
+    }
+
+    @MainActor
+    private func makeShareableImage() -> ShareableDhikrImage? {
+        let renderer = ImageRenderer(
+            content: ShareableDhikrCard(category: category, dhikr: dhikr)
+        )
+        renderer.scale = 3
+        guard let cg = renderer.cgImage else { return nil }
+        let name = category.displayTitle
+            .replacingOccurrences(of: "/", with: "-")
+            .replacingOccurrences(of: " ", with: "_")
+        return ShareableDhikrImage(cgImage: cg, suggestedName: "munajat_\(name)")
     }
 
     private func audioButton(url: URL) -> some View {
@@ -260,6 +340,7 @@ private struct DhikrPageView: View {
                 .clipShape(Capsule())
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(playing ? L10n.pause.resolved() : L10n.listen.resolved())
     }
 
     private var dhikrAudioURL: URL? {

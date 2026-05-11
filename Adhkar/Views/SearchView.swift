@@ -54,9 +54,13 @@ struct SearchView: View {
                 }
             }
             .navigationTitle(L10n.tabSearch.resolved())
+            #if os(iOS) || os(visionOS)
             .searchable(text: $query,
                         placement: .navigationBarDrawer(displayMode: .always),
                         prompt: L10n.searchPrompt.resolved())
+            #else
+            .searchable(text: $query, prompt: L10n.searchPrompt.resolved())
+            #endif
             .navigationDestination(for: AdhkarCategory.self) { cat in
                 AdhkarDetailsView(adhkar: cat)
             }
