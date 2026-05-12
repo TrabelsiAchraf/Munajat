@@ -31,6 +31,7 @@ struct AdhkarApp: App {
                 .environment(audio)
                 .environment(notifications)
                 .environment(streak)
+                .environment(\.layoutDirection, LocalizedText.preferredLayoutDirection)
                 .preferredColorScheme(.dark)
                 .onOpenURL { url in
                     guard url.scheme == "munajat", url.host == "category" else { return }
