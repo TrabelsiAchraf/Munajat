@@ -49,7 +49,7 @@ final class StreakService {
     /// only if the suite somehow can't be opened (shouldn't happen in
     /// release builds since the entitlement is part of the bundle).
     nonisolated static func makeSharedDefaults() -> UserDefaults {
-        UserDefaults(suiteName: "group.com.tadevv.Munajat") ?? .standard
+        UserDefaults(suiteName: "group.com.tadev.munajat") ?? .standard
     }
 
     init(defaults: UserDefaults = StreakService.makeSharedDefaults()) {

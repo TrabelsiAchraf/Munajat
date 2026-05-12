@@ -12,6 +12,7 @@ device-screenshot floating below with rounded corners and a drop shadow.
 
 from __future__ import annotations
 
+import argparse
 import json
 import math
 import random
@@ -34,8 +35,12 @@ else:
 # Layout
 # ---------------------------------------------------------------------------
 
-CANVAS_W = 1320          # iPhone 6.9" portrait width  (App Store requirement)
-CANVAS_H = 2868          # iPhone 6.9" portrait height
+SIZES = {
+    "6.5": (1242, 2688),     # iPhone XS Max / 11 Pro Max
+    "6.7": (1284, 2778),     # iPhone 12–15 Pro Max (also fits the 6.5" slot)
+    "6.9": (1320, 2868),     # iPhone 16/17 Pro Max  (new dedicated slot)
+}
+CANVAS_W, CANVAS_H = SIZES["6.7"]   # default: maximum compatibility
 
 PAD_H            = 96    # horizontal padding for text
 TITLE_TOP_PAD    = 180   # top margin before title
@@ -269,6 +274,14 @@ def composite_screen(raw_path: Path, copy: Copy, is_arabic: bool, out_path: Path
 # ---------------------------------------------------------------------------
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description="Compose App Store screenshots.")
+    parser.add_argument("--size", choices=sorted(SIZES.keys()), default="6.7",
+                        help="Target iPhone display size (default: 6.7\").")
+    args = parser.parse_args()
+
+    global CANVAS_W, CANVAS_H
+    CANVAS_W, CANVAS_H = SIZES[args.size]
+
     config = json.loads(COPY_FILE.read_text())
     screens = config["screens"]
 

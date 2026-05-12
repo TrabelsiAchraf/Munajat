@@ -49,7 +49,7 @@ struct CurrentPeriodProvider: TimelineProvider {
     private static let periodBoundaries: [Int] = [4, 12, 19]
 
     /// Read by the host app's `StreakService`; the widget only reads.
-    private static let appGroupDefaults = UserDefaults(suiteName: "group.com.tadevv.Munajat")
+    private static let appGroupDefaults = UserDefaults(suiteName: "group.com.tadev.munajat")
     private static let currentStreakKey = "streak.current"
 
     func placeholder(in context: Context) -> CurrentPeriodEntry {
