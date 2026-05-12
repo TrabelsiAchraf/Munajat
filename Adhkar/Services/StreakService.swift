@@ -117,7 +117,11 @@ final class StreakService {
 
         // Nudge the widget to re-render with the fresh streak. Cheap: WidgetKit
         // coalesces requests and only re-runs the timeline provider if needed.
-        WidgetCenter.shared.reloadTimelines(ofKind: "CurrentPeriodWidget")
+        if #available(visionOS 26.0, *) {
+            WidgetCenter.shared.reloadTimelines(ofKind: "CurrentPeriodWidget")
+        } else {
+            // Fallback on earlier versions
+        }
     }
 
     private static func dayKey(for date: Date) -> String {

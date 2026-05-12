@@ -69,16 +69,28 @@ private struct FavoriteButton: View {
     @Environment(FavoritesStore.self) private var favorites
 
     var body: some View {
-        Button {
-            favorites.toggle(categoryId)
-        } label: {
-            Image(systemName: favorites.contains(categoryId) ? "heart.fill" : "heart")
-                .font(.title3)
-                .foregroundStyle(favorites.contains(categoryId) ? .red : .secondary)
-                .contentTransition(.symbolEffect(.replace))
+        if #available(visionOS 26.0, *) {
+            Button {
+                favorites.toggle(categoryId)
+            } label: {
+                Image(systemName: favorites.contains(categoryId) ? "heart.fill" : "heart")
+                    .font(.title3)
+                    .foregroundStyle(favorites.contains(categoryId) ? .red : .secondary)
+                    .contentTransition(.symbolEffect(.replace))
+            }
+            .buttonStyle(.plain)
+            .sensoryFeedback(.impact(weight: .light), trigger: favorites.contains(categoryId))
+        } else {
+            Button {
+                favorites.toggle(categoryId)
+            } label: {
+                Image(systemName: favorites.contains(categoryId) ? "heart.fill" : "heart")
+                    .font(.title3)
+                    .foregroundStyle(favorites.contains(categoryId) ? .red : .secondary)
+                    .contentTransition(.symbolEffect(.replace))
+            }
+            .buttonStyle(.plain)
         }
-        .buttonStyle(.plain)
-        .sensoryFeedback(.impact(weight: .light), trigger: favorites.contains(categoryId))
     }
 }
 

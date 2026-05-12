@@ -64,15 +64,26 @@ struct AdhkarDetailsView: View {
     }
 
     var body: some View {
-        baseContent
-            .toolbar { resetToolbarItem }
-            .onChange(of: selectedIndex) { _, _ in audio.stop() }
-            .onChange(of: completedCount) { oldValue, newValue in
-                handleProgressChange(old: oldValue, new: newValue)
-            }
-            .sensoryFeedback(.success, trigger: showCelebration) { _, new in new }
-            .overlay { celebrationOverlay }
-            .onDisappear { audio.stop() }
+        if #available(visionOS 26.0, *) {
+            baseContent
+                .toolbar { resetToolbarItem }
+                .onChange(of: selectedIndex) { _, _ in audio.stop() }
+                .onChange(of: completedCount) { oldValue, newValue in
+                    handleProgressChange(old: oldValue, new: newValue)
+                }
+                .sensoryFeedback(.success, trigger: showCelebration) { _, new in new }
+                .overlay { celebrationOverlay }
+                .onDisappear { audio.stop() }
+        } else {
+            baseContent
+                .toolbar { resetToolbarItem }
+                .onChange(of: selectedIndex) { _, _ in audio.stop() }
+                .onChange(of: completedCount) { oldValue, newValue in
+                    handleProgressChange(old: oldValue, new: newValue)
+                }
+                .overlay { celebrationOverlay }
+                .onDisappear { audio.stop() }
+        }
     }
 
     private var baseContent: some View {
@@ -359,8 +370,8 @@ private struct DhikrPageView: View {
         }
         .buttonStyle(.plain)
         .disabled(isCompleted)
-        .sensoryFeedback(.impact(weight: .light), trigger: counter)
-        .sensoryFeedback(.success, trigger: isCompleted) { _, new in new }
+//        .sensoryFeedback(.impact(weight: .light), trigger: counter)
+//        .sensoryFeedback(.success, trigger: isCompleted) { _, new in new }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(L10n.a11yCounterLabel.resolved())
         .accessibilityValue("\(counter) / \(dhikr.count)")
