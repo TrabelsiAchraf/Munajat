@@ -10,14 +10,6 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(NotificationManager.self) private var notifications
 
-    /// External URLs surfaced from the Settings screen and required by App Store
-    /// review. Replace with the hosted endpoints once the static pages land
-    /// (placeholders point to a GitHub Pages slug we control).
-    private enum ExternalURL {
-        static let privacy = URL(string: "https://tadevv.github.io/munajat/privacy")!
-        static let support = URL(string: "https://tadevv.github.io/munajat/support")!
-    }
-
     var body: some View {
         NavigationStack {
             ZStack {
@@ -69,28 +61,26 @@ struct SettingsView: View {
 
     private var legalSection: some View {
         Section {
-            Link(destination: ExternalURL.privacy) {
-                HStack {
+            NavigationLink {
+                PrivacyPolicyView()
+            } label: {
+                Label {
+                    Text(L10n.privacyPolicy.resolved())
+                } icon: {
                     Image(systemName: "lock.shield")
                         .foregroundStyle(.secondary)
                         .frame(width: 24)
-                    Text(L10n.privacyPolicy.resolved())
-                    Spacer()
-                    Image(systemName: "arrow.up.right.square")
-                        .font(.footnote)
-                        .foregroundStyle(.tertiary)
                 }
             }
-            Link(destination: ExternalURL.support) {
-                HStack {
+            NavigationLink {
+                SupportView()
+            } label: {
+                Label {
+                    Text(L10n.support.resolved())
+                } icon: {
                     Image(systemName: "lifepreserver")
                         .foregroundStyle(.secondary)
                         .frame(width: 24)
-                    Text(L10n.support.resolved())
-                    Spacer()
-                    Image(systemName: "arrow.up.right.square")
-                        .font(.footnote)
-                        .foregroundStyle(.tertiary)
                 }
             }
         } header: {

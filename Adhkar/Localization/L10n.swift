@@ -88,6 +88,120 @@ enum L10n {
     static let support       = LocalizedText(ar: "الدعم",          fr: "Support",                       en: "Support")
     static let settingsLegal = LocalizedText(ar: "قانوني",         fr: "Mentions légales",              en: "Legal")
 
+    // Privacy policy screen
+    static let privacyIntroTitle = LocalizedText(
+        ar: "خصوصيتك",
+        fr: "Ta vie privée",
+        en: "Your privacy"
+    )
+    static let privacyIntroBody = LocalizedText(
+        ar: "تطبيق مناجاة لا يجمع أي بيانات شخصية ولا يستخدم أي خدمة تتبع أو إعلانات. يعمل التطبيق محليًا على جهازك.",
+        fr: "Munajat ne collecte aucune donnée personnelle et n'utilise aucun service de pistage ni de publicité. L'application fonctionne entièrement en local sur ton appareil.",
+        en: "Munajat collects no personal data and uses no tracking or advertising services. The app runs entirely on-device."
+    )
+    static let privacyDataStoredTitle = LocalizedText(
+        ar: "البيانات المخزّنة محليًا",
+        fr: "Données stockées localement",
+        en: "Locally stored data"
+    )
+    static let privacyDataStoredBody = LocalizedText(
+        ar: "نخزّن على جهازك فقط: عدّادات الأذكار، المفضلة، إعدادات التنبيهات، وسلسلة الأيام. لا يتم رفع أي شيء إلى أي خادم.",
+        fr: "Sur ton appareil uniquement : les compteurs de dhikr, les favoris, les préférences de notifications et l'historique de la série quotidienne. Rien n'est envoyé vers un serveur.",
+        en: "On your device only: dhikr counters, favorites, notification preferences and the daily-streak history. Nothing is uploaded to any server."
+    )
+    static let privacyNetworkTitle = LocalizedText(
+        ar: "الاتصال بالشبكة",
+        fr: "Connexion réseau",
+        en: "Network access"
+    )
+    static let privacyNetworkBody = LocalizedText(
+        ar: "الاستخدام الوحيد للشبكة هو بثّ ملفات الصوت من hisnmuslim.com عند الضغط على زر «استمع». لا نُرسل أي معرّف.",
+        fr: "La seule utilisation du réseau est le streaming des fichiers audio depuis hisnmuslim.com quand tu touches le bouton « Écouter ». Aucun identifiant n'est transmis.",
+        en: "The only network use is audio streaming from hisnmuslim.com when you tap “Listen”. No identifier is sent."
+    )
+    static let privacyNotifsTitle = LocalizedText(
+        ar: "التنبيهات",
+        fr: "Notifications",
+        en: "Notifications"
+    )
+    static let privacyNotifsBody = LocalizedText(
+        ar: "التنبيهات تُجدول محليًا عبر نظام iOS. لا يمرّ أي محتوى عبر خوادمنا.",
+        fr: "Les rappels sont planifiés en local par iOS. Aucun contenu ne transite par nos serveurs.",
+        en: "Reminders are scheduled locally by iOS. No content passes through our servers."
+    )
+    static let privacyContactTitle = LocalizedText(
+        ar: "الاتصال",
+        fr: "Contact",
+        en: "Contact"
+    )
+    static let privacyContactBody = LocalizedText(
+        ar: "لأي سؤال متعلق بالخصوصية، استخدم قسم الدعم في الإعدادات.",
+        fr: "Pour toute question liée à la vie privée, utilise la rubrique Support depuis les Réglages.",
+        en: "For any privacy question, use the Support section from Settings."
+    )
+
+    // Support screen
+    static let supportHeaderTitle = LocalizedText(
+        ar: "كيف نساعدك؟",
+        fr: "Comment t'aider ?",
+        en: "How can we help?"
+    )
+    static let supportHeaderBody = LocalizedText(
+        ar: "أجوبة سريعة على الأسئلة الشائعة. إن لم تجد ما تبحث عنه، الاقتراحات والملاحظات مرحّب بها.",
+        fr: "Réponses rapides aux questions fréquentes. Si tu ne trouves pas, suggestions et retours sont bienvenus.",
+        en: "Quick answers to common questions. If you don't find what you need, suggestions and feedback are welcome."
+    )
+    static let supportFaqAudioQ = LocalizedText(
+        ar: "الصوت لا يعمل",
+        fr: "Le son ne marche pas",
+        en: "Audio does not play"
+    )
+    static let supportFaqAudioA = LocalizedText(
+        ar: "الصوت يتطلب اتصالاً بالإنترنت لأنه يُبثّ من hisnmuslim.com. تأكد من اتصالك ومن أن الجهاز ليس في وضع الطيران.",
+        fr: "Le son nécessite une connexion Internet car il est diffusé depuis hisnmuslim.com. Vérifie ta connexion et que l'appareil n'est pas en mode Avion.",
+        en: "Audio requires an Internet connection — it is streamed from hisnmuslim.com. Check your connection and that the device is not in Airplane Mode."
+    )
+    static let supportFaqNotifsQ = LocalizedText(
+        ar: "لا تصلني التنبيهات",
+        fr: "Je ne reçois pas les notifications",
+        en: "Notifications don't fire"
+    )
+    static let supportFaqNotifsA = LocalizedText(
+        ar: "افتح إعدادات النظام ← مناجاة ← التنبيهات وتأكد من تفعيلها. داخل التطبيق، فعّل الفتحة المطلوبة في «الإعدادات».",
+        fr: "Ouvre Réglages système → Munajat → Notifications et vérifie qu'elles sont activées. Dans l'app, active aussi le créneau voulu depuis « Réglages ».",
+        en: "Open System Settings → Munajat → Notifications and make sure they are enabled. In the app, also enable the desired slot under “Settings”."
+    )
+    static let supportFaqCountersQ = LocalizedText(
+        ar: "تمت إعادة العدّادات إلى الصفر",
+        fr: "Les compteurs sont remis à zéro",
+        en: "The counters reset"
+    )
+    static let supportFaqCountersA = LocalizedText(
+        ar: "هذا متعمَّد: تُعاد العدّادات في بداية كل يوم لتبدأ من جديد. تتقدّم سلسلتك بمجرد قراءة ذكر واحد.",
+        fr: "C'est volontaire : les compteurs sont remis à zéro chaque jour pour repartir à neuf. Ta série progresse dès qu'un dhikr est lu.",
+        en: "This is intentional: counters reset at the start of each day so you start fresh. Your streak advances as soon as one dhikr is read."
+    )
+    static let supportFaqStreakQ = LocalizedText(
+        ar: "اختفت سلسلتي",
+        fr: "Ma série a disparu",
+        en: "My streak disappeared"
+    )
+    static let supportFaqStreakA = LocalizedText(
+        ar: "تعتمد السلسلة على التاريخ الميلادي بالتوقيت المحلي. تغيير تقويم النظام لا يُفقد سجلّك المخزّن محليًا.",
+        fr: "La série se base sur la date grégorienne et le fuseau horaire local. Changer le calendrier du système ne supprime pas ton historique stocké en local.",
+        en: "The streak uses the Gregorian date in your local time zone. Changing the system calendar does not lose your locally stored history."
+    )
+    static let supportContentTitle = LocalizedText(
+        ar: "ملاحظة حول المحتوى",
+        fr: "Note sur le contenu",
+        en: "About the content"
+    )
+    static let supportContentBody = LocalizedText(
+        ar: "النصوص مأخوذة من «حصن المسلم» للشيخ سعيد بن علي القحطاني. لأي خطأ في الترجمة أو المصدر، يُرجى الإبلاغ.",
+        fr: "Les textes sont issus de « Hisn al-Muslim » du Cheikh Saʿīd al-Qaḥṭānī. Pour toute erreur de traduction ou de source, n'hésite pas à le signaler.",
+        en: "Texts come from “Hisn al-Muslim” by Sheikh Saʿīd al-Qaḥṭānī. Please report any translation or source error."
+    )
+
     // Accessibility helpers
     static let a11yCounterLabel        = LocalizedText(ar: "العدّاد",        fr: "Compteur",      en: "Counter")
     static let a11yResetCounters       = LocalizedText(ar: "إعادة العدّ",     fr: "Réinitialiser",  en: "Reset counters")
