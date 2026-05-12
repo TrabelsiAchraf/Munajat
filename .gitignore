@@ -29,6 +29,10 @@ fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 
+# Marketing — raw simulator captures are large and regenerable via
+# scripts/capture_marketing.sh; only the composed `out/` deliverables ship.
+marketing/raw/
+
 # Python (content generation scripts)
 __pycache__/
 *.pyc

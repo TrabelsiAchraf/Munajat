@@ -1,0 +1,28 @@
+{
+  "screens": [
+    {
+      "slug": "home",
+      "fr": { "title": "Tes adhkar du jour", "subtitle": "Toujours à portée, à toute heure." },
+      "en": { "title": "Your daily dhikr",   "subtitle": "Always within reach, anytime." },
+      "ar": { "title": "أذكارك اليومية",      "subtitle": "في متناولك في كل وقت." }
+    },
+    {
+      "slug": "detail",
+      "fr": { "title": "Lis, écoute, partage", "subtitle": "Le texte, l'audio et le partage avec tes proches en un écran." },
+      "en": { "title": "Read, listen, share",   "subtitle": "Text, audio and share with loved ones in one screen." },
+      "ar": { "title": "اقرأ، استمع، شارك",       "subtitle": "النص والصوت والمشاركة مع أحبّتك في شاشة واحدة." }
+    },
+    {
+      "slug": "favorites",
+      "fr": { "title": "Tes essentiels, en un tap", "subtitle": "Mets en favori ce que tu lis le plus." },
+      "en": { "title": "Your essentials, one tap",  "subtitle": "Bookmark the adhkar you read most." },
+      "ar": { "title": "أهمّ ما عندك بلمسة",          "subtitle": "أضِف إلى المفضلة الأذكار التي تقرأها كثيرًا." }
+    },
+    {
+      "slug": "settings",
+      "fr": { "title": "Active tes rappels",  "subtitle": "Reçois une notification pour les adhkar du matin, du soir et du coucher." },
+      "en": { "title": "Turn on reminders",   "subtitle": "Get notified for morning, evening and sleep adhkar." },
+      "ar": { "title": "فعّل تذكيراتك",          "subtitle": "تنبيهات يومية لأذكار الصباح والمساء والنوم." }
+    }
+  ]
+}

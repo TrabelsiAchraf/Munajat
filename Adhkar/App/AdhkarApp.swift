@@ -17,7 +17,19 @@ struct AdhkarApp: App {
 
     init() {
         FontRegistrar.registerBundledFonts()
+        #if DEBUG
+        // Marketing capture: `-MarketingScreen <slug>` launch arg pre-routes
+        // the UI so screenshots can be scripted without UI automation.
+        let slug = UserDefaults.standard.string(forKey: "MarketingScreen")
+        _initialTab = State(initialValue: slug.flatMap(RootTab.init(marketingSlug:)) ?? .home)
+        _pendingDeepLinkCategoryId = State(initialValue: slug == "detail" ? "morning_adhkar" : nil)
+        #else
+        _initialTab = State(initialValue: .home)
+        _pendingDeepLinkCategoryId = State(initialValue: nil)
+        #endif
     }
+
+    @State private var initialTab: RootTab
 
     /// Pending category id parsed from a `munajat://category/<id>` URL.
     /// `RootTabView` observes this and pushes onto the home navigation
@@ -26,7 +38,8 @@ struct AdhkarApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootTabView(pendingDeepLinkCategoryId: $pendingDeepLinkCategoryId)
+            RootTabView(initialTab: initialTab,
+                        pendingDeepLinkCategoryId: $pendingDeepLinkCategoryId)
                 .environment(favorites)
                 .environment(audio)
                 .environment(notifications)

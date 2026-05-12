@@ -10,6 +10,17 @@ import SwiftData
 
 enum RootTab: Hashable {
     case home, favorites, search, settings
+
+    #if DEBUG
+    init?(marketingSlug: String) {
+        switch marketingSlug {
+        case "home", "detail": self = .home
+        case "favorites":      self = .favorites
+        case "settings":       self = .settings
+        default: return nil
+        }
+    }
+    #endif
 }
 
 struct RootTabView: View {
@@ -17,13 +28,23 @@ struct RootTabView: View {
     @Environment(StreakService.self) private var streak
     @Environment(\.scenePhase) private var scenePhase
 
+    /// Initial selected tab. Defaults to `.home`; overridden via debug
+    /// launch args during marketing screenshot capture.
+    let initialTab: RootTab
+
     /// Bound to `AdhkarApp.pendingDeepLinkCategoryId`. When set, we switch
     /// to the home tab and push the matching `AdhkarCategory` onto its
     /// navigation path, then clear the binding.
     @Binding var pendingDeepLinkCategoryId: String?
 
-    @State private var selection: RootTab = .home
+    @State private var selection: RootTab
     @State private var homePath = NavigationPath()
+
+    init(initialTab: RootTab = .home, pendingDeepLinkCategoryId: Binding<String?>) {
+        self.initialTab = initialTab
+        self._pendingDeepLinkCategoryId = pendingDeepLinkCategoryId
+        self._selection = State(initialValue: initialTab)
+    }
 
     var body: some View {
         TabView(selection: $selection) {
@@ -48,20 +69,28 @@ struct RootTabView: View {
                 .tag(RootTab.settings)
         }
         .tint(.orange)
-        .task { streak.recordOpen(context: modelContext) }
+        .task {
+            streak.recordOpen(context: modelContext)
+            // Handle an initial pending category id (set by AdhkarApp.init via
+            // the marketing launch arg). onChange only fires on transitions, so
+            // we also route once on first appearance.
+            routePendingDeepLink()
+        }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active { streak.recordOpen(context: modelContext) }
         }
-        .onChange(of: pendingDeepLinkCategoryId) { _, newValue in
-            guard let id = newValue,
-                  let category = DataProvider.adharCategories.first(where: { $0.id == id })
-            else { return }
-            selection = .home
-            // Reset any in-flight navigation so we don't stack duplicates
-            // when the widget is tapped twice in a row.
-            homePath = NavigationPath()
-            homePath.append(category)
-            pendingDeepLinkCategoryId = nil
-        }
+        .onChange(of: pendingDeepLinkCategoryId) { _, _ in routePendingDeepLink() }
+    }
+
+    private func routePendingDeepLink() {
+        guard let id = pendingDeepLinkCategoryId,
+              let category = DataProvider.adharCategories.first(where: { $0.id == id })
+        else { return }
+        selection = .home
+        // Reset any in-flight navigation so we don't stack duplicates when the
+        // widget is tapped twice in a row.
+        homePath = NavigationPath()
+        homePath.append(category)
+        pendingDeepLinkCategoryId = nil
     }
 }
