@@ -5,14 +5,17 @@
 # the app with different launch args (read by the DEBUG-only `MarketingScreen`
 # pre-routing in AdhkarApp.init) and captures via `xcrun simctl io screenshot`.
 #
-# Usage: ./scripts/capture_marketing.sh <SIM_UDID>
+# Usage: ./scripts/capture_marketing.sh [SIM_UDID] [RAW_SUBDIR]
+#   SIM_UDID     defaults to iPhone 17 Pro Max
+#   RAW_SUBDIR   "raw" for iPhone (default), "raw_ipad13" for iPad
 
 set -euo pipefail
 
 SIM="${1:-74883169-D394-4358-A8AD-283CEF0C74CF}"   # iPhone 17 Pro Max default
-BUNDLE="com.tadevv.Adhkar"
+RAW_SUBDIR="${2:-raw}"
+BUNDLE="com.tadevv.munajat"
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
-RAW_DIR="$REPO/marketing/raw"
+RAW_DIR="$REPO/marketing/$RAW_SUBDIR"
 
 # Three favorite categories pre-seeded so the favorites screen has content
 FAV_IDS='("morning_adhkar","evening_adhkar","sleep_adhkar")'

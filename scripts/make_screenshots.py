@@ -36,9 +36,10 @@ else:
 # ---------------------------------------------------------------------------
 
 SIZES = {
-    "6.5": (1242, 2688),     # iPhone XS Max / 11 Pro Max
-    "6.7": (1284, 2778),     # iPhone 12–15 Pro Max (also fits the 6.5" slot)
-    "6.9": (1320, 2868),     # iPhone 16/17 Pro Max  (new dedicated slot)
+    "6.5":    (1242, 2688),  # iPhone XS Max / 11 Pro Max
+    "6.7":    (1284, 2778),  # iPhone 12–15 Pro Max (also fits the 6.5" slot)
+    "6.9":    (1320, 2868),  # iPhone 16/17 Pro Max  (new dedicated slot)
+    "ipad13": (2064, 2752),  # iPad Pro 13" M4/M5     (required for universal apps)
 }
 CANVAS_W, CANVAS_H = SIZES["6.7"]   # default: maximum compatibility
 
@@ -276,11 +277,23 @@ def composite_screen(raw_path: Path, copy: Copy, is_arabic: bool, out_path: Path
 def main() -> None:
     parser = argparse.ArgumentParser(description="Compose App Store screenshots.")
     parser.add_argument("--size", choices=sorted(SIZES.keys()), default="6.7",
-                        help="Target iPhone display size (default: 6.7\").")
+                        help="Target device size (default: 6.7\" iPhone).")
     args = parser.parse_args()
 
     global CANVAS_W, CANVAS_H
     CANVAS_W, CANVAS_H = SIZES[args.size]
+
+    # iPad raws/outs live in a parallel tree to keep the iPhone deliverables
+    # untouched. iPhone sizes share the legacy `raw/` and `out/` folders.
+    is_ipad = args.size.startswith("ipad")
+    raw_root = REPO / "marketing" / ("raw_" + args.size if is_ipad else "raw")
+    out_root = REPO / "marketing" / ("out_" + args.size if is_ipad else "out")
+
+    # On iPad the device is wider relative to height, so screenshots benefit
+    # from larger padding around the device — adjust per canvas to keep
+    # consistent visual weight.
+    global DEVICE_WIDTH
+    DEVICE_WIDTH = int(CANVAS_W * (0.66 if is_ipad else 0.78))
 
     config = json.loads(COPY_FILE.read_text())
     screens = config["screens"]
@@ -292,8 +305,8 @@ def main() -> None:
         is_arabic = lang == "ar"
         for idx, screen in enumerate(screens, start=1):
             slug = screen["slug"]
-            raw_path = RAW_DIR / lang / f"{slug}.png"
-            out_path = OUT_DIR / lang / f"{idx:02d}_{slug}.png"
+            raw_path = raw_root / lang / f"{slug}.png"
+            out_path = out_root / lang / f"{idx:02d}_{slug}.png"
             if not raw_path.exists():
                 missing.append(str(raw_path.relative_to(REPO)))
                 continue
