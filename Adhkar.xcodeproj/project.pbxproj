@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		01667841FF6CBC822707B3F1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0755300B7D2AF93A0C90710C /* Foundation.framework */; };
 		5B8DDF50899A54DAA0716CEF /* MunajatWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 77C1C60B13211E97703D7121 /* MunajatWidget.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A549F27376613897076D3BCF /* DataProviderContextsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6246C4006D761FF3BFE2DEC3 /* DataProviderContextsTests.swift */; };
 		B2FEB1EE57D4BFE4FA2C8A06 /* HifzSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C90B1D8BF94BCFBDB464163 /* HifzSchedulerTests.swift */; };
 		C247824A7AF076AC722F620A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0755300B7D2AF93A0C90710C /* Foundation.framework */; };
 /* End PBXBuildFile section */
@@ -47,6 +48,7 @@
 /* Begin PBXFileReference section */
 		0755300B7D2AF93A0C90710C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		1C90B1D8BF94BCFBDB464163 /* HifzSchedulerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HifzSchedulerTests.swift; sourceTree = "<group>"; };
+		6246C4006D761FF3BFE2DEC3 /* DataProviderContextsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DataProviderContextsTests.swift; sourceTree = "<group>"; };
 		6FE853B82DB165D700410740 /* Adhkar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Adhkar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77C1C60B13211E97703D7121 /* MunajatWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MunajatWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E84C432517C1794DC1A808EA /* AdhkarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdhkarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				1C90B1D8BF94BCFBDB464163 /* HifzSchedulerTests.swift */,
+				6246C4006D761FF3BFE2DEC3 /* DataProviderContextsTests.swift */,
 			);
 			name = AdhkarTests;
 			path = AdhkarTests;
@@ -304,6 +307,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2FEB1EE57D4BFE4FA2C8A06 /* HifzSchedulerTests.swift in Sources */,
+				A549F27376613897076D3BCF /* DataProviderContextsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
