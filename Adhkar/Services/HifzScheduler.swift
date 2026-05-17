@@ -41,16 +41,16 @@ enum HifzScheduler {
                 card.lapses += 1
                 card.reps = 0
             case .hard:
-                card.intervalDays *= 1.2
+                card.intervalDays = (card.intervalDays * 1.2).rounded(toDecimalPlaces: 1)
                 card.easeFactor = max(minEase, card.easeFactor - 0.15)
                 card.nextReviewAt = addDays(card.intervalDays, to: now)
                 card.reps += 1
             case .good:
-                card.intervalDays *= card.easeFactor
+                card.intervalDays = (card.intervalDays * card.easeFactor).rounded(toDecimalPlaces: 1)
                 card.nextReviewAt = addDays(card.intervalDays, to: now)
                 card.reps += 1
             case .easy:
-                card.intervalDays *= card.easeFactor * 1.3
+                card.intervalDays = (card.intervalDays * card.easeFactor * 1.3).rounded(toDecimalPlaces: 1)
                 card.easeFactor += 0.15
                 card.nextReviewAt = addDays(card.intervalDays, to: now)
                 card.reps += 1
@@ -75,9 +75,9 @@ enum HifzScheduler {
             } else {
                 switch button {
                 case .again: result[button] = 0
-                case .hard:  result[button] = card.intervalDays * 1.2
-                case .good:  result[button] = card.intervalDays * card.easeFactor
-                case .easy:  result[button] = card.intervalDays * card.easeFactor * 1.3
+                case .hard:  result[button] = (card.intervalDays * 1.2).rounded(toDecimalPlaces: 1)
+                case .good:  result[button] = (card.intervalDays * card.easeFactor).rounded(toDecimalPlaces: 1)
+                case .easy:  result[button] = (card.intervalDays * card.easeFactor * 1.3).rounded(toDecimalPlaces: 1)
                 }
             }
         }
@@ -92,5 +92,14 @@ enum HifzScheduler {
 
     private static func addDays(_ days: Double, to date: Date) -> Date {
         date.addingTimeInterval(days * 86_400)
+    }
+}
+
+private extension Double {
+    /// Round to `places` decimal places to keep interval values clean
+    /// and avoid IEEE 754 artifacts (e.g. 6 * 1.2 → 7.2, not 7.199999…).
+    func rounded(toDecimalPlaces places: Int) -> Double {
+        let factor = pow(10.0, Double(places))
+        return (self * factor).rounded() / factor
     }
 }
