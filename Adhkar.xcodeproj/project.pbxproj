@@ -7,11 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01667841FF6CBC822707B3F1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0755300B7D2AF93A0C90710C /* Foundation.framework */; };
+		52363E887989F6282C9408AF /* PlaceholderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6AC0EB96EDA685C5C85262D /* PlaceholderTest.swift */; };
 		5B8DDF50899A54DAA0716CEF /* MunajatWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 77C1C60B13211E97703D7121 /* MunajatWidget.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C247824A7AF076AC722F620A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0755300B7D2AF93A0C90710C /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		039D14F664016EB0B52837BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6FE853B02DB165D700410740 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6FE853B72DB165D700410740;
+			remoteInfo = Adhkar;
+		};
 		193C8C80F6375451B7B0E9E7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6FE853B02DB165D700410740 /* Project object */;
@@ -39,6 +48,8 @@
 		0755300B7D2AF93A0C90710C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		6FE853B82DB165D700410740 /* Adhkar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Adhkar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77C1C60B13211E97703D7121 /* MunajatWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MunajatWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6AC0EB96EDA685C5C85262D /* PlaceholderTest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlaceholderTest.swift; sourceTree = "<group>"; };
+		E84C432517C1794DC1A808EA /* AdhkarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdhkarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -67,6 +78,8 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		51D90147447D5D064B5A0941 /* MunajatWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = MunajatWidget;
 			sourceTree = "<group>";
 		};
@@ -96,9 +109,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DD1ED71A9C30D6C234E19267 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01667841FF6CBC822707B3F1 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2AD05B1932A4FEEA41F51FFA /* AdhkarTests */ = {
+			isa = PBXGroup;
+			children = (
+				E6AC0EB96EDA685C5C85262D /* PlaceholderTest.swift */,
+			);
+			name = AdhkarTests;
+			path = AdhkarTests;
+			sourceTree = SOURCE_ROOT;
+		};
 		3D4A2B5E61F6E6E3C197AF7E /* iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -114,6 +144,7 @@
 				6FE853B92DB165D700410740 /* Products */,
 				F715657F0F79FD5A87F64BD1 /* Frameworks */,
 				51D90147447D5D064B5A0941 /* MunajatWidget */,
+				2AD05B1932A4FEEA41F51FFA /* AdhkarTests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -122,6 +153,7 @@
 			children = (
 				6FE853B82DB165D700410740 /* Adhkar.app */,
 				77C1C60B13211E97703D7121 /* MunajatWidget.appex */,
+				E84C432517C1794DC1A808EA /* AdhkarTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -137,6 +169,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		6CE59EA635FC67476D50BFAF /* AdhkarTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7B026A5CE4D0AAF447F3EF62 /* Build configuration list for PBXNativeTarget "AdhkarTests" */;
+			buildPhases = (
+				CC6F4D58A6DDAF138A34B2A9 /* Sources */,
+				DD1ED71A9C30D6C234E19267 /* Frameworks */,
+				1CE10B90DFD8CBB899AC0CF5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A0844D8193B77E8B63E254C2 /* PBXTargetDependency */,
+			);
+			name = AdhkarTests;
+			productName = AdhkarTests;
+			productReference = E84C432517C1794DC1A808EA /* AdhkarTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		6FE853B72DB165D700410740 /* Adhkar */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6FE853C42DB165D800410740 /* Build configuration list for PBXNativeTarget "Adhkar" */;
@@ -210,11 +260,19 @@
 			targets = (
 				6FE853B72DB165D700410740 /* Adhkar */,
 				8B27475F206607E77B14D888 /* MunajatWidget */,
+				6CE59EA635FC67476D50BFAF /* AdhkarTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1CE10B90DFD8CBB899AC0CF5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6FE853B62DB165D700410740 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -239,6 +297,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CC6F4D58A6DDAF138A34B2A9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				52363E887989F6282C9408AF /* PlaceholderTest.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D6E04D895F7B50F6264A3D0E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -254,6 +320,12 @@
 			name = MunajatWidget;
 			target = 8B27475F206607E77B14D888 /* MunajatWidget */;
 			targetProxy = 193C8C80F6375451B7B0E9E7 /* PBXContainerItemProxy */;
+		};
+		A0844D8193B77E8B63E254C2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Adhkar;
+			target = 6FE853B72DB165D700410740 /* Adhkar */;
+			targetProxy = 039D14F664016EB0B52837BE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -456,6 +528,43 @@
 			};
 			name = Release;
 		};
+		714479A20FAD66C90D594A60 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tadev.munajat.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Adhkar.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Adhkar";
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Debug;
+		};
+		ED20390DB2DAEA289C4CB622 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tadev.munajat.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Adhkar.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Adhkar";
+				VALIDATE_PRODUCT = YES;
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Release;
+		};
 		EFE37DE05F5CA171E41A8EFC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -532,6 +641,15 @@
 			buildConfigurations = (
 				6FE853C52DB165D800410740 /* Debug */,
 				6FE853C62DB165D800410740 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7B026A5CE4D0AAF447F3EF62 /* Build configuration list for PBXNativeTarget "AdhkarTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ED20390DB2DAEA289C4CB622 /* Release */,
+				714479A20FAD66C90D594A60 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
