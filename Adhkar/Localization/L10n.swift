@@ -222,4 +222,16 @@ enum L10n {
         fr: "Tu as lu tous les adhkar de cette catégorie",
         en: "You read every dhikr in this category"
     )
+
+    // MARK: - Context-driven home
+    static let contextHomeCardLabel    = LocalizedText(ar: "كيف تشعر؟", fr: "Comment te sens-tu ?", en: "How do you feel?")
+    static let contextHomeCardHint     = LocalizedText(ar: "١٥ حالات · اختر ما تعيشه", fr: "15 états · choisis ce que tu vis", en: "15 states · pick what you're living")
+    static let contextPickerTitle      = LocalizedText(ar: "كيف تشعر؟", fr: "Comment te sens-tu ?", en: "How do you feel?")
+    static let contextFamilyEmotion    = LocalizedText(ar: "المشاعر", fr: "Émotions", en: "Emotions")
+    static let contextFamilyTrial      = LocalizedText(ar: "ابتلاءات الحياة", fr: "Épreuves de vie", en: "Life trials")
+    static let contextCancel           = LocalizedText(ar: "إلغاء", fr: "Annuler", en: "Cancel")
+    static let contextDhikrSuggested   = LocalizedText(ar: "أذكار مقترحة", fr: "Dhikr suggérés", en: "Suggested dhikr")
+    static let contextEmptyTitle       = LocalizedText(ar: "لا توجد عناصر بعد", fr: "Aucun dhikr pour ce contexte", en: "No dhikr for this context yet")
+    static let contextEmptyHint        = LocalizedText(ar: "سيتم إضافتها قريبًا.", fr: "Ils seront ajoutés bientôt.", en: "They will be added soon.")
+    static let contextDhikrCountSuffix = LocalizedText(ar: "ذكر", fr: "dhikr", en: "dhikr")
 }
