@@ -49,3 +49,46 @@ private struct AdhkarFile: Codable {
     let version: Int
     let categories: [AdhkarCategory]
 }
+
+extension DataProvider {
+    static let lifeContexts: [LifeContext] = loadContexts()
+
+    enum ContextsLoadError: Error, CustomStringConvertible {
+        case fileNotFound
+        case decodingFailed(Error)
+
+        var description: String {
+            switch self {
+            case .fileNotFound: return "contexts.json not found in app bundle"
+            case .decodingFailed(let underlying): return "contexts.json failed to decode: \(underlying)"
+            }
+        }
+    }
+
+    static func loadContextsThrowing(from bundle: Bundle = .main) throws -> [LifeContext] {
+        guard let url = bundle.url(forResource: "contexts", withExtension: "json") else {
+            throw ContextsLoadError.fileNotFound
+        }
+        let data = try Data(contentsOf: url)
+        do {
+            let file = try JSONDecoder().decode(ContextsFile.self, from: data)
+            return file.contexts
+        } catch {
+            throw ContextsLoadError.decodingFailed(error)
+        }
+    }
+
+    private static func loadContexts() -> [LifeContext] {
+        do {
+            return try loadContextsThrowing()
+        } catch {
+            assertionFailure("\(error)")
+            return []
+        }
+    }
+}
+
+private struct ContextsFile: Codable {
+    let version: Int
+    let contexts: [LifeContext]
+}

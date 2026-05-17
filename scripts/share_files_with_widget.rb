@@ -14,6 +14,7 @@ SHARED_FILES = %w[
   Models/AdhkarType.swift
   Models/AdhkarSection+Display.swift
   Models/LocalizedText.swift
+  Models/LifeContext.swift
   Services/DataProvider.swift
   Localization/L10n.swift
   Design/CrescentStarPattern.swift
@@ -21,6 +22,7 @@ SHARED_FILES = %w[
   Design/Font+Arabic.swift
   Design/IslamicPattern.swift
   Resources/adhkar.json
+  Resources/contexts.json
   Resources/Amiri-Regular.ttf
   Resources/Amiri-Bold.ttf
   Resources/AmiriQuran.ttf

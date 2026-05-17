@@ -56,20 +56,22 @@
 		3E82AB61AEFA71A58A3222C5 /* Exceptions for "Adhkar" folder in "MunajatWidget" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Design/Color+Extension.swift",
+				Models/AdhkarCategory.swift,
+				Models/AdhkarType.swift,
+				"Models/AdhkarSection+Display.swift",
+				Models/LocalizedText.swift,
+				Models/LifeContext.swift,
+				Services/DataProvider.swift,
+				Localization/L10n.swift,
 				Design/CrescentStarPattern.swift,
+				"Design/Color+Extension.swift",
 				"Design/Font+Arabic.swift",
 				Design/IslamicPattern.swift,
-				Localization/L10n.swift,
-				Models/AdhkarCategory.swift,
-				"Models/AdhkarSection+Display.swift",
-				Models/AdhkarType.swift,
-				Models/LocalizedText.swift,
 				Resources/adhkar.json,
-				"Resources/Amiri-Bold.ttf",
+				Resources/contexts.json,
 				"Resources/Amiri-Regular.ttf",
+				"Resources/Amiri-Bold.ttf",
 				Resources/AmiriQuran.ttf,
-				Services/DataProvider.swift,
 			);
 			target = 8B27475F206607E77B14D888 /* MunajatWidget */;
 		};
