@@ -44,3 +44,5 @@ venv/
 # Claude Code per-user state
 .claude/settings.local.json
 .claude/skills/
+
+.superpowers/
