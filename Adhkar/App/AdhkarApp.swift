@@ -53,6 +53,6 @@ struct AdhkarApp: App {
                     pendingDeepLinkCategoryId = id
                 }
         }
-        .modelContainer(for: [DhikrProgress.self, DailyActivity.self])
+        .modelContainer(for: [DhikrProgress.self, DailyActivity.self, HifzCard.self])
     }
 }
