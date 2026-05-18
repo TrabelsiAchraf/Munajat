@@ -189,48 +189,39 @@ adhkar,dhikr,dua,islam,quran,hisn,muslim,prayer,remembrance,memorize,hifz,islami
 ```
 Thanks for reviewing Munajat.
 
-This is build 2 of version 1.0, resubmitted after the 4.3(a) feedback on submission 8f80130c-8c2e-485b-9357-e410f074830a. We've added two structural features that differentiate Munajat from any other adhkar app in the store — they are highlighted as NEW in flows 1, 4 and 5 below.
+Build 2 of v1.0, resubmitted after the 4.3(a) feedback on submission 8f80130c-8c2e-485b-9357-e410f074830a. Two structural features added — flagged NEW.
 
-No sign-in is required. The app is free, contains no in-app purchases, and stores everything locally on device. The only network call happens when the user explicitly taps the "Listen" button — audio is streamed from hisnmuslim.com (CDN of the open-source Hisn al-Muslim project, the same content source we cite in App Information).
+No sign-in, free, no IAP, all data local. Only network call: "Listen" streams audio from hisnmuslim.com (public-domain source cited in App Info).
 
-KEY FLOWS TO TEST
+KEY FLOWS
 
-1. NEW — Home → tap the "How do you feel?" headline card at the top → see 15 life-state contexts grouped into Emotions and Life Trials → tap any context (e.g. "Anxious") → see 3 to 7 dhikr curated for that emotional or situational state, each with Arabic text + source. Tap any to read in single-item mode.
+1. NEW — Home → tap "How do you feel?" → 15 life-state contexts (Emotions + Life Trials) → pick any (e.g. Anxious) → 3 to 7 curated dhikr with Arabic + source.
 
-2. Home → tap any classic category card (Morning / Evening / Sleep / etc.) → swipe through adhkar pages → tap the large circle to increment the counter.
+2. Home → any classic category (Morning / Evening / Sleep…) → swipe pages → tap circle to count.
 
-3. Inside a dhikr → tap "Listen" (requires Internet). Audio plays even on silent mode. Tap "Share" → a styled image card is generated locally.
+3. Inside a dhikr → "Listen" (Internet, plays on silent) and "Share" (styled image rendered locally).
 
-4. NEW — Inside any dhikr → tap "Memorize" in the action row → the dhikr is added to a personal Hifz (memorization) list. The button label flips to "In Hifz" with a filled brain icon.
+4. NEW — Any dhikr → "Memorize" → adds to personal Hifz list, button flips to "In Hifz".
 
-5. NEW — Memorize tab (5th tab, brain icon) → see all your Hifz cards grouped by stage (New / Learning / Anchored) and a "X to review today" badge → tap "Start session" → for each card: see the meaning of the dhikr in your language, try to recall it, tap "Reveal" → see the Arabic text → self-rate (Again / Hard / Good / Easy). The four buttons show dynamic delays computed by a simplified SM-2 spaced-repetition scheduler.
+5. NEW — Memorize tab → cards by stage + "X to review today" → "Start session" → see meaning, recall, tap "Reveal" → Arabic shown → self-rate Again/Hard/Good/Easy with SM-2 delays.
 
-6. Settings tab → toggle "Morning adhkar" on. iOS will prompt for notification permission the first time. Pick any time. The same panel also has a "Memorization reminder" slot for the new Hifz feature.
+6. Settings → "Morning adhkar" toggle (iOS prompts permission). Same panel has new "Memorization reminder".
 
-7. Favorites: tap the heart icon on any category card on Home → switch to the Favorites tab to see it listed.
+7. Favorites: heart on a category → tab shows it. Search: filters live.
 
-8. Search tab → type "morning" or any Arabic word → results filter live.
+8. Widget: long-press Home Screen → +. Shows current-period dhikr + "X to review" Hifz badge in medium when due. Tap deep-links via "munajat://".
 
-9. Long-press Home Screen → + → search "Munajat" → add widget. The widget shows the suggested dhikr for the current period (morning / day / evening). The medium size also displays an "X to review" hifz badge under the streak when due cards exist. Tapping it deep-links into the matching category via the "munajat://" URL scheme registered in Info.plist.
+EXPECTED
 
-EXPECTED BEHAVIORS WORTH NOTING
+• Per-dhikr counters reset daily — intentional.
+• Streak advances as soon as one dhikr is read.
+• Arabic system language flips UI to RTL.
+• Universal: iPhone + iPad.
+• Hifz: a new card pressed Good returns tomorrow, Easy in 4 days; later intervals scale by an ease factor floored at 1.3.
 
-• The per-dhikr counters reset at the start of each day — this is intentional, not a bug.
-• The daily streak advances as soon as one dhikr is read on a given day.
-• Switching iOS language to Arabic flips the whole UI to right-to-left automatically.
-• The app supports iPhone and iPad with the same code (universal).
-• The Memorize button label and icon flip between "Memorize / brain" and "In Hifz / brain.fill" once a dhikr is added to the Hifz list.
-• Hifz review intervals follow the SM-2 algorithm: a new card pressed "Good" returns tomorrow; pressed "Easy" returns in 4 days. Subsequent intervals scale with an ease factor that floors at 1.3.
+CONTENT & ACCESSIBILITY
 
-ACCESSIBILITY
-
-VoiceOver labels, hints and values are present on every interactive control in Arabic, French and English. Dark Interface, Larger Text, Voice Control and Differentiate Without Color are all supported. See https://trabelsiachraf.github.io/munajat-site/accessibility.html
-
-CONTENT
-
-All texts come from "Hisn al-Muslim" by Sheikh Saʿīd al-Qaḥṭānī (public, widely-cited Islamic supplications). No user-generated content. The 69 dhikr-to-context associations powering the "How do you feel?" feature are curated manually from this same source — no external data, no AI generation, no third-party content. The Sunna text is in the public domain and necessarily shared across the adhkar category, the same way Bible apps share scripture; the code is written entirely from scratch in SwiftUI, no template, no third-party codebase.
-
-Happy to provide a 60-second video walkthrough if helpful.
+All texts from "Hisn al-Muslim" (Sheikh Saʿīd al-Qaḥṭānī), public domain. The 69 dhikr-to-context associations are curated manually from this same source — no AI, no third-party data. Code from scratch in SwiftUI. VoiceOver, Larger Text and Differentiate Without Color all supported in AR/FR/EN.
 
 Thanks,
 Achraf
