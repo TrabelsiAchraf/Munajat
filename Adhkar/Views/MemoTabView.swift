@@ -36,9 +36,15 @@ struct MemoTabView: View {
             #if os(iOS) || os(visionOS)
             .navigationBarTitleDisplayMode(.large)
             #endif
+            #if os(iOS) || os(visionOS)
             .fullScreenCover(isPresented: $showReviewSession) {
                 ReviewSessionView(cards: dueToday)
             }
+            #else
+            .sheet(isPresented: $showReviewSession) {
+                ReviewSessionView(cards: dueToday)
+            }
+            #endif
         }
     }
 
