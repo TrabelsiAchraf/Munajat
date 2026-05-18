@@ -15,6 +15,7 @@ SHARED_FILES = %w[
   Models/AdhkarSection+Display.swift
   Models/LocalizedText.swift
   Models/LifeContext.swift
+  Models/HifzCard.swift
   Services/DataProvider.swift
   Localization/L10n.swift
   Design/CrescentStarPattern.swift

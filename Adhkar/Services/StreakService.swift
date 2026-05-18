@@ -78,6 +78,25 @@ final class StreakService {
         todayItemsRead = activity.itemsRead
     }
 
+    /// Re-counts due-today / total hifz cards and writes them to the App
+    /// Group suite so the widget can render a badge without spinning up
+    /// SwiftData. Called from `recompute(context:)` and explicitly after
+    /// a review session ends.
+    func refreshHifzCounts(context: ModelContext) {
+        let now = Date.now
+        let endOfDay = Calendar(identifier: .gregorian).date(
+            bySettingHour: 23, minute: 59, second: 59, of: now
+        ) ?? now
+        let dueDescriptor = FetchDescriptor<HifzCard>(
+            predicate: #Predicate<HifzCard> { $0.nextReviewAt <= endOfDay }
+        )
+        let totalDescriptor = FetchDescriptor<HifzCard>()
+        let due   = (try? context.fetch(dueDescriptor))?.count ?? 0
+        let total = (try? context.fetch(totalDescriptor))?.count ?? 0
+        defaults.set(due,   forKey: "hifz.dueToday")
+        defaults.set(total, forKey: "hifz.totalCards")
+    }
+
     // MARK: - Private
 
     @discardableResult
@@ -114,6 +133,8 @@ final class StreakService {
 
         defaults.set(currentStreak, forKey: currentKey)
         defaults.set(bestStreak, forKey: bestKey)
+
+        refreshHifzCounts(context: context)
 
         // Nudge the widget to re-render with the fresh streak. Cheap: WidgetKit
         // coalesces requests and only re-runs the timeline provider if needed.
