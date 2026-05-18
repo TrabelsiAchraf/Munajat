@@ -62,6 +62,15 @@ struct HomeView: View {
                     .presentationDetents([.large])
                     .presentationDragIndicator(.visible)
             }
+            #if DEBUG
+            .task {
+                if UserDefaults.standard.bool(forKey: "marketing.openContextPicker") {
+                    try? await Task.sleep(for: .milliseconds(300))
+                    isContextPickerPresented = true
+                    UserDefaults.standard.set(false, forKey: "marketing.openContextPicker")
+                }
+            }
+            #endif
         }
     }
 

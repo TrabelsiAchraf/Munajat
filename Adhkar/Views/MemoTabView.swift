@@ -45,6 +45,23 @@ struct MemoTabView: View {
                 ReviewSessionView(cards: dueToday)
             }
             #endif
+            #if DEBUG
+            .task {
+                let ud = UserDefaults.standard
+                if ud.bool(forKey: "marketing.preSeedHifz") {
+                    let seedIds = ["distress_1", "morning_adhkar_10", "sleep_adhkar_4"]
+                    for itemId in seedIds {
+                        HifzStore.add(itemId: itemId, in: modelContext)
+                    }
+                    ud.set(false, forKey: "marketing.preSeedHifz")
+                }
+                if ud.bool(forKey: "marketing.launchReviewSession") {
+                    try? await Task.sleep(for: .milliseconds(500))
+                    showReviewSession = true
+                    ud.set(false, forKey: "marketing.launchReviewSession")
+                }
+            }
+            #endif
         }
     }
 

@@ -6,6 +6,7 @@ import SwiftUI
 /// detail all live inside the sheet and dismiss together on "Annuler".
 struct ContextPickerView: View {
     @Environment(\.dismiss) private var dismiss
+    @State private var path = NavigationPath()
     private let contexts = DataProvider.lifeContexts
 
     private var emotions: [LifeContext] { contexts.filter { $0.family == .emotion } }
@@ -17,7 +18,7 @@ struct ContextPickerView: View {
     ]
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 22) {
                     familySection(title: L10n.contextFamilyEmotion.resolved(),
@@ -51,6 +52,16 @@ struct ContextPickerView: View {
                     Text(L10n.contextEmptyTitle.resolved())
                 }
             }
+            #if DEBUG
+            .task {
+                if let detailId = UserDefaults.standard.string(forKey: "marketing.contextDetailId"),
+                   let ctx = DataProvider.lifeContexts.first(where: { $0.id == detailId }) {
+                    try? await Task.sleep(for: .milliseconds(200))
+                    path.append(ctx)
+                    UserDefaults.standard.removeObject(forKey: "marketing.contextDetailId")
+                }
+            }
+            #endif
         }
     }
 

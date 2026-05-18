@@ -64,6 +64,15 @@ struct ReviewSessionView: View {
             }
         }
         .background(Color.black.ignoresSafeArea())
+        #if DEBUG
+        .task {
+            if UserDefaults.standard.bool(forKey: "marketing.autoRevealReview") {
+                try? await Task.sleep(for: .milliseconds(400))
+                revealed = true
+                UserDefaults.standard.set(false, forKey: "marketing.autoRevealReview")
+            }
+        }
+        #endif
     }
 
     private var topBar: some View {

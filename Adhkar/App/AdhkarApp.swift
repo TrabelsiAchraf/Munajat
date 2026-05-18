@@ -23,6 +23,20 @@ struct AdhkarApp: App {
         let slug = UserDefaults.standard.string(forKey: "MarketingScreen")
         _initialTab = State(initialValue: slug.flatMap(RootTab.init(marketingSlug:)) ?? .home)
         _pendingDeepLinkCategoryId = State(initialValue: slug == "detail" ? "morning_adhkar" : nil)
+
+        // Marketing flags consumed by views in their .task modifier.
+        let ud = UserDefaults.standard
+        ud.set(slug == "context_picker" || slug == "context_detail",
+               forKey: "marketing.openContextPicker")
+        if slug == "context_detail" {
+            ud.set("anxious", forKey: "marketing.contextDetailId")
+        } else {
+            ud.removeObject(forKey: "marketing.contextDetailId")
+        }
+        ud.set(slug == "memorize_filled" || slug == "review_session",
+               forKey: "marketing.preSeedHifz")
+        ud.set(slug == "review_session", forKey: "marketing.launchReviewSession")
+        ud.set(slug == "review_session", forKey: "marketing.autoRevealReview")
         #else
         _initialTab = State(initialValue: .home)
         _pendingDeepLinkCategoryId = State(initialValue: nil)
