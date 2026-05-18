@@ -16,7 +16,7 @@ import Observation
 @Observable
 final class NotificationManager {
     enum Slot: String, CaseIterable, Identifiable {
-        case morning, evening, sleep
+        case morning, evening, sleep, hifz
         var id: String { rawValue }
 
         var defaultHour: Int {
@@ -24,6 +24,7 @@ final class NotificationManager {
             case .morning: return 8
             case .evening: return 17
             case .sleep:   return 22
+            case .hifz:    return 19
             }
         }
 
@@ -34,6 +35,7 @@ final class NotificationManager {
             case .morning: return L10n.notifTitleMorning
             case .evening: return L10n.notifTitleEvening
             case .sleep:   return L10n.notifTitleSleep
+            case .hifz:    return L10n.notifTitleHifz
             }
         }
 
@@ -42,6 +44,7 @@ final class NotificationManager {
             case .morning: return L10n.slotMorning
             case .evening: return L10n.slotEvening
             case .sleep:   return L10n.slotSleep
+            case .hifz:    return L10n.slotHifz
             }
         }
     }

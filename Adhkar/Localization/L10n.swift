@@ -44,6 +44,11 @@ enum L10n {
     static let slotEvening = LocalizedText(ar: "أذكار المساء", fr: "Adhkar du soir",  en: "Evening adhkar")
     static let slotSleep   = LocalizedText(ar: "أذكار النوم",  fr: "Adhkar du coucher", en: "Sleep adhkar")
 
+    // Hifz notification
+    static let slotHifz         = LocalizedText(ar: "تذكير الحفظ", fr: "Rappel mémorisation", en: "Memorization reminder")
+    static let notifTitleHifz   = LocalizedText(ar: "حان وقت المراجعة", fr: "C'est l'heure de réviser", en: "Time to review")
+    static let notifBodyHifz    = LocalizedText(ar: "بطاقات في انتظارك.", fr: "Tes cartes t'attendent.", en: "Your cards are waiting.")
+
     // Detail view
     static let translation     = LocalizedText(ar: "الترجمة",   fr: "Traduction",     en: "Translation")
     static let transliteration = LocalizedText(ar: "النطق",     fr: "Translittération", en: "Transliteration")
