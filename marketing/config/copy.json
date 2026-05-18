@@ -2,15 +2,39 @@
   "screens": [
     {
       "slug": "home",
-      "fr": { "title": "Tes adhkar du jour", "subtitle": "Toujours à portée, à toute heure." },
-      "en": { "title": "Your daily dhikr",   "subtitle": "Always within reach, anytime." },
-      "ar": { "title": "أذكارك اليومية",      "subtitle": "في متناولك في كل وقت." }
+      "fr": { "title": "Adhkar selon ton état",   "subtitle": "Une nouvelle façon de prier — selon ce que tu vis." },
+      "en": { "title": "Adhkar for what you live", "subtitle": "A new way to remember — based on what you're going through." },
+      "ar": { "title": "أذكار حسب حالة قلبك",     "subtitle": "طريقة جديدة للذكر — حسب ما تعيشه." }
+    },
+    {
+      "slug": "context_picker",
+      "fr": { "title": "Comment te sens-tu ?",  "subtitle": "15 états émotionnels et épreuves de vie, chacun avec ses adhkar." },
+      "en": { "title": "How do you feel?",       "subtitle": "15 emotional states and life trials, each with its own adhkar." },
+      "ar": { "title": "كيف تشعر؟",              "subtitle": "١٥ حالة مشاعر وابتلاءات حياة، كلٌّ بأذكاره." }
+    },
+    {
+      "slug": "context_detail",
+      "fr": { "title": "Des dhikr ciblés",      "subtitle": "3 à 7 invocations soigneusement curées par contexte." },
+      "en": { "title": "Targeted dhikr",         "subtitle": "3 to 7 invocations carefully curated per context." },
+      "ar": { "title": "أذكار مستهدفة",         "subtitle": "من ٣ إلى ٧ أدعية مختارة بعناية لكل حالة." }
     },
     {
       "slug": "detail",
-      "fr": { "title": "Lis, écoute, partage", "subtitle": "Le texte, l'audio et le partage avec tes proches en un écran." },
-      "en": { "title": "Read, listen, share",   "subtitle": "Text, audio and share with loved ones in one screen." },
-      "ar": { "title": "اقرأ، استمع، شارك",       "subtitle": "النص والصوت والمشاركة مع أحبّتك في شاشة واحدة." }
+      "fr": { "title": "Lis, écoute, mémorise", "subtitle": "Texte, audio, compteur tactile et bouton mémorisation en un écran." },
+      "en": { "title": "Read, listen, memorize", "subtitle": "Text, audio, tap-to-count and memorize button in one screen." },
+      "ar": { "title": "اقرأ، استمع، احفظ",      "subtitle": "النص والصوت والعدّاد وزرّ الحفظ في شاشة واحدة." }
+    },
+    {
+      "slug": "memorize_filled",
+      "fr": { "title": "Ancre les essentiels",   "subtitle": "Suivi de progression et révisions espacées dans un onglet dédié." },
+      "en": { "title": "Anchor the essentials",   "subtitle": "Progress tracking and spaced reviews in a dedicated tab." },
+      "ar": { "title": "ثبّت الأساسيات",        "subtitle": "تتبّع تقدّمك ومراجعات متباعدة في تبويب مخصّص." }
+    },
+    {
+      "slug": "review_session",
+      "fr": { "title": "Mémorisation guidée",   "subtitle": "Répétition espacée style Anki, avec quatre niveaux d'auto-évaluation." },
+      "en": { "title": "Guided memorization",     "subtitle": "Anki-style spaced repetition with four self-evaluation levels." },
+      "ar": { "title": "حفظ موجَّه",            "subtitle": "مراجعة متباعدة بأسلوب Anki، بأربعة مستويات تقييم." }
     },
     {
       "slug": "favorites",
@@ -20,9 +44,9 @@
     },
     {
       "slug": "settings",
-      "fr": { "title": "Active tes rappels",  "subtitle": "Reçois une notification pour les adhkar du matin, du soir et du coucher." },
-      "en": { "title": "Turn on reminders",   "subtitle": "Get notified for morning, evening and sleep adhkar." },
-      "ar": { "title": "فعّل تذكيراتك",          "subtitle": "تنبيهات يومية لأذكار الصباح والمساء والنوم." }
+      "fr": { "title": "Active tes rappels",   "subtitle": "Matin, soir, coucher — et un rappel quotidien pour ta mémorisation." },
+      "en": { "title": "Turn on reminders",     "subtitle": "Morning, evening, sleep — and a daily memorization reminder." },
+      "ar": { "title": "فعّل تذكيراتك",        "subtitle": "صباحًا ومساءً وعند النوم — وتذكير يومي للحفظ." }
     }
   ]
 }

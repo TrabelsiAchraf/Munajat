@@ -22,7 +22,7 @@ FAV_IDS='("morning_adhkar","evening_adhkar","sleep_adhkar")'
 
 declare -a LANGS=("fr" "en" "ar")
 declare -A LOCALES=( [fr]="fr_FR" [en]="en_US" [ar]="ar_SA" )
-declare -a SCREENS=("home" "detail" "favorites" "settings")
+declare -a SCREENS=("home" "context_picker" "context_detail" "detail" "memorize_filled" "review_session" "favorites" "settings")
 
 launch() {
   local lang="$1" locale="$2" screen="$3"
@@ -33,7 +33,14 @@ launch() {
     -AppleLocale "$locale" \
     -MarketingScreen "$screen" \
     -favoriteCategoryIds "$FAV_IDS" >/dev/null
-  sleep 1.6
+  # Bump the wait for screens that chain auto-routing (sheet → push → reveal).
+  case "$screen" in
+    review_session)    sleep 3.0 ;;
+    context_detail)    sleep 2.5 ;;
+    context_picker)    sleep 2.0 ;;
+    memorize_filled)   sleep 2.0 ;;
+    *)                 sleep 1.6 ;;
+  esac
 }
 
 capture() {
