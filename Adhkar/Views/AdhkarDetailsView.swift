@@ -416,6 +416,7 @@ private struct DhikrPageView: View {
                 audioButton(url: audioURL)
             }
             shareButton
+            MemorizeButton(itemId: dhikr.id, accent: accent)
         }
     }
 
