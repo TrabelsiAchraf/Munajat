@@ -177,12 +177,7 @@ private struct MemoCardRow: View {
     }
 
     var body: some View {
-        let (title, source): (String, String) = {
-            if let (d, c) = dhikrAndCategory {
-                return (c.displayTitle, d.source.isEmpty ? "" : d.source)
-            }
-            return (card.itemId, "")
-        }()
+        let title: String = dhikrAndCategory?.1.displayTitle ?? card.itemId
 
         HStack(spacing: 12) {
             Image(systemName: "doc.text")
