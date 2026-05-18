@@ -40,6 +40,17 @@ struct ContextPickerView: View {
             .navigationDestination(for: LifeContext.self) { ctx in
                 ContextDetailView(context: ctx)
             }
+            .navigationDestination(for: ContextDhikrTarget.self) { target in
+                if let category = DataProvider.adharCategories.first(where: { $0.id == target.categoryId }) {
+                    AdhkarDetailsView(
+                        adhkar: category,
+                        focusedItemId: target.itemId,
+                        navTitleOverride: target.navTitle
+                    )
+                } else {
+                    Text(L10n.contextEmptyTitle.resolved())
+                }
+            }
         }
     }
 
