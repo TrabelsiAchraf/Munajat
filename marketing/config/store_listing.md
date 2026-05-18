@@ -187,19 +187,48 @@ adhkar,dhikr,dua,islam,quran,hisn,muslim,prayer,remembrance,memorize,hifz,islami
 À coller dans **App Store Connect → Version 1.0 → App Review Information → Notes** au moment de la resoumission. Texte en anglais.
 
 ```
-Hi App Review,
+Thanks for reviewing Munajat.
 
-This is Munajat 1.0 build 2 — the same app you reviewed under submission 8f80130c-8c2e-485b-9357-e410f074830a, with significant structural changes to address the 4.3(a) feedback.
+This is build 2 of version 1.0, resubmitted after the 4.3(a) feedback on submission 8f80130c-8c2e-485b-9357-e410f074830a. We've added two structural features that differentiate Munajat from any other adhkar app in the store — they are highlighted as NEW in flows 1, 4 and 5 below.
 
-THREE FEATURES THAT NO OTHER ADHKAR APP IN THE STORE HAS:
+No sign-in is required. The app is free, contains no in-app purchases, and stores everything locally on device. The only network call happens when the user explicitly taps the "Listen" button — audio is streamed from hisnmuslim.com (CDN of the open-source Hisn al-Muslim project, the same content source we cite in App Information).
 
-1. Context-driven home — opens with "How do you feel?" leading to a picker of 15 life-state contexts (8 emotions + 7 life trials). Each context surfaces 3-7 curated Quranic and prophetic invocations relevant to that specific emotional or situational state. See screenshots 2 and 3.
+KEY FLOWS TO TEST
 
-2. Built-in spaced-repetition memorization (dedicated 5th tab "Memorize"). Tap "Memorize" on any dhikr to add it to a personal Hifz list. The app schedules reviews using a simplified SM-2 algorithm with 4-button self-evaluation (Again / Hard / Good / Easy). See screenshots 4 and 5.
+1. NEW — Home → tap the "How do you feel?" headline card at the top → see 15 life-state contexts grouped into Emotions and Life Trials → tap any context (e.g. "Anxious") → see 3 to 7 dhikr curated for that emotional or situational state, each with Arabic text + source. Tap any to read in single-item mode.
 
-3. 69 curated dhikr-context associations covering anxiety, gratitude, grief, anger, fear, sickness, debt, mourning, and more — none of which exist in template-based adhkar apps.
+2. Home → tap any classic category card (Morning / Evening / Sleep / etc.) → swipe through adhkar pages → tap the large circle to increment the counter.
 
-The underlying text (Hisn al-Muslim collection) is in the public domain and necessarily shared across the category, the same way Bible apps share scripture. The code is written entirely from scratch in SwiftUI — no template, no third-party codebase.
+3. Inside a dhikr → tap "Listen" (requires Internet). Audio plays even on silent mode. Tap "Share" → a styled image card is generated locally.
+
+4. NEW — Inside any dhikr → tap "Memorize" in the action row → the dhikr is added to a personal Hifz (memorization) list. The button label flips to "In Hifz" with a filled brain icon.
+
+5. NEW — Memorize tab (5th tab, brain icon) → see all your Hifz cards grouped by stage (New / Learning / Anchored) and a "X to review today" badge → tap "Start session" → for each card: see the meaning of the dhikr in your language, try to recall it, tap "Reveal" → see the Arabic text → self-rate (Again / Hard / Good / Easy). The four buttons show dynamic delays computed by a simplified SM-2 spaced-repetition scheduler.
+
+6. Settings tab → toggle "Morning adhkar" on. iOS will prompt for notification permission the first time. Pick any time. The same panel also has a "Memorization reminder" slot for the new Hifz feature.
+
+7. Favorites: tap the heart icon on any category card on Home → switch to the Favorites tab to see it listed.
+
+8. Search tab → type "morning" or any Arabic word → results filter live.
+
+9. Long-press Home Screen → + → search "Munajat" → add widget. The widget shows the suggested dhikr for the current period (morning / day / evening). The medium size also displays an "X to review" hifz badge under the streak when due cards exist. Tapping it deep-links into the matching category via the "munajat://" URL scheme registered in Info.plist.
+
+EXPECTED BEHAVIORS WORTH NOTING
+
+• The per-dhikr counters reset at the start of each day — this is intentional, not a bug.
+• The daily streak advances as soon as one dhikr is read on a given day.
+• Switching iOS language to Arabic flips the whole UI to right-to-left automatically.
+• The app supports iPhone and iPad with the same code (universal).
+• The Memorize button label and icon flip between "Memorize / brain" and "In Hifz / brain.fill" once a dhikr is added to the Hifz list.
+• Hifz review intervals follow the SM-2 algorithm: a new card pressed "Good" returns tomorrow; pressed "Easy" returns in 4 days. Subsequent intervals scale with an ease factor that floors at 1.3.
+
+ACCESSIBILITY
+
+VoiceOver labels, hints and values are present on every interactive control in Arabic, French and English. Dark Interface, Larger Text, Voice Control and Differentiate Without Color are all supported. See https://trabelsiachraf.github.io/munajat-site/accessibility.html
+
+CONTENT
+
+All texts come from "Hisn al-Muslim" by Sheikh Saʿīd al-Qaḥṭānī (public, widely-cited Islamic supplications). No user-generated content. The 69 dhikr-to-context associations powering the "How do you feel?" feature are curated manually from this same source — no external data, no AI generation, no third-party content. The Sunna text is in the public domain and necessarily shared across the adhkar category, the same way Bible apps share scripture; the code is written entirely from scratch in SwiftUI, no template, no third-party codebase.
 
 Happy to provide a 60-second video walkthrough if helpful.
 
