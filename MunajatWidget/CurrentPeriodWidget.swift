@@ -108,6 +108,8 @@ struct CurrentPeriodEntryView: View {
     let entry: CurrentPeriodEntry
     @Environment(\.widgetFamily) private var family
 
+    private let sharedDefaults = UserDefaults(suiteName: "group.com.tadev.munajat") ?? .standard
+
     var body: some View {
         switch family {
         case .systemMedium: mediumLayout
@@ -140,6 +142,17 @@ struct CurrentPeriodEntryView: View {
                     .lineLimit(1)
                 Spacer(minLength: 0)
                 streakFooter
+                let dueToday = sharedDefaults.integer(forKey: "hifz.dueToday")
+                if dueToday > 0 {
+                    HStack(spacing: 4) {
+                        Image(systemName: "brain.head.profile")
+                            .font(.caption2)
+                        Text("\(dueToday) \(L10n.memoDueTodayPrefix.resolved())")
+                            .font(.caption2.weight(.semibold))
+                    }
+                    .foregroundStyle(.secondary)
+                    .padding(.top, 4)
+                }
             }
             Divider()
                 .overlay(Color.white.opacity(0.25))
