@@ -14,6 +14,8 @@ struct HomeView: View {
     /// push a category from outside this view.
     @Binding var path: NavigationPath
 
+    @State private var isContextPickerPresented = false
+
     private var sections: [(section: AdhkarSection, categories: [AdhkarCategory])] {
         AdhkarSection.displayOrder.compactMap { sec in
             let cats = allCategories.filter { $0.section == sec }
@@ -37,6 +39,7 @@ struct HomeView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 28) {
                         HeroHeader()
+                        HomeContextCard { isContextPickerPresented = true }
                         StreakCard()
                         if let featured {
                             FeaturedSection(category: featured)
@@ -53,6 +56,11 @@ struct HomeView: View {
             .navigationTitle(L10n.homeTitle.resolved())
             .navigationDestination(for: AdhkarCategory.self) { cat in
                 AdhkarDetailsView(adhkar: cat)
+            }
+            .sheet(isPresented: $isContextPickerPresented) {
+                ContextPickerView()
+                    .presentationDetents([.large])
+                    .presentationDragIndicator(.visible)
             }
         }
     }
