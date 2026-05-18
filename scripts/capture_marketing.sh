@@ -34,11 +34,14 @@ launch() {
     -MarketingScreen "$screen" \
     -favoriteCategoryIds "$FAV_IDS" >/dev/null
   # Bump the wait for screens that chain auto-routing (sheet → push → reveal).
+  # First-launch-in-language pays a cold-start cost (SwiftData + fonts re-init),
+  # so we also bump home specifically — it's always the first screen captured.
   case "$screen" in
     review_session)    sleep 3.0 ;;
     context_detail)    sleep 2.5 ;;
     context_picker)    sleep 2.0 ;;
     memorize_filled)   sleep 2.0 ;;
+    home)              sleep 3.5 ;;
     *)                 sleep 1.6 ;;
   esac
 }
