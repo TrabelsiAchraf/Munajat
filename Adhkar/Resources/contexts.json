@@ -1,20 +1,344 @@
 {
   "version": 1,
   "contexts": [
-    { "id": "anxious",        "family": "emotion", "iconName": "wind",                "color": "blue",   "title": { "ar": "قلق",  "fr": "Anxieux",       "en": "Anxious" },    "intro": { "ar": "", "fr": "Quand l'inquiétude pèse…",  "en": "When worry weighs on you…" }, "dhikrIds": [] },
-    { "id": "grateful",       "family": "emotion", "iconName": "hands.sparkles.fill", "color": "yellow", "title": { "ar": "شاكر", "fr": "Reconnaissant", "en": "Grateful" },   "intro": { "ar": "", "fr": "Pour la gratitude…",        "en": "For gratitude…" },             "dhikrIds": [] },
-    { "id": "sad",            "family": "emotion", "iconName": "cloud.rain.fill",     "color": "indigo", "title": { "ar": "حزين", "fr": "Triste",        "en": "Sad" },        "intro": { "ar": "", "fr": "Quand le cœur est lourd…",   "en": "When the heart is heavy…" },   "dhikrIds": [] },
-    { "id": "angry",          "family": "emotion", "iconName": "flame.fill",          "color": "red",    "title": { "ar": "غاضب","fr": "En colère",     "en": "Angry" },      "intro": { "ar": "", "fr": "Pour apaiser la colère…",    "en": "To calm anger…" },             "dhikrIds": [] },
-    { "id": "fearful",        "family": "emotion", "iconName": "exclamationmark.triangle.fill","color": "orange","title": { "ar": "خائف","fr": "Peur","en": "Fearful" },       "intro": { "ar": "", "fr": "Face à la peur…",           "en": "Facing fear…" },               "dhikrIds": [] },
-    { "id": "happy",          "family": "emotion", "iconName": "sun.max.fill",        "color": "yellow", "title": { "ar": "سعيد","fr": "Heureux",       "en": "Happy" },      "intro": { "ar": "", "fr": "Pour célébrer la joie…",    "en": "To celebrate joy…" },          "dhikrIds": [] },
-    { "id": "regretful",      "family": "emotion", "iconName": "drop.fill",           "color": "teal",   "title": { "ar": "نادم","fr": "Repentant",     "en": "Regretful" },  "intro": { "ar": "", "fr": "Pour demander pardon…",     "en": "To ask for forgiveness…" },    "dhikrIds": [] },
-    { "id": "hopeful",        "family": "emotion", "iconName": "sunrise.fill",        "color": "orange", "title": { "ar": "راجٍ", "fr": "Espoir",        "en": "Hopeful" },    "intro": { "ar": "", "fr": "Pour nourrir l'espoir…",    "en": "To nurture hope…" },           "dhikrIds": [] },
-    { "id": "sick",           "family": "trial",   "iconName": "bandage.fill",        "color": "pink",   "title": { "ar": "مريض","fr": "Malade",        "en": "Sick" },       "intro": { "ar": "", "fr": "Pour la guérison…",         "en": "For healing…" },               "dhikrIds": [] },
-    { "id": "mourning",       "family": "trial",   "iconName": "moon.fill",           "color": "indigo", "title": { "ar": "حزين","fr": "Deuil",         "en": "Mourning" },   "intro": { "ar": "", "fr": "Quand on a perdu un proche…","en": "When one has lost a loved one…" }, "dhikrIds": [] },
-    { "id": "indebted",       "family": "trial",   "iconName": "creditcard.fill",     "color": "brown",  "title": { "ar": "مدين", "fr": "Dette",         "en": "In debt" },    "intro": { "ar": "", "fr": "Face à la charge financière…","en": "Facing financial burden…" },   "dhikrIds": [] },
-    { "id": "before-important","family": "trial",  "iconName": "hourglass",           "color": "purple", "title": { "ar": "قبل أمر مهم","fr": "Avant un moment important","en": "Before an important moment" }, "intro": { "ar": "", "fr": "Avant un examen, un entretien, une décision…", "en": "Before an exam, interview, decision…" }, "dhikrIds": [] },
-    { "id": "in-conflict",    "family": "trial",   "iconName": "person.2.slash",      "color": "red",    "title": { "ar": "خلاف","fr": "En conflit",    "en": "In conflict" },"intro": { "ar": "", "fr": "Avec quelqu'un…",           "en": "With someone…" },              "dhikrIds": [] },
-    { "id": "insomniac",      "family": "trial",   "iconName": "bed.double.fill",     "color": "blue",   "title": { "ar": "أرق", "fr": "Insomnie",      "en": "Insomnia" },   "intro": { "ar": "", "fr": "Quand le sommeil fuit…",     "en": "When sleep escapes you…" },    "dhikrIds": [] },
-    { "id": "doubting",       "family": "trial",   "iconName": "questionmark.circle.fill","color":"gray","title": { "ar": "متشكك","fr": "Doute",         "en": "Doubting" },   "intro": { "ar": "", "fr": "Face au doute…",            "en": "Facing doubt…" },              "dhikrIds": [] }
+    {
+      "id": "anxious",
+      "family": "emotion",
+      "iconName": "wind",
+      "color": "blue",
+      "title": {
+        "ar": "قلق",
+        "fr": "Anxieux",
+        "en": "Anxious"
+      },
+      "intro": {
+        "ar": "حين يثقل الهمّ، تذكّر أن الله حسبك.",
+        "fr": "Quand l'inquiétude pèse, rappelle-toi qu'Allah te suffit.",
+        "en": "When worry weighs on you, remember Allah is sufficient."
+      },
+      "dhikrIds": [
+        "distress_1",
+        "distress_2",
+        "distress_3",
+        "sadness_worry_2",
+        "morning_adhkar_10"
+      ]
+    },
+    {
+      "id": "grateful",
+      "family": "emotion",
+      "iconName": "hands.sparkles.fill",
+      "color": "yellow",
+      "title": {
+        "ar": "شاكر",
+        "fr": "Reconnaissant",
+        "en": "Grateful"
+      },
+      "intro": {
+        "ar": "اشكر النعمة بذكر المنعم.",
+        "fr": "Pour célébrer chaque bienfait.",
+        "en": "To celebrate every blessing."
+      },
+      "dhikrIds": [
+        "wake_up_1",
+        "wake_up_2",
+        "after_meal_1",
+        "duaa_of_amazement_and_joy_1",
+        "reaction_to_good_or_bad_news_1"
+      ]
+    },
+    {
+      "id": "sad",
+      "family": "emotion",
+      "iconName": "cloud.rain.fill",
+      "color": "indigo",
+      "title": {
+        "ar": "حزين",
+        "fr": "Triste",
+        "en": "Sad"
+      },
+      "intro": {
+        "ar": "حين يثقل القلب من الحزن.",
+        "fr": "Quand le cœur est lourd de tristesse.",
+        "en": "When the heart is heavy with grief."
+      },
+      "dhikrIds": [
+        "sadness_worry_1",
+        "sadness_worry_2",
+        "calamity_dua_1",
+        "duaa_for_condolence_1"
+      ]
+    },
+    {
+      "id": "angry",
+      "family": "emotion",
+      "iconName": "flame.fill",
+      "color": "red",
+      "title": {
+        "ar": "غاضب",
+        "fr": "En colère",
+        "en": "Angry"
+      },
+      "intro": {
+        "ar": "للجوء من الشيطان عند الغضب.",
+        "fr": "Pour se réfugier auprès d'Allah quand la colère monte.",
+        "en": "To take refuge in Allah when anger rises."
+      },
+      "dhikrIds": [
+        "anger_1",
+        "expel_shaytan_whispers_1",
+        "fasting_response_to_insult_1"
+      ]
+    },
+    {
+      "id": "fearful",
+      "family": "emotion",
+      "iconName": "exclamationmark.triangle.fill",
+      "color": "orange",
+      "title": {
+        "ar": "خائف",
+        "fr": "Peur",
+        "en": "Fearful"
+      },
+      "intro": {
+        "ar": "من خاف فاللاجئ إلى الله آمن.",
+        "fr": "Quand la peur t'atteint, abrite-toi auprès d'Allah.",
+        "en": "When fear strikes, take shelter in Allah."
+      },
+      "dhikrIds": [
+        "night_fear_1",
+        "what_to_say_when_frightened_1",
+        "fear_people_1",
+        "meeting_enemy_3",
+        "morning_adhkar_10"
+      ]
+    },
+    {
+      "id": "happy",
+      "family": "emotion",
+      "iconName": "sun.max.fill",
+      "color": "yellow",
+      "title": {
+        "ar": "سعيد",
+        "fr": "Heureux",
+        "en": "Happy"
+      },
+      "intro": {
+        "ar": "السرور بالله ذكر وحمد.",
+        "fr": "Pour partager la joie avec Allah.",
+        "en": "To share your joy with Allah."
+      },
+      "dhikrIds": [
+        "duaa_of_amazement_and_joy_1",
+        "duaa_of_amazement_and_joy_2",
+        "reaction_to_good_or_bad_news_1",
+        "what_to_say_when_you_receive_good_news_1"
+      ]
+    },
+    {
+      "id": "regretful",
+      "family": "emotion",
+      "iconName": "drop.fill",
+      "color": "teal",
+      "title": {
+        "ar": "نادم",
+        "fr": "Repentant",
+        "en": "Regretful"
+      },
+      "intro": {
+        "ar": "للاستغفار والتوبة.",
+        "fr": "Pour l'istighfar et le repentir.",
+        "en": "For seeking forgiveness and repentance."
+      },
+      "dhikrIds": [
+        "forgiveness_and_repentance_3",
+        "forgiveness_and_repentance_1",
+        "gathering_expiation_1",
+        "repentance_after_sin_1",
+        "forgiveness_and_repentance_2"
+      ]
+    },
+    {
+      "id": "hopeful",
+      "family": "emotion",
+      "iconName": "sunrise.fill",
+      "color": "orange",
+      "title": {
+        "ar": "راجٍ",
+        "fr": "Espoir",
+        "en": "Hopeful"
+      },
+      "intro": {
+        "ar": "تعلّق الرجاء بالحيّ القيّوم.",
+        "fr": "Pour nourrir l'espoir en la miséricorde d'Allah.",
+        "en": "To nurture hope in Allah's mercy."
+      },
+      "dhikrIds": [
+        "distress_2",
+        "morning_adhkar_15",
+        "morning_adhkar_10",
+        "evening_adhkar_15",
+        "hard_matter_1"
+      ]
+    },
+    {
+      "id": "sick",
+      "family": "trial",
+      "iconName": "bandage.fill",
+      "color": "pink",
+      "title": {
+        "ar": "مريض",
+        "fr": "Malade",
+        "en": "Sick"
+      },
+      "intro": {
+        "ar": "للمريض ولمن يزوره.",
+        "fr": "Pour la guérison du corps et du cœur.",
+        "en": "For the healing of body and heart."
+      },
+      "dhikrIds": [
+        "dua_for_sick_when_visited_1",
+        "dua_for_sick_when_visited_2",
+        "duaa_when_feeling_pain_1",
+        "desperate_sick_dua_1",
+        "desperate_sick_dua_3"
+      ]
+    },
+    {
+      "id": "mourning",
+      "family": "trial",
+      "iconName": "moon.fill",
+      "color": "indigo",
+      "title": {
+        "ar": "حزين",
+        "fr": "Deuil",
+        "en": "Mourning"
+      },
+      "intro": {
+        "ar": "عند فقد قريب أو حبيب.",
+        "fr": "Quand on a perdu un proche.",
+        "en": "When one has lost a loved one."
+      },
+      "dhikrIds": [
+        "calamity_dua_1",
+        "duaa_for_condolence_1",
+        "duaa_for_condolence_2",
+        "duaa_when_closing_dead_eyes_1",
+        "duaa_after_burial_1"
+      ]
+    },
+    {
+      "id": "indebted",
+      "family": "trial",
+      "iconName": "creditcard.fill",
+      "color": "brown",
+      "title": {
+        "ar": "مدين",
+        "fr": "Dette",
+        "en": "In debt"
+      },
+      "intro": {
+        "ar": "لقضاء الدين وكفاية الهم.",
+        "fr": "Face à la charge financière.",
+        "en": "When burdened by debt."
+      },
+      "dhikrIds": [
+        "debt_relief_1",
+        "debt_relief_2",
+        "sadness_worry_2",
+        "duaa_for_creditor_when_repaying_1"
+      ]
+    },
+    {
+      "id": "before-important",
+      "family": "trial",
+      "iconName": "hourglass",
+      "color": "purple",
+      "title": {
+        "ar": "قبل أمر مهم",
+        "fr": "Avant un moment important",
+        "en": "Before an important moment"
+      },
+      "intro": {
+        "ar": "قبل أمر مهم استخر الله.",
+        "fr": "Avant un examen, un entretien, une décision.",
+        "en": "Before an exam, interview, or decision."
+      },
+      "dhikrIds": [
+        "istikharah_prayer_1",
+        "hard_matter_1",
+        "duaa_for_travel_1",
+        "dua_in_unwanted_situation_2"
+      ]
+    },
+    {
+      "id": "in-conflict",
+      "family": "trial",
+      "iconName": "person.2.slash",
+      "color": "red",
+      "title": {
+        "ar": "خلاف",
+        "fr": "En conflit",
+        "en": "In conflict"
+      },
+      "intro": {
+        "ar": "حين يقع الخلاف، اللجوء إلى الله.",
+        "fr": "Quand le conflit éclate, retourne-toi vers Allah.",
+        "en": "When in conflict, turn to Allah."
+      },
+      "dhikrIds": [
+        "meeting_enemy_1",
+        "meeting_enemy_2",
+        "meeting_enemy_3",
+        "fear_people_1",
+        "dua_for_one_you_insulted_1"
+      ]
+    },
+    {
+      "id": "insomniac",
+      "family": "trial",
+      "iconName": "bed.double.fill",
+      "color": "blue",
+      "title": {
+        "ar": "أرق",
+        "fr": "Insomnie",
+        "en": "Insomnia"
+      },
+      "intro": {
+        "ar": "حين يفر النوم.",
+        "fr": "Quand le sommeil se dérobe.",
+        "en": "When sleep escapes you."
+      },
+      "dhikrIds": [
+        "sleep_adhkar_1",
+        "sleep_adhkar_4",
+        "sleep_adhkar_7",
+        "sleep_adhkar_8",
+        "sleep_adhkar_13"
+      ]
+    },
+    {
+      "id": "doubting",
+      "family": "trial",
+      "iconName": "questionmark.circle.fill",
+      "color": "gray",
+      "title": {
+        "ar": "متشكك",
+        "fr": "Doute",
+        "en": "Doubting"
+      },
+      "intro": {
+        "ar": "حين تأتي الوسوسة، ثبّت قلبك بالله.",
+        "fr": "Quand le doute s'installe, ancre ton cœur en Allah.",
+        "en": "When doubt creeps in, anchor your heart in Allah."
+      },
+      "dhikrIds": [
+        "waswasah_faith_1",
+        "waswasah_faith_3",
+        "expel_shaytan_whispers_1",
+        "expel_shaytan_whispers_3",
+        "duaa_fear_of_shirk_1"
+      ]
+    }
   ]
 }
