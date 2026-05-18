@@ -234,4 +234,44 @@ enum L10n {
     static let contextEmptyTitle       = LocalizedText(ar: "لا توجد عناصر بعد", fr: "Aucun dhikr pour ce contexte", en: "No dhikr for this context yet")
     static let contextEmptyHint        = LocalizedText(ar: "سيتم إضافتها قريبًا.", fr: "Ils seront ajoutés bientôt.", en: "They will be added soon.")
     static let contextDhikrCountSuffix = LocalizedText(ar: "ذكر", fr: "dhikr", en: "dhikr")
+
+    // MARK: - Memorization — tab + button
+    static let tabMemorize           = LocalizedText(ar: "حفظ", fr: "Mémoriser", en: "Memorize")
+    static let memorizeAddLabel      = LocalizedText(ar: "احفظ", fr: "Mémoriser", en: "Memorize")
+    static let memorizeAddedLabel    = LocalizedText(ar: "في الحفظ", fr: "Dans Hifz", en: "In Hifz")
+    static let memorizeRemoveConfirm = LocalizedText(ar: "إزالة من قائمة الحفظ؟", fr: "Retirer de la liste Hifz ?", en: "Remove from Hifz list?")
+    static let memorizeRemoveYes     = LocalizedText(ar: "إزالة", fr: "Retirer", en: "Remove")
+    static let memorizeRemoveNo      = LocalizedText(ar: "إلغاء", fr: "Annuler", en: "Cancel")
+
+    // MARK: - Memorization — tab landing
+    static let memoEmptyTitle        = LocalizedText(ar: "لا توجد بطاقات بعد", fr: "Aucune carte pour l'instant", en: "No cards yet")
+    static let memoEmptyHint         = LocalizedText(ar: "افتح أي ذكر واضغط \"احفظ\" لإضافة بطاقتك الأولى.", fr: "Ouvre un dhikr et tape \"Mémoriser\" pour ajouter ta première carte.", en: "Open any dhikr and tap \"Memorize\" to add your first card.")
+    static let memoDueTodayPrefix    = LocalizedText(ar: "بطاقات للمراجعة اليوم", fr: "à réviser aujourd'hui", en: "to review today")
+    static let memoStartSession      = LocalizedText(ar: "ابدأ الجلسة", fr: "Lancer la séance", en: "Start session")
+    static let memoAllUpToDate       = LocalizedText(ar: "كل شيء محدّث ✓", fr: "Tout est à jour ✓", en: "All up to date ✓")
+    static let memoProgressTitle     = LocalizedText(ar: "تقدمك", fr: "Ta progression", en: "Your progress")
+    static let memoAllCardsTitle     = LocalizedText(ar: "كل البطاقات", fr: "Toutes tes cartes", en: "All your cards")
+    static let memoStageNew          = LocalizedText(ar: "جديد", fr: "Nouveau", en: "New")
+    static let memoStageLearning     = LocalizedText(ar: "في التعلم", fr: "En apprentissage", en: "Learning")
+    static let memoStageAnchored     = LocalizedText(ar: "مرسّخ", fr: "Ancré", en: "Anchored")
+
+    // MARK: - Memorization — review session
+    static let reviewMeaningLabel    = LocalizedText(ar: "معنى الذكر", fr: "Sens du dhikr", en: "Meaning")
+    static let reviewHint            = LocalizedText(ar: "حاول استذكار النص العربي ثم اكشف.", fr: "Essaie de te souvenir du texte arabe, puis révèle.", en: "Try to recall the Arabic text, then reveal.")
+    static let reviewReveal          = LocalizedText(ar: "اكشف", fr: "Révéler", en: "Reveal")
+    static let reviewRateLabel       = LocalizedText(ar: "قيّم استذكارك:", fr: "Évalue ta restitution :", en: "Rate your recall:")
+    static let reviewAgain           = LocalizedText(ar: "أعد", fr: "Encore", en: "Again")
+    static let reviewHard            = LocalizedText(ar: "صعب", fr: "Difficile", en: "Hard")
+    static let reviewGood            = LocalizedText(ar: "جيد", fr: "Bien", en: "Good")
+    static let reviewEasy            = LocalizedText(ar: "سهل", fr: "Facile", en: "Easy")
+    static let reviewToday           = LocalizedText(ar: "اليوم", fr: "aujourd'hui", en: "today")
+    static let reviewDays            = LocalizedText(ar: "يوم", fr: "j", en: "d")
+
+    // MARK: - Review summary
+    static let reviewSummaryTitle    = LocalizedText(ar: "انتهت الجلسة", fr: "Séance terminée", en: "Session done")
+    static let reviewSummaryReviewed = LocalizedText(ar: "بطاقات تم مراجعتها", fr: "cartes revues", en: "cards reviewed")
+    static let reviewSummaryAnchored = LocalizedText(ar: "مرسّخ", fr: "ancrées", en: "anchored")
+    static let reviewSummaryLearning = LocalizedText(ar: "في التعلم", fr: "en cours", en: "in learning")
+    static let reviewSummaryAgain    = LocalizedText(ar: "للمراجعة", fr: "à revoir", en: "to review")
+    static let reviewSummaryNext     = LocalizedText(ar: "الجلسة القادمة", fr: "Prochaine séance", en: "Next session")
 }
