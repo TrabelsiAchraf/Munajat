@@ -10,6 +10,15 @@ import SwiftData
 
 struct AdhkarDetailsView: View {
     let adhkar: AdhkarCategory
+    let focusedItemId: String?
+    let navTitleOverride: LocalizedText?
+
+    init(adhkar: AdhkarCategory, focusedItemId: String? = nil, navTitleOverride: LocalizedText? = nil) {
+        self.adhkar = adhkar
+        self.focusedItemId = focusedItemId
+        self.navTitleOverride = navTitleOverride
+    }
+
     @State private var resetToken = UUID()
     @State private var selectedIndex: Int = 0
     @State private var showCelebration = false
@@ -25,14 +34,21 @@ struct AdhkarDetailsView: View {
 
     private var accent: Color { (adhkar.section ?? .other).accentColor }
 
-    private var totalCount: Int { adhkar.adhkarList.count }
+    /// Items shown — either all category items, or just the focused one
+    /// when `focusedItemId` is set.
+    private var visibleItems: [Adhkar] {
+        guard let id = focusedItemId else { return adhkar.adhkarList }
+        return adhkar.adhkarList.filter { $0.id == id }
+    }
+
+    private var totalCount: Int { visibleItems.count }
 
     private var completedCount: Int {
         let progressById = Dictionary(
             uniqueKeysWithValues: allProgress.map { ($0.itemId, $0) }
         )
         let calendar = Calendar.current
-        return adhkar.adhkarList.reduce(into: 0) { acc, dhikr in
+        return visibleItems.reduce(into: 0) { acc, dhikr in
             guard let p = progressById[dhikr.id],
                   calendar.isDateInToday(p.lastUpdated),
                   p.count >= dhikr.count
@@ -92,7 +108,7 @@ struct AdhkarDetailsView: View {
             pagedDhikrList
         }
         .safeAreaInset(edge: .top, spacing: 0) { progressHeader }
-        .navigationTitle(adhkar.displayTitle)
+        .navigationTitle(navTitleOverride?.resolved() ?? adhkar.displayTitle)
         #if os(iOS) || os(visionOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
@@ -125,6 +141,7 @@ struct AdhkarDetailsView: View {
     }
 
     private func handleProgressChange(old: Int, new: Int) {
+        guard focusedItemId == nil else { return } // no celebration in single-item mode
         guard new == totalCount,
               totalCount > 0,
               old < totalCount,
@@ -173,12 +190,12 @@ struct AdhkarDetailsView: View {
     private var pagedDhikrList: some View {
         #if os(iOS) || os(visionOS)
         TabView(selection: $selectedIndex) {
-            ForEach(Array(adhkar.adhkarList.enumerated()), id: \.element.id) { index, dhikr in
+            ForEach(Array(visibleItems.enumerated()), id: \.element.id) { index, dhikr in
                 DhikrPageView(
                     category: adhkar,
                     dhikr: dhikr,
                     position: index + 1,
-                    total: adhkar.adhkarList.count,
+                    total: visibleItems.count,
                     accent: accent,
                     onCompletion: { streak.recordDhikrCompleted(context: modelContext) }
                 )
@@ -191,12 +208,12 @@ struct AdhkarDetailsView: View {
         #else
         ScrollView {
             VStack(spacing: 24) {
-                ForEach(Array(adhkar.adhkarList.enumerated()), id: \.element.id) { index, dhikr in
+                ForEach(Array(visibleItems.enumerated()), id: \.element.id) { index, dhikr in
                     DhikrPageView(
                         category: adhkar,
                         dhikr: dhikr,
                         position: index + 1,
-                        total: adhkar.adhkarList.count,
+                        total: visibleItems.count,
                         accent: accent,
                         onCompletion: { streak.recordDhikrCompleted(context: modelContext) }
                     )
@@ -209,7 +226,7 @@ struct AdhkarDetailsView: View {
     }
 
     private func resetAllCounters() {
-        let ids = adhkar.adhkarList.map(\.id)
+        let ids = visibleItems.map(\.id)
         let descriptor = FetchDescriptor<DhikrProgress>(
             predicate: #Predicate<DhikrProgress> { ids.contains($0.itemId) }
         )
