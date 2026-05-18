@@ -9,13 +9,14 @@ import SwiftUI
 import SwiftData
 
 enum RootTab: Hashable {
-    case home, favorites, search, settings
+    case home, favorites, search, memorize, settings
 
     #if DEBUG
     init?(marketingSlug: String) {
         switch marketingSlug {
         case "home", "detail": self = .home
         case "favorites":      self = .favorites
+        case "memorize":       self = .memorize
         case "settings":       self = .settings
         default: return nil
         }
@@ -62,6 +63,11 @@ struct RootTabView: View {
                 .tabItem { Label(L10n.tabSearch.resolved(), systemImage: "magnifyingglass") }
                 .accessibilityIdentifier("tab.search")
                 .tag(RootTab.search)
+
+            MemoTabView()
+                .tabItem { Label(L10n.tabMemorize.resolved(), systemImage: "brain.head.profile") }
+                .accessibilityIdentifier("tab.memorize")
+                .tag(RootTab.memorize)
 
             SettingsView()
                 .tabItem { Label(L10n.tabSettings.resolved(), systemImage: "gearshape.fill") }
