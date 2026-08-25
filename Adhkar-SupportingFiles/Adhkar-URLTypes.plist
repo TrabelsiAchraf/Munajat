@@ -2,6 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<!-- The app is localised through LocalizedText/L10n rather than .lproj
+	     folders, so the bundle has no localisations for iOS to discover.
+	     Declaring them here is what makes the App Store product page list the
+	     three languages, and what makes the per-app "Preferred Language" row
+	     appear in Settings so users can override their device language. -->
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>fr</string>
+		<string>ar</string>
+	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

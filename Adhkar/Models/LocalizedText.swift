@@ -25,8 +25,11 @@ struct LocalizedText: Codable, Hashable, Equatable {
         let lang = Self.preferredLanguageCode(fallback: locale)
         switch lang {
         case "fr": return fr ?? en ?? ar ?? ""
-        case "en": return en ?? fr ?? ar ?? ""
-        default:   return ar ?? en ?? fr ?? ""
+        case "ar": return ar ?? en ?? fr ?? ""
+        // Any other language falls back to English, not Arabic: Turkish,
+        // Indonesian, Urdu and Malay speakers are a large part of the audience
+        // and would otherwise get an interface they cannot read.
+        default:   return en ?? fr ?? ar ?? ""
         }
     }
 
@@ -38,7 +41,7 @@ struct LocalizedText: Codable, Hashable, Equatable {
            let first = langs.first {
             return String(first.split(separator: "-").first ?? Substring(first))
         }
-        return fallback.language.languageCode?.identifier ?? "ar"
+        return fallback.language.languageCode?.identifier ?? "en"
     }
 
     /// Layout direction implied by the currently selected app language.
