@@ -279,4 +279,15 @@ enum L10n {
     static let reviewSummaryLearning = LocalizedText(ar: "في التعلم", fr: "en cours", en: "in learning")
     static let reviewSummaryAgain    = LocalizedText(ar: "للمراجعة", fr: "à revoir", en: "to review")
     static let reviewSummaryNext     = LocalizedText(ar: "الجلسة القادمة", fr: "Prochaine séance", en: "Next session")
+
+    // MARK: - Post-prayer sequence
+    static let postPrayerTitle      = LocalizedText(ar: "أذكار بعد الصلاة", fr: "Après la prière", en: "After the prayer")
+    static let postPrayerCardLabel  = LocalizedText(ar: "أذكار بعد الصلاة", fr: "Après la prière", en: "After the prayer")
+    static let postPrayerCardHint   = LocalizedText(ar: "اتبع الأذكار خطوة بخطوة", fr: "Suis les adhkar pas à pas", en: "Follow the adhkar step by step")
+    static let postPrayerNext       = LocalizedText(ar: "التالي", fr: "Étape suivante", en: "Next step")
+    static let postPrayerSkip       = LocalizedText(ar: "تخطّي", fr: "Passer", en: "Skip")
+    static let postPrayerStepOf     = LocalizedText(ar: "من", fr: "sur", en: "of")
+    static let postPrayerDone       = LocalizedText(ar: "تمت الأذكار", fr: "Adhkar terminés", en: "Adhkar complete")
+    static let postPrayerRestart    = LocalizedText(ar: "إعادة", fr: "Recommencer", en: "Start again")
+    static let postPrayerClose      = LocalizedText(ar: "إغلاق", fr: "Fermer", en: "Close")
 }
