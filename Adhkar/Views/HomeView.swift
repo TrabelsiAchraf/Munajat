@@ -15,6 +15,7 @@ struct HomeView: View {
     @Binding var path: NavigationPath
 
     @State private var isContextPickerPresented = false
+    @State private var isPostPrayerPresented = false
 
     private var sections: [(section: AdhkarSection, categories: [AdhkarCategory])] {
         AdhkarSection.displayOrder.compactMap { sec in
@@ -40,6 +41,7 @@ struct HomeView: View {
                     VStack(alignment: .leading, spacing: 28) {
                         HeroHeader()
                         HomeContextCard { isContextPickerPresented = true }
+                        PostPrayerCard { isPostPrayerPresented = true }
                         StreakCard()
                         if let featured {
                             FeaturedSection(category: featured)
@@ -61,6 +63,9 @@ struct HomeView: View {
                 ContextPickerView()
                     .presentationDetents([.large])
                     .presentationDragIndicator(.visible)
+            }
+            .fullScreenCover(isPresented: $isPostPrayerPresented) {
+                PostPrayerSessionView()
             }
             #if DEBUG
             .task {
