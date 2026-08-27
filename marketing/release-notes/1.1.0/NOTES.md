@@ -4,7 +4,12 @@
 **Build:** 270820261735
 **Uploaded to TestFlight:** 2026-08-27
 
-Lengths: fr 938, en 836, ar 694 characters. The App Store field takes 4000.
+Lengths: fr 681, en 618, ar 482 characters. The App Store field takes 4000.
+
+**Voice:** informal second person in French (*tu*), matching
+`marketing/config/store_listing.md` and the in-app strings in `L10n.swift`.
+The first draft used *vous* and had to be redone — check the listing before
+writing new copy.
 
 ## Why it is worded this way
 
@@ -31,9 +36,19 @@ Steps 11 and 12 of the sequence are recited only after Fajr, and step 11
 after Maghrib as well. They are labelled in the app and can be skipped in one
 tap. The release notes do not mention the distinction.
 
-## Order of the bullet points
+**Bugs are not itemised.** An earlier draft listed the language fallback and
+the App Store language row as two separate bullets. Users do not read
+changelogs to learn what was broken — "a language display bug, plus a few
+improvements" carries everything they need. Keep future notes this short.
 
-The iOS 17 line comes first on purpose: it is the only change that decides
-whether someone can install the app at all. The two language items follow,
-and both are honest about the fact that the capability already existed and
-only the plumbing was wrong.
+## Order and framing of the bullet points
+
+The iOS 17 line comes first: it is the only change that decides whether
+someone can install the app at all.
+
+It is framed as an invitation, not as a chore. "No need to update your
+iPhone" puts the work on the reader; "Your iPhone can't run iOS 18? We're not
+leaving you behind" says the app came to them. That matters for this app in
+particular — the download numbers lead with Senegal, Congo and Egypt, where
+devices are kept for years and the reader is more likely to be on the old
+side of that line.
