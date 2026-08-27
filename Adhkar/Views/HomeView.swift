@@ -65,9 +65,17 @@ struct HomeView: View {
                     .presentationDetents([.large])
                     .presentationDragIndicator(.visible)
             }
+            // fullScreenCover does not exist on macOS; a sheet is the closest
+            // equivalent there.
+            #if os(iOS) || os(visionOS)
             .fullScreenCover(isPresented: $presentPostPrayer) {
                 PostPrayerSessionView()
             }
+            #else
+            .sheet(isPresented: $presentPostPrayer) {
+                PostPrayerSessionView()
+            }
+            #endif
             #if DEBUG
             .task {
                 if UserDefaults.standard.bool(forKey: "marketing.openContextPicker") {

@@ -17,6 +17,9 @@ struct PostPrayerSessionView: View {
     @State private var session = PostPrayerSession(steps: PostPrayerSequence.steps)
     @SceneStorage("postPrayer.snapshot") private var storedSnapshot: Data?
     @State private var completionRecorded = false
+    /// Swallows taps while a step change is cross-fading, so a quick double tap
+    /// on a single-repetition step cannot blow through two dhikr at once.
+    @State private var isAdvancing = false
 
     private let accent = Color.orange
 
@@ -24,20 +27,41 @@ struct PostPrayerSessionView: View {
         NavigationStack {
             ZStack {
                 AdaptiveBackground(decorated: true)
-                ScrollView {
-                    VStack(spacing: 24) {
+                if let step = session.currentStep {
+                    VStack(spacing: 0) {
                         progressBar
-                        if let step = session.currentStep {
-                            stepCard(step)
+                            .padding(.horizontal)
+                            .padding(.bottom, 14)
+
+                        ScrollView {
+                            VStack(spacing: 20) {
+                                stepCard(step)
+                                    // Identity per step so the card cross-fades
+                                    // instead of mutating its text in place.
+                                    .id(step.id)
+                                    .transition(.opacity)
+                                stepList
+                            }
+                            .padding(.horizontal)
+                            .padding(.bottom, 16)
+                        }
+                        .animation(.easeInOut(duration: 0.22), value: session.index)
+
+                        // The counter lives outside the scroll view on purpose.
+                        // Card heights run from two words to the whole of Ayat
+                        // al-Kursi, so a counter laid out under the card moved
+                        // across — and off — the screen on every step change.
+                        VStack(spacing: 10) {
+                            Divider().opacity(0.25)
                             counterButton(step)
                             controls(step)
-                        } else {
-                            completionCard
                         }
-                        stepList
+                        .padding(.bottom, 14)
                     }
-                    .padding(.horizontal)
-                    .padding(.vertical, 16)
+                } else {
+                    completionCard
+                        .padding(.horizontal)
+                        .transition(.opacity)
                 }
             }
             .navigationTitle(L10n.postPrayerTitle.resolved())
@@ -54,7 +78,14 @@ struct PostPrayerSessionView: View {
         .sensoryFeedback(.success, trigger: session.index)
         .onAppear(perform: restore)
         .onDisappear { audio.stop() }
-        .onChange(of: session.index) { _, _ in audio.stop() }
+        .onChange(of: session.index) { _, _ in
+            audio.stop()
+            isAdvancing = true
+            Task {
+                try? await Task.sleep(for: .milliseconds(260))
+                isAdvancing = false
+            }
+        }
         .onChange(of: session.snapshot) { _, _ in persist() }
         .onChange(of: session.isComplete) { _, complete in
             guard complete, !completionRecorded else { return }
@@ -151,27 +182,24 @@ struct PostPrayerSessionView: View {
                         .foregroundStyle(.secondary)
                 }
             }
-            .frame(width: 200, height: 200)
+            .frame(width: 168, height: 168)
         }
+        .id(step.id)
         .buttonStyle(.plain)
-        .disabled(session.awaitingConfirmation)
+        .disabled(isAdvancing)
         .accessibilityLabel(L10n.postPrayerTitle.resolved())
         .accessibilityValue("\(session.count) / \(step.repetitions)")
     }
 
     @ViewBuilder
     private func controls(_ step: PostPrayerStep) -> some View {
-        HStack(spacing: 12) {
-            if step.onlyAfter != nil, !session.awaitingConfirmation {
-                Button(L10n.postPrayerSkip.resolved()) { session.skip() }
-                    .buttonStyle(.bordered)
-            }
-            if session.awaitingConfirmation {
-                Button(L10n.postPrayerNext.resolved()) { session.confirmAdvance() }
-                    .buttonStyle(.borderedProminent)
-            }
+        // Only the conditional steps offer a way out: everything else advances
+        // by being finished.
+        if step.onlyAfter != nil {
+            Button(L10n.postPrayerSkip.resolved()) { session.skip() }
+                .buttonStyle(.bordered)
+                .tint(accent)
         }
-        .tint(accent)
     }
 
     private var completionCard: some View {

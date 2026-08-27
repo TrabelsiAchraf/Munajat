@@ -44,11 +44,4 @@ struct PostPrayerSequenceTests {
         #expect(conditional.count == 2)
         #expect(conditional.map(\.itemId) == ["after_prayer_adhkar_7", "after_prayer_adhkar_8"])
     }
-
-    // Auto-advance keeps the finger on the button inside a group of like
-    // recitations, and stops where the nature of the dhikr changes.
-    @Test func autoAdvanceCoversExactlyTheGroupedSteps() {
-        let auto = PostPrayerSequence.steps.filter(\.advancesAutomatically).map(\.id)
-        #expect(auto == ["istighfar", "subhanallah", "alhamdulillah", "allahuakbar"])
-    }
 }

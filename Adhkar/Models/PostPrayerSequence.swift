@@ -33,7 +33,6 @@ struct PostPrayerStep: Identifiable, Hashable {
     let transliteration: LocalizedText?
     let translation: LocalizedText?
     let repetitions: Int
-    let advancesAutomatically: Bool
     let onlyAfter: PrayerScope?
 
     init(id: String,
@@ -42,7 +41,6 @@ struct PostPrayerStep: Identifiable, Hashable {
          transliteration: LocalizedText? = nil,
          translation: LocalizedText? = nil,
          repetitions: Int,
-         advancesAutomatically: Bool = false,
          onlyAfter: PrayerScope? = nil) {
         self.id = id
         self.itemId = itemId
@@ -50,7 +48,6 @@ struct PostPrayerStep: Identifiable, Hashable {
         self.transliteration = transliteration
         self.translation = translation
         self.repetitions = repetitions
-        self.advancesAutomatically = advancesAutomatically
         self.onlyAfter = onlyAfter
     }
 
@@ -98,8 +95,7 @@ enum PostPrayerSequence {
                 ar: "أستغفر الله",
                 fr: "Je demande pardon à Allah.",
                 en: "I ask Allah for forgiveness."),
-            repetitions: 3,
-            advancesAutomatically: true),
+            repetitions: 3),
 
         PostPrayerStep(
             id: "salam",
@@ -122,8 +118,7 @@ enum PostPrayerSequence {
             arabic: "سُبْحَانَ اللهِ",
             transliteration: LocalizedText(fr: "Subḥāna-Llāh", en: "Subḥāna-Llāh"),
             translation: LocalizedText(fr: "Gloire à Allah.", en: "How perfect Allah is."),
-            repetitions: 33,
-            advancesAutomatically: true),
+            repetitions: 33),
 
         PostPrayerStep(
             id: "alhamdulillah",
@@ -131,8 +126,7 @@ enum PostPrayerSequence {
             arabic: "الْحَمْدُ لِلَّهِ",
             transliteration: LocalizedText(fr: "Al-ḥamdu li-Llāh", en: "Al-ḥamdu li-Llāh"),
             translation: LocalizedText(fr: "Louange à Allah.", en: "All praise is for Allah."),
-            repetitions: 33,
-            advancesAutomatically: true),
+            repetitions: 33),
 
         PostPrayerStep(
             id: "allahuakbar",
@@ -140,8 +134,7 @@ enum PostPrayerSequence {
             arabic: "اللهُ أَكْبَرُ",
             transliteration: LocalizedText(fr: "Allāhu akbar", en: "Allāhu akbar"),
             translation: LocalizedText(fr: "Allah est le plus grand.", en: "Allah is the greatest."),
-            repetitions: 33,
-            advancesAutomatically: true),
+            repetitions: 33),
 
         PostPrayerStep(
             id: "tahlil-hundred",
