@@ -41,6 +41,12 @@ struct PostPrayerSession: Equatable {
     }
 
     var currentStep: PostPrayerStep? { index < steps.count ? steps[index] : nil }
+    /// The current step has been recited its full count. Advancing is left to
+    /// the caller so the filled ring can stay on screen for a beat.
+    var isStepFinished: Bool {
+        guard let step = currentStep else { return false }
+        return count >= step.repetitions
+    }
     var isComplete: Bool { index >= steps.count }
     var progress: Double {
         steps.isEmpty ? 1 : min(Double(index) / Double(steps.count), 1)
@@ -49,26 +55,33 @@ struct PostPrayerSession: Equatable {
         Snapshot(stepCount: steps.count, index: index, count: count)
     }
 
-    /// One tap. A finished step always chains into the next one: a
-    /// confirmation button that appeared on some steps and not others read as
-    /// a bug rather than as a pause, and the last step had nothing to confirm
-    /// into at all. Finishing the last step ends the session, which is what
-    /// shows the completion screen.
+    /// One tap. Counting and advancing are deliberately separate: when the
+    /// same gesture did both, a single-repetition step swapped itself out
+    /// before the progress ring could draw, so the tap had no visible effect.
+    /// The view watches `isStepFinished`, holds the filled ring, then calls
+    /// `advance()`. Taps past the target are ignored.
     mutating func increment() {
-        guard !isComplete, let step = currentStep else { return }
+        guard !isComplete, let step = currentStep, count < step.repetitions else { return }
         count += 1
-        guard count >= step.repetitions else { return }
-        advance()
     }
 
-    /// Move on without finishing — used by the conditional steps.
-    mutating func skip() {
+    /// Move to the next step, or complete the session if this was the last one.
+    mutating func advance() {
         guard !isComplete else { return }
-        advance()
-    }
-
-    private mutating func advance() {
         index += 1
         count = 0
     }
+
+    /// Advance only if the current step is done. Keeps the decision in tested
+    /// code: the view is left with nothing but the delay that lets the filled
+    /// ring be seen. Returns whether it moved.
+    @discardableResult
+    mutating func advanceIfFinished() -> Bool {
+        guard isStepFinished else { return false }
+        advance()
+        return true
+    }
+
+    /// Move on without finishing — used by the conditional steps.
+    mutating func skip() { advance() }
 }

@@ -78,14 +78,21 @@ struct PostPrayerSessionView: View {
         .sensoryFeedback(.success, trigger: session.index)
         .onAppear(perform: restore)
         .onDisappear { audio.stop() }
-        .onChange(of: session.index) { _, _ in
-            audio.stop()
+        // The model counts; the view decides when to move on. Holding the
+        // filled ring for a beat is the whole point: on a single-repetition
+        // step, counting and advancing in the same gesture swapped the counter
+        // out before the ring could draw, so the tap looked like it did nothing.
+        .onChange(of: session.count) { _, _ in
+            guard session.isStepFinished, !isAdvancing else { return }
             isAdvancing = true
             Task {
-                try? await Task.sleep(for: .milliseconds(260))
+                try? await Task.sleep(for: .milliseconds(320))
+                session.advanceIfFinished()
+                try? await Task.sleep(for: .milliseconds(220))
                 isAdvancing = false
             }
         }
+        .onChange(of: session.index) { _, _ in audio.stop() }
         .onChange(of: session.snapshot) { _, _ in persist() }
         .onChange(of: session.isComplete) { _, complete in
             guard complete, !completionRecorded else { return }
@@ -252,7 +259,11 @@ struct PostPrayerSessionView: View {
         guard let storedSnapshot,
               let snapshot = try? JSONDecoder().decode(PostPrayerSession.Snapshot.self, from: storedSnapshot)
         else { return }
-        session = PostPrayerSession(steps: PostPrayerSequence.steps, restoring: snapshot)
+        var restored = PostPrayerSession(steps: PostPrayerSequence.steps, restoring: snapshot)
+        // A snapshot taken between "finished" and "advanced" would otherwise
+        // resume on a step that can no longer be tapped.
+        if restored.isStepFinished { restored.advance() }
+        session = restored
     }
 
     private func persist() {

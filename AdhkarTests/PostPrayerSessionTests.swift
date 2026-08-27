@@ -32,32 +32,70 @@ struct PostPrayerSessionTests {
         #expect(session.currentStep?.id == "first")
     }
 
-    // Every step chains, not just some: a button that appeared on a few steps
-    // and not others read as a bug.
-    @Test func everyFinishedStepChainsIntoTheNext() {
+    // increment() only counts. Advancing is a separate call so the view can
+    // hold the filled ring on screen before moving on — on a single-repetition
+    // step the two happened in the same gesture and the ring never drew.
+    @Test func reachingTheTargetFinishesTheStepWithoutAdvancing() {
         var session = makeSession()
         for _ in 0..<3 { session.increment() }
+        #expect(session.isStepFinished)
+        #expect(session.index == 0)
+        #expect(session.count == 3)
+    }
+
+    @Test func advanceMovesToTheNextStepAndResetsTheCount() {
+        var session = makeSession()
+        for _ in 0..<3 { session.increment() }
+        session.advance()
         #expect(session.index == 1)
         #expect(session.count == 0)
+        #expect(!session.isStepFinished)
         #expect(session.currentStep?.id == "second")
     }
 
-    @Test func finishingTheLastStepCompletesTheSession() {
+    // A single-repetition step must still report a finished step, so the view
+    // has something to react to.
+    @Test func aSingleRepetitionStepFinishesOnOneTap() {
+        var session = PostPrayerSession(steps: [
+            PostPrayerStep(id: "once", itemId: "x", arabic: "أ", repetitions: 1),
+        ])
+        session.increment()
+        #expect(session.isStepFinished)
+        #expect(session.count == 1)
+        #expect(!session.isComplete)
+        session.advance()
+        #expect(session.isComplete)
+    }
+
+    @Test func tapsPastTheTargetAreIgnored() {
+        var session = makeSession()
+        for _ in 0..<10 { session.increment() }
+        #expect(session.count == 3)
+        #expect(session.index == 0)
+    }
+
+    @Test func advancingPastTheLastStepCompletesTheSession() {
         var session = makeSession()
         for _ in 0..<3 { session.increment() }
+        session.advance()
         session.increment()
+        session.increment()
+        #expect(session.isStepFinished)
         #expect(!session.isComplete)
-        session.increment()
+        session.advance()
         #expect(session.isComplete)
         #expect(session.currentStep == nil)
     }
 
     @Test func aCompletedSessionIgnoresFurtherInput() {
         var session = makeSession()
-        for _ in 0..<5 { session.increment() }
+        session.advance()
+        session.advance()
         #expect(session.isComplete)
         session.increment()
+        session.advance()
         #expect(session.index == 2)
+        #expect(session.count == 0)
     }
 
     @Test func skipMovesPastAStepWithoutCompletingIt() {
@@ -108,16 +146,41 @@ struct PostPrayerSessionTests {
         #expect(session.count == 0)
     }
 
-    @Test func theRealSequenceRunsToCompletionOnTapsAlone() {
+    @Test func theRealSequenceRunsToCompletion() {
         var session = PostPrayerSession(steps: PostPrayerSequence.steps)
+        var taps = 0
         var guardCounter = 0
         while !session.isComplete, guardCounter < 500 {
             guardCounter += 1
-            session.increment()
+            if session.isStepFinished { session.advance() } else { session.increment(); taps += 1 }
         }
         #expect(session.isComplete)
-        // 12 steps whose repetitions sum to 121, and nothing needs a second
-        // kind of input to advance.
-        #expect(guardCounter == PostPrayerSequence.steps.reduce(0) { $0 + $1.repetitions })
+        // Every step is reached by tapping exactly its repetitions.
+        #expect(taps == PostPrayerSequence.steps.reduce(0) { $0 + $1.repetitions })
+    }
+
+    @Test func advanceIfFinishedMovesOnlyWhenTheStepIsDone() {
+        var session = makeSession()
+        #expect(session.advanceIfFinished() == false)
+        #expect(session.index == 0)
+
+        session.increment()
+        #expect(session.advanceIfFinished() == false)   // 1 of 3
+        #expect(session.index == 0)
+
+        session.increment()
+        session.increment()
+        #expect(session.advanceIfFinished() == true)
+        #expect(session.index == 1)
+        #expect(session.count == 0)
+    }
+
+    @Test func advanceIfFinishedIsSafeOnACompletedSession() {
+        var session = makeSession()
+        session.advance()
+        session.advance()
+        #expect(session.isComplete)
+        #expect(session.advanceIfFinished() == false)
+        #expect(session.index == 2)
     }
 }
