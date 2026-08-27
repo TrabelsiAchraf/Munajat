@@ -38,18 +38,26 @@ struct RootTabView: View {
     /// navigation path, then clear the binding.
     @Binding var pendingDeepLinkCategoryId: String?
 
+    /// Bound to `AdhkarApp.pendingPostPrayerDeepLink`. Handed straight to
+    /// `HomeView`, which presents the guided sequence; SwiftUI clears it when
+    /// the cover is dismissed.
+    @Binding var pendingPostPrayerDeepLink: Bool
+
     @State private var selection: RootTab
     @State private var homePath = NavigationPath()
 
-    init(initialTab: RootTab = .home, pendingDeepLinkCategoryId: Binding<String?>) {
+    init(initialTab: RootTab = .home,
+         pendingDeepLinkCategoryId: Binding<String?>,
+         pendingPostPrayerDeepLink: Binding<Bool>) {
         self.initialTab = initialTab
         self._pendingDeepLinkCategoryId = pendingDeepLinkCategoryId
+        self._pendingPostPrayerDeepLink = pendingPostPrayerDeepLink
         self._selection = State(initialValue: initialTab)
     }
 
     var body: some View {
         TabView(selection: $selection) {
-            HomeView(path: $homePath)
+            HomeView(path: $homePath, presentPostPrayer: $pendingPostPrayerDeepLink)
                 .tabItem { Label(L10n.tabHome.resolved(), systemImage: "house.fill") }
                 .accessibilityIdentifier("tab.home")
                 .tag(RootTab.home)
@@ -86,6 +94,10 @@ struct RootTabView: View {
             if phase == .active { streak.recordOpen(context: modelContext) }
         }
         .onChange(of: pendingDeepLinkCategoryId) { _, _ in routePendingDeepLink() }
+        .onChange(of: pendingPostPrayerDeepLink) { _, pending in
+            guard pending else { return }
+            selection = .home
+        }
     }
 
     private func routePendingDeepLink() {

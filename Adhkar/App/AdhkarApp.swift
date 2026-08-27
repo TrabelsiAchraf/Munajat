@@ -50,10 +50,15 @@ struct AdhkarApp: App {
     /// path when set.
     @State private var pendingDeepLinkCategoryId: String?
 
+    /// Set by a `munajat://tasbih` URL; `RootTabView` routes it to Home,
+    /// which presents the guided sequence.
+    @State private var pendingPostPrayerDeepLink = false
+
     var body: some Scene {
         WindowGroup {
             RootTabView(initialTab: initialTab,
-                        pendingDeepLinkCategoryId: $pendingDeepLinkCategoryId)
+                        pendingDeepLinkCategoryId: $pendingDeepLinkCategoryId,
+                        pendingPostPrayerDeepLink: $pendingPostPrayerDeepLink)
                 .environment(favorites)
                 .environment(audio)
                 .environment(notifications)
@@ -61,10 +66,17 @@ struct AdhkarApp: App {
                 .environment(\.layoutDirection, LocalizedText.preferredLayoutDirection)
                 .preferredColorScheme(.dark)
                 .onOpenURL { url in
-                    guard url.scheme == "munajat", url.host == "category" else { return }
-                    let id = url.pathComponents.dropFirst().joined(separator: "/")
-                    guard !id.isEmpty else { return }
-                    pendingDeepLinkCategoryId = id
+                    guard url.scheme == "munajat" else { return }
+                    switch url.host {
+                    case "category":
+                        let id = url.pathComponents.dropFirst().joined(separator: "/")
+                        guard !id.isEmpty else { return }
+                        pendingDeepLinkCategoryId = id
+                    case "tasbih":
+                        pendingPostPrayerDeepLink = true
+                    default:
+                        return
+                    }
                 }
         }
         .modelContainer(for: [DhikrProgress.self, DailyActivity.self, HifzCard.self])

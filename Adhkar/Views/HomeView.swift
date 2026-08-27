@@ -15,7 +15,8 @@ struct HomeView: View {
     @Binding var path: NavigationPath
 
     @State private var isContextPickerPresented = false
-    @State private var isPostPrayerPresented = false
+    /// Driven by `munajat://tasbih`; also flipped locally by the home card.
+    @Binding var presentPostPrayer: Bool
 
     private var sections: [(section: AdhkarSection, categories: [AdhkarCategory])] {
         AdhkarSection.displayOrder.compactMap { sec in
@@ -41,7 +42,7 @@ struct HomeView: View {
                     VStack(alignment: .leading, spacing: 28) {
                         HeroHeader()
                         HomeContextCard { isContextPickerPresented = true }
-                        PostPrayerCard { isPostPrayerPresented = true }
+                        PostPrayerCard { presentPostPrayer = true }
                         StreakCard()
                         if let featured {
                             FeaturedSection(category: featured)
@@ -64,7 +65,7 @@ struct HomeView: View {
                     .presentationDetents([.large])
                     .presentationDragIndicator(.visible)
             }
-            .fullScreenCover(isPresented: $isPostPrayerPresented) {
+            .fullScreenCover(isPresented: $presentPostPrayer) {
                 PostPrayerSessionView()
             }
             #if DEBUG
