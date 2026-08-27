@@ -23,7 +23,9 @@ xcodebuild -project Adhkar.xcodeproj -scheme Adhkar \
   -destination 'generic/platform=iOS Simulator' -configuration Debug build
 ```
 
-No test target exists yet. Adding new Xcode targets is fragile to do by hand on the pbxproj — use the `xcodeproj` Ruby gem (already used for the widget setup; see `scripts/setup_widget_target.rb` and `scripts/share_files_with_widget.rb`).
+There **is** a test target: `AdhkarTests`, using Swift Testing (`import Testing`, `@Suite`, `@Test`, `#expect`). Its Xcode group is a plain `PBXGroup`, **not** a synchronized one, so a new test file is not picked up automatically — run `ruby scripts/sync_test_sources.rb` after adding one (idempotent; also prunes references to deleted files).
+
+Adding new Xcode targets is fragile to do by hand on the pbxproj — use the `xcodeproj` Ruby gem (already used for the widget setup; see `scripts/setup_widget_target.rb` and `scripts/share_files_with_widget.rb`). The same gem is the right tool for bulk build-setting edits such as deployment targets or version bumps.
 
 ## Regenerating content & assets
 
@@ -115,6 +117,14 @@ JSON schema highlights:
 - **Streak history**: SwiftData `DailyActivity(@Attribute(.unique) dayKey, itemsRead, firstOpen)`. `dayKey` is `yyyy-MM-dd` in `Calendar(identifier: .gregorian)` + local TZ so device-set Islamic locales don't reshuffle the day boundaries.
 - **Streak counters**: `StreakService` (`@Observable @MainActor`) mirrors `currentStreak` / `bestStreak` to `UserDefaults(suiteName: "group.com.tadevv.Munajat")` (App Group) so the widget can read without spinning up SwiftData. Calls `WidgetCenter.shared.reloadTimelines(ofKind: "CurrentPeriodWidget")` after each recompute. The init takes a `nonisolated static func makeSharedDefaults()` default — keep that pattern when reading the suite from non-actor contexts.
 - **Celebration shown**: per-category `celebration.lastShown.<categoryId>` timestamp in `UserDefaults.standard` — used by `AdhkarDetailsView` to fire the completion overlay at most once per day per category.
+
+### Guided post-prayer sequence (1.1.0)
+- `PostPrayerSequence` is static step data, not JSON: it references items of the `after_prayer_adhkar` category by id for source, translation and audio, and carries its own Arabic only for the steps split out of a bundled item. An item is split **only when the dhikr it bundles carry different repetition counts** — items 1 and 4. Item 5 holds three sūrahs but each is recited once and the JSON supplies them as one unit, so it stays whole. The order is the JSON's, which is Hisn al-Muslim's; do not reorder.
+- `PostPrayerSession` is a plain value type holding all progression logic, like `HifzScheduler` — no SwiftUI, fully unit-tested. `increment()` only counts; the view holds the filled ring 320 ms then calls `advanceIfFinished()`. Splitting the two is deliberate: doing both in one gesture meant a single-repetition step swapped out before the ring drew.
+- **Not backed by `DhikrProgress`.** That model is keyed per item and resets on day change — right for morning/evening adhkar, wrong for a sequence recited after all five prayers, which would show as already complete at Dhuhr. Session state is `@State` plus a `@SceneStorage` snapshot; no SwiftData model, no migration.
+- The counter is pinned **outside** the ScrollView. Card heights run from two words to all of Āyat al-Kursī, and a counter laid out under the card travelled ~1000 points between steps.
+- A test asserts every referenced `itemId` exists in `adhkar.json` — the guard that fails loudly if `build_adhkar.py` renumbers items.
+- `-MarketingScreen post_prayer` opens the screen for screenshot capture. It is the only headless way in: `simctl` cannot tap, and iOS 26 blocks custom-scheme URLs from outside the app behind an undismissable confirmation.
 
 ### Visual language
 - **Forced dark mode**: `RootTabView` has `.preferredColorScheme(.dark)`. Light-mode code paths in `AdaptiveBackground` still exist but are dead — keep them for now in case the user toggles back.
