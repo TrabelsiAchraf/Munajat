@@ -6,12 +6,15 @@ import Foundation
 @Suite("PostPrayerSession")
 struct PostPrayerSessionTests {
 
-    /// Two steps, one auto-advancing and one not — enough to exercise every path.
+    /// Three steps: one auto-advancing, one waiting for confirmation, and a
+    /// tail so the confirming step is not also the last one — finishing the
+    /// last step ends the session instead of asking for confirmation.
     private func makeSession() -> PostPrayerSession {
         PostPrayerSession(steps: [
             PostPrayerStep(id: "auto", itemId: "x", arabic: "أ",
                            repetitions: 3, advancesAutomatically: true),
             PostPrayerStep(id: "manual", itemId: "y", arabic: "ب", repetitions: 2),
+            PostPrayerStep(id: "tail", itemId: "z", arabic: "ج", repetitions: 1),
         ])
     }
 
@@ -49,7 +52,8 @@ struct PostPrayerSessionTests {
         #expect(session.index == 1)
 
         session.confirmAdvance()
-        #expect(session.isComplete)
+        #expect(session.index == 2)
+        #expect(!session.isComplete)
     }
 
     // Regression: taps past the target used to bleed into the next step.
@@ -78,6 +82,7 @@ struct PostPrayerSessionTests {
         var session = makeSession()
         session.skip()
         session.skip()
+        session.skip()
         #expect(session.isComplete)
         #expect(session.currentStep == nil)
     }
@@ -86,7 +91,9 @@ struct PostPrayerSessionTests {
         var session = makeSession()
         #expect(session.progress == 0)
         session.skip()
-        #expect(abs(session.progress - 0.5) < 0.0001)
+        #expect(abs(session.progress - 1.0 / 3.0) < 0.0001)
+        session.skip()
+        #expect(abs(session.progress - 2.0 / 3.0) < 0.0001)
         session.skip()
         #expect(session.progress == 1)
     }
@@ -95,10 +102,11 @@ struct PostPrayerSessionTests {
         var session = makeSession()
         session.skip()
         session.skip()
+        session.skip()
         session.increment()
         session.confirmAdvance()
         #expect(session.isComplete)
-        #expect(session.index == 2)
+        #expect(session.index == 3)
     }
 
     @Test func theSnapshotRoundTripsFaithfully() throws {
@@ -134,5 +142,33 @@ struct PostPrayerSessionTests {
         }
         #expect(session.isComplete)
         #expect(guardCounter < 500, "the session never terminated")
+    }
+
+    // The last step has nothing to confirm into: reaching its target must land
+    // straight on the completion screen, not on a "next step" button pointing
+    // at nothing.
+    @Test func finishingTheLastStepCompletesWithoutAConfirmationTap() {
+        var session = PostPrayerSession(steps: [
+            PostPrayerStep(id: "only", itemId: "x", arabic: "أ", repetitions: 2),
+        ])
+        session.increment()
+        #expect(!session.isComplete)
+        session.increment()
+        #expect(session.isComplete)
+        #expect(!session.awaitingConfirmation)
+    }
+
+    @Test func theRealSequenceEndsWithoutAnExtraTap() {
+        var session = PostPrayerSession(steps: PostPrayerSequence.steps)
+        let lastIndex = PostPrayerSequence.steps.count - 1
+        var guardCounter = 0
+        while session.index < lastIndex, guardCounter < 500 {
+            guardCounter += 1
+            if session.awaitingConfirmation { session.confirmAdvance() } else { session.increment() }
+        }
+        let last = try! #require(session.currentStep)
+        for _ in 0..<last.repetitions { session.increment() }
+        #expect(session.isComplete)
+        #expect(!session.awaitingConfirmation)
     }
 }

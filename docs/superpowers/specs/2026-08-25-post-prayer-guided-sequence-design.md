@@ -72,6 +72,10 @@ Steps 11 and 12 carry an `onlyAfter` scope. They are shown with a badge and skip
 
 Once a step reaches its target, extra taps are ignored rather than counted into the next step.
 
+**The last step always advances automatically**, whatever its flag says: it has nothing to confirm into, so finishing it lands straight on the completion screen. Added 2026-08-27 after testing the build — the twelfth step was offering a "next step" button that pointed at nothing.
+
+Free navigation between steps (previous/next at will, with a count kept per step) was considered on 2026-08-27 and **declined**: the flow stays linear, each step completed in turn.
+
 ## 5. Architecture
 
 ### 5.1 Why not `DhikrProgress`

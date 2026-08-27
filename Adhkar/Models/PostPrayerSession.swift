@@ -45,6 +45,7 @@ struct PostPrayerSession: Equatable {
     }
 
     var currentStep: PostPrayerStep? { index < steps.count ? steps[index] : nil }
+    private var isOnLastStep: Bool { index == steps.count - 1 }
     var isComplete: Bool { index >= steps.count }
     var progress: Double {
         steps.isEmpty ? 1 : min(Double(index) / Double(steps.count), 1)
@@ -60,7 +61,14 @@ struct PostPrayerSession: Equatable {
         guard !isComplete, !awaitingConfirmation, let step = currentStep else { return }
         count += 1
         guard count >= step.repetitions else { return }
-        if step.advancesAutomatically { advance() } else { awaitingConfirmation = true }
+        // The last step has nothing to confirm into — a "next step" button there
+        // would point at nothing. Finishing it ends the session, which is what
+        // shows the completion screen.
+        if step.advancesAutomatically || isOnLastStep {
+            advance()
+        } else {
+            awaitingConfirmation = true
+        }
     }
 
     mutating func confirmAdvance() {
