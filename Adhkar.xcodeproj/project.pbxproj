@@ -12,6 +12,7 @@
 		5B8DDF50899A54DAA0716CEF /* MunajatWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 77C1C60B13211E97703D7121 /* MunajatWidget.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A549F27376613897076D3BCF /* DataProviderContextsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6246C4006D761FF3BFE2DEC3 /* DataProviderContextsTests.swift */; };
 		B2FEB1EE57D4BFE4FA2C8A06 /* HifzSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C90B1D8BF94BCFBDB464163 /* HifzSchedulerTests.swift */; };
+		C0E8FF176479AE9047F107D0 /* PostPrayerSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FC7B3662FEEB7B711AA50C0 /* PostPrayerSessionTests.swift */; };
 		C247824A7AF076AC722F620A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0755300B7D2AF93A0C90710C /* Foundation.framework */; };
 		C5CFF6F8DCBA1F3A00BFD26B /* LocalizedTextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADAEF99EE5FEBDBB0A003830 /* LocalizedTextTests.swift */; };
 /* End PBXBuildFile section */
@@ -54,6 +55,7 @@
 		6FE853B82DB165D700410740 /* Adhkar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Adhkar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77C1C60B13211E97703D7121 /* MunajatWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MunajatWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		94780DD814EC046C5EFFBB59 /* PostPrayerSequenceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PostPrayerSequenceTests.swift; sourceTree = "<group>"; };
+		9FC7B3662FEEB7B711AA50C0 /* PostPrayerSessionTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PostPrayerSessionTests.swift; sourceTree = "<group>"; };
 		ADAEF99EE5FEBDBB0A003830 /* LocalizedTextTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LocalizedTextTests.swift; sourceTree = "<group>"; };
 		E84C432517C1794DC1A808EA /* AdhkarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdhkarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -136,6 +138,7 @@
 				6246C4006D761FF3BFE2DEC3 /* DataProviderContextsTests.swift */,
 				ADAEF99EE5FEBDBB0A003830 /* LocalizedTextTests.swift */,
 				94780DD814EC046C5EFFBB59 /* PostPrayerSequenceTests.swift */,
+				9FC7B3662FEEB7B711AA50C0 /* PostPrayerSessionTests.swift */,
 			);
 			name = AdhkarTests;
 			path = AdhkarTests;
@@ -317,6 +320,7 @@
 				A549F27376613897076D3BCF /* DataProviderContextsTests.swift in Sources */,
 				C5CFF6F8DCBA1F3A00BFD26B /* LocalizedTextTests.swift in Sources */,
 				1E6F8135AFE6C0C0122D6DD0 /* PostPrayerSequenceTests.swift in Sources */,
+				C0E8FF176479AE9047F107D0 /* PostPrayerSessionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
