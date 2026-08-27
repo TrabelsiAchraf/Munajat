@@ -1,0 +1,11 @@
+After the prayer — a new guided sequence
+
+Follow the adhkar of Hisn al-Muslim after every prayer, step by step. The twelve invocations come in their traditional order, each with its own counter: three istighfar, the tasbihat thirty-three times each up to the hundred, the surahs, Ayat al-Kursi. Tap, and the app moves you on.
+
+Every step shows its Arabic text, its transliteration, its source and its recitation, so you can read along or listen.
+
+Also in this release:
+
+• The app now runs on iOS 17, not just iOS 18.4 — no need to update your iPhone to use it.
+• The App Store page finally lists all three languages the app speaks. Arabic, French and English were always there; the listing did not say so.
+• Fixed: on a device set to a language other than Arabic, French or English, the interface appeared in Arabic instead of English.
