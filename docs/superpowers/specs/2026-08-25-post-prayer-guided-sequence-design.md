@@ -66,11 +66,15 @@ Steps 5 to 8 total 100, which is the point of that group and is enforced by a te
 
 Steps 11 and 12 carry an `onlyAfter` scope. They are shown with a badge and skippable in one tap; they are never hidden, because hiding them would teach the user the sequence is shorter than it is.
 
-### 4.3 Auto-advance
+### 4.3 Advancing
 
-`advancesAutomatically` is a per-step flag, not a global setting. It is true inside a group of like recitations — the opening istighfār into the salām formula, and the three tasbihāt into each other — so the finger never leaves the button during the hundred. It is false wherever the nature of the dhikr changes, so a confirmation marks the breath before the tahlīl formulas, the sūrahs, Āyat al-Kursī and the conditional steps.
+**Every finished step chains into the next one.** Extra taps past the target are ignored rather than counted into the next dhikr.
 
-Once a step reaches its target, extra taps are ignored rather than counted into the next step.
+This replaces the original design, which used a per-step `advancesAutomatically` flag: automatic inside a group of like recitations, and an explicit confirmation wherever the nature of the dhikr changed, to mark a breath before the tahlīl formulas, the sūrahs and Āyat al-Kursī. Tested in the hand on 2026-08-27, that read as a bug rather than as a rhythm — nothing tells the user which steps will ask for a tap, so the button looked like it appeared at random. The flag, `awaitingConfirmation` and `confirmAdvance()` are all gone; the model is one state simpler for it. Only the two conditional steps keep a way out, through "Passer".
+
+**Counting and advancing are separate operations.** `increment()` only counts; the view holds the filled ring for 320 ms and then calls `advanceIfFinished()`. The first version advanced inside the same call, which meant a single-repetition step swapped itself out before the progress ring could draw — the tap appeared to do nothing at all. The same beat now applies at 33/33, giving a pause at the end of each third.
+
+Free navigation between steps (previous/next at will, with a count kept per step) was considered on 2026-08-27 and **declined**: the flow stays linear, each step completed in turn.
 
 ## 5. Architecture
 
@@ -94,7 +98,9 @@ AdhkarTests/PostPrayerSequenceTests.swift
 
 ### 5.3 The screen
 
-Presented as a `fullScreenCover` from Home. One step at a time: Arabic in Amiri, transliteration, `n / N`, and a large tap area. `.sensoryFeedback(.impact, trigger:)` per tap, `.success` on step change. Below, the list of twelve steps with a check on those done — that list is what makes it read as a guided ritual rather than a counter, and it is what the App Store screenshot will show. A global progress bar on top, a close button, and access to the full JSON item (source, English translation, audio) through `itemId`.
+Presented as a `fullScreenCover` from Home — on macOS, where that modifier does not exist, a `sheet`. One step at a time: Arabic in Amiri, transliteration, `n / N`, and a large tap area.
+
+**The counter is pinned below the scroll view, outside it.** Card heights run from two words for `سُبْحَانَ اللهِ` to the whole of Āyat al-Kursī, and a counter laid out under the card travelled roughly a thousand points between steps — far enough to leave the screen entirely. Only the text scrolls. The counter also carries an identity per step, so the ring is replaced on a step change rather than animated backwards from full to empty, and a short guard swallows taps during the cross-fade so a double tap cannot skip a dhikr. `.sensoryFeedback(.impact, trigger:)` per tap, `.success` on step change. Below, the list of twelve steps with a check on those done — that list is what makes it read as a guided ritual rather than a counter, and it is what the App Store screenshot will show. A global progress bar on top, a close button, and access to the full JSON item (source, English translation, audio) through `itemId`.
 
 `AudioPlayer` is reused unchanged.
 

@@ -15,6 +15,8 @@ struct HomeView: View {
     @Binding var path: NavigationPath
 
     @State private var isContextPickerPresented = false
+    /// Driven by `munajat://tasbih`; also flipped locally by the home card.
+    @Binding var presentPostPrayer: Bool
 
     private var sections: [(section: AdhkarSection, categories: [AdhkarCategory])] {
         AdhkarSection.displayOrder.compactMap { sec in
@@ -40,6 +42,7 @@ struct HomeView: View {
                     VStack(alignment: .leading, spacing: 28) {
                         HeroHeader()
                         HomeContextCard { isContextPickerPresented = true }
+                        PostPrayerCard { presentPostPrayer = true }
                         StreakCard()
                         if let featured {
                             FeaturedSection(category: featured)
@@ -62,12 +65,28 @@ struct HomeView: View {
                     .presentationDetents([.large])
                     .presentationDragIndicator(.visible)
             }
+            // fullScreenCover does not exist on macOS; a sheet is the closest
+            // equivalent there.
+            #if os(iOS) || os(visionOS)
+            .fullScreenCover(isPresented: $presentPostPrayer) {
+                PostPrayerSessionView()
+            }
+            #else
+            .sheet(isPresented: $presentPostPrayer) {
+                PostPrayerSessionView()
+            }
+            #endif
             #if DEBUG
             .task {
                 if UserDefaults.standard.bool(forKey: "marketing.openContextPicker") {
                     try? await Task.sleep(for: .milliseconds(300))
                     isContextPickerPresented = true
                     UserDefaults.standard.set(false, forKey: "marketing.openContextPicker")
+                }
+                if UserDefaults.standard.bool(forKey: "marketing.openPostPrayer") {
+                    try? await Task.sleep(for: .milliseconds(300))
+                    presentPostPrayer = true
+                    UserDefaults.standard.set(false, forKey: "marketing.openPostPrayer")
                 }
             }
             #endif
