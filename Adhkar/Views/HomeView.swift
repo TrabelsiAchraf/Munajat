@@ -75,6 +75,11 @@ struct HomeView: View {
                     isContextPickerPresented = true
                     UserDefaults.standard.set(false, forKey: "marketing.openContextPicker")
                 }
+                if UserDefaults.standard.bool(forKey: "marketing.openPostPrayer") {
+                    try? await Task.sleep(for: .milliseconds(300))
+                    presentPostPrayer = true
+                    UserDefaults.standard.set(false, forKey: "marketing.openPostPrayer")
+                }
             }
             #endif
         }

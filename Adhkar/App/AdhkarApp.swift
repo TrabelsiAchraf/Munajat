@@ -28,6 +28,7 @@ struct AdhkarApp: App {
         let ud = UserDefaults.standard
         ud.set(slug == "context_picker" || slug == "context_detail",
                forKey: "marketing.openContextPicker")
+        ud.set(slug == "post_prayer", forKey: "marketing.openPostPrayer")
         if slug == "context_detail" {
             ud.set("anxious", forKey: "marketing.contextDetailId")
         } else {

@@ -14,7 +14,8 @@ enum RootTab: Hashable {
     #if DEBUG
     init?(marketingSlug: String) {
         switch marketingSlug {
-        case "home", "detail", "context_picker", "context_detail": self = .home
+        case "home", "detail", "context_picker", "context_detail",
+             "post_prayer":                                          self = .home
         case "favorites":                                            self = .favorites
         case "memorize", "memorize_filled", "review_session":        self = .memorize
         case "settings":                                             self = .settings
