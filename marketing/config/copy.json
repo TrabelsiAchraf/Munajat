@@ -1,52 +1,46 @@
 {
   "screens": [
     {
-      "slug": "home",
-      "fr": { "title": "Adhkar selon ton état",   "subtitle": "Une nouvelle façon de prier — selon ce que tu vis." },
-      "en": { "title": "Adhkar for what you live", "subtitle": "A new way to remember — based on what you're going through." },
-      "ar": { "title": "أذكار حسب حالة قلبك",     "subtitle": "طريقة جديدة للذكر — حسب ما تعيشه." }
-    },
-    {
       "slug": "context_picker",
-      "fr": { "title": "Comment te sens-tu ?",  "subtitle": "15 états émotionnels et épreuves de vie, chacun avec ses adhkar." },
-      "en": { "title": "How do you feel?",       "subtitle": "15 emotional states and life trials, each with its own adhkar." },
-      "ar": { "title": "كيف تشعر؟",              "subtitle": "١٥ حالة مشاعر وابتلاءات حياة، كلٌّ بأذكاره." }
+      "fr": { "title": "Le dhikr adapté à ton moment", "subtitle": "15 états du cœur et épreuves de vie — chacun avec ses adhkar." },
+      "en": { "title": "The right dhikr for your moment", "subtitle": "15 states of the heart and life trials — each with its own adhkar." },
+      "ar": { "title": "الذكر المناسب للحظتك", "subtitle": "١٥ حالة قلب وابتلاء حياة — لكلٍّ أذكاره." }
     },
     {
       "slug": "context_detail",
-      "fr": { "title": "Des dhikr ciblés",      "subtitle": "3 à 7 invocations soigneusement curées par contexte." },
-      "en": { "title": "Targeted dhikr",         "subtitle": "3 to 7 invocations carefully curated per context." },
-      "ar": { "title": "أذكار مستهدفة",         "subtitle": "من ٣ إلى ٧ أدعية مختارة بعناية لكل حالة." }
+      "fr": { "title": "Quoi que tu traverses", "subtitle": "Anxiété, tristesse, deuil, dette, insomnie… 3 à 7 invocations curées par contexte." },
+      "en": { "title": "Whatever you're going through", "subtitle": "Anxiety, sadness, mourning, debt, insomnia… 3 to 7 curated invocations per context." },
+      "ar": { "title": "مهما كان ما تمرّ به", "subtitle": "قلق، حزن، فقد، دَين، أرق… من ٣ إلى ٧ أدعية مختارة لكل حالة." }
     },
     {
       "slug": "detail",
-      "fr": { "title": "Lis, écoute, mémorise", "subtitle": "Texte, audio, compteur tactile et bouton mémorisation en un écran." },
-      "en": { "title": "Read, listen, memorize", "subtitle": "Text, audio, tap-to-count and memorize button in one screen." },
-      "ar": { "title": "اقرأ، استمع، احفظ",      "subtitle": "النص والصوت والعدّاد وزرّ الحفظ في شاشة واحدة." }
+      "fr": { "title": "Des adhkar de Hisn al-Muslim", "subtitle": "Arabe, traduction, translittération — et la source citée sous chaque dhikr." },
+      "en": { "title": "Adhkar from Hisn al-Muslim", "subtitle": "Arabic, translation, transliteration — with the source cited under every dhikr." },
+      "ar": { "title": "أذكار من حصن المسلم", "subtitle": "النص العربي والترجمة والنقل الحرفي — والمصدر مذكور تحت كل ذكر." }
     },
     {
-      "slug": "memorize_filled",
-      "fr": { "title": "Ancre les essentiels",   "subtitle": "Suivi de progression et révisions espacées dans un onglet dédié." },
-      "en": { "title": "Anchor the essentials",   "subtitle": "Progress tracking and spaced reviews in a dedicated tab." },
-      "ar": { "title": "ثبّت الأساسيات",        "subtitle": "تتبّع تقدّمك ومراجعات متباعدة في تبويب مخصّص." }
+      "slug": "home",
+      "fr": { "title": "Commence et termine ta journée", "subtitle": "Matin, soir, sommeil — et les adhkar après la prière, guidés." },
+      "en": { "title": "Start and end your day", "subtitle": "Morning, evening, sleep — and guided after-prayer adhkar." },
+      "ar": { "title": "ابدأ يومك واختمه بالذكر", "subtitle": "الصباح والمساء والنوم — وأذكار بعد الصلاة موجَّهة." }
+    },
+    {
+      "slug": "post_prayer",
+      "fr": { "title": "Après la prière, sans effort", "subtitle": "Les douze invocations dans l'ordre, chacune avec son compteur." },
+      "en": { "title": "After the prayer, effortless", "subtitle": "The twelve invocations in order, each with its own counter." },
+      "ar": { "title": "بعد الصلاة، بلا عناء", "subtitle": "الأذكار الاثنا عشر بترتيبها المأثور، ولكل ذكر عدّاده." }
     },
     {
       "slug": "review_session",
-      "fr": { "title": "Mémorisation guidée",   "subtitle": "Répétition espacée style Anki, avec quatre niveaux d'auto-évaluation." },
-      "en": { "title": "Guided memorization",     "subtitle": "Anki-style spaced repetition with four self-evaluation levels." },
-      "ar": { "title": "حفظ موجَّه",            "subtitle": "مراجعة متباعدة بأسلوب Anki، بأربعة مستويات تقييم." }
-    },
-    {
-      "slug": "favorites",
-      "fr": { "title": "Tes essentiels, en un tap", "subtitle": "Mets en favori ce que tu lis le plus." },
-      "en": { "title": "Your essentials, one tap",  "subtitle": "Bookmark the adhkar you read most." },
-      "ar": { "title": "أهمّ ما عندك بلمسة",          "subtitle": "أضِف إلى المفضلة الأذكار التي تقرأها كثيرًا." }
+      "fr": { "title": "Mémorise ce qui compte", "subtitle": "Répétition espacée — cinq minutes par jour, et les essentiels s'ancrent." },
+      "en": { "title": "Memorize what matters", "subtitle": "Spaced repetition — five minutes a day, and the essentials anchor." },
+      "ar": { "title": "احفظ ما يهمك", "subtitle": "مراجعة متباعدة — خمس دقائق يوميًا وتترسّخ الأذكار الأساسية." }
     },
     {
       "slug": "settings",
-      "fr": { "title": "Active tes rappels",   "subtitle": "Matin, soir, coucher — et un rappel quotidien pour ta mémorisation." },
-      "en": { "title": "Turn on reminders",     "subtitle": "Morning, evening, sleep — and a daily memorization reminder." },
-      "ar": { "title": "فعّل تذكيراتك",        "subtitle": "صباحًا ومساءً وعند النوم — وتذكير يومي للحفظ." }
+      "fr": { "title": "Ton dhikr. Ta vie privée.", "subtitle": "Pas de compte, pas de pub, pas de pistage — 100 % sur ton appareil." },
+      "en": { "title": "Your remembrance. Your privacy.", "subtitle": "No account, no ads, no tracking — 100% on your device." },
+      "ar": { "title": "ذكرك. خصوصيتك.", "subtitle": "بدون حساب، بدون إعلانات، بدون تتبع — ١٠٠٪ على جهازك." }
     }
   ]
 }

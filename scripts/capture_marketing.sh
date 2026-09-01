@@ -13,6 +13,11 @@ set -euo pipefail
 
 SIM="${1:-74883169-D394-4358-A8AD-283CEF0C74CF}"   # iPhone 17 Pro Max default
 RAW_SUBDIR="${2:-raw}"
+# iPad cold-starts are slower than iPhone — scale all waits up via
+# SLEEP_SCALE=3 ./scripts/capture_marketing.sh <ipad-udid> raw_ipad13
+SLEEP_SCALE="${SLEEP_SCALE:-1}"
+
+zzz() { sleep "$(echo "$1 * $SLEEP_SCALE" | bc)"; }
 BUNDLE="com.tadevv.munajat"
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 RAW_DIR="$REPO/marketing/$RAW_SUBDIR"
@@ -22,12 +27,12 @@ FAV_IDS='("morning_adhkar","evening_adhkar","sleep_adhkar")'
 
 declare -a LANGS=("fr" "en" "ar")
 declare -A LOCALES=( [fr]="fr_FR" [en]="en_US" [ar]="ar_SA" )
-declare -a SCREENS=("home" "context_picker" "context_detail" "detail" "memorize_filled" "review_session" "favorites" "settings")
+declare -a SCREENS=("home" "context_picker" "context_detail" "detail" "post_prayer" "review_session" "settings")
 
 launch() {
   local lang="$1" locale="$2" screen="$3"
   xcrun simctl terminate "$SIM" "$BUNDLE" >/dev/null 2>&1 || true
-  sleep 0.3
+  zzz 0.3
   xcrun simctl launch "$SIM" "$BUNDLE" \
     -AppleLanguages "($lang)" \
     -AppleLocale "$locale" \
@@ -37,12 +42,13 @@ launch() {
   # First-launch-in-language pays a cold-start cost (SwiftData + fonts re-init),
   # so we also bump home specifically — it's always the first screen captured.
   case "$screen" in
-    review_session)    sleep 3.0 ;;
-    context_detail)    sleep 2.5 ;;
-    context_picker)    sleep 2.0 ;;
-    memorize_filled)   sleep 2.0 ;;
-    home)              sleep 3.5 ;;
-    *)                 sleep 1.6 ;;
+    review_session)    zzz 3.0 ;;
+    post_prayer)       zzz 2.5 ;;
+    context_detail)    zzz 2.5 ;;
+    context_picker)    zzz 2.0 ;;
+    memorize_filled)   zzz 2.0 ;;
+    home)              zzz 3.5 ;;
+    *)                 zzz 1.6 ;;
   esac
 }
 
