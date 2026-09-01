@@ -16,6 +16,7 @@
 		C0E8FF176479AE9047F107D0 /* PostPrayerSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FC7B3662FEEB7B711AA50C0 /* PostPrayerSessionTests.swift */; };
 		C247824A7AF076AC722F620A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0755300B7D2AF93A0C90710C /* Foundation.framework */; };
 		C5CFF6F8DCBA1F3A00BFD26B /* LocalizedTextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADAEF99EE5FEBDBB0A003830 /* LocalizedTextTests.swift */; };
+		E102840A36A9A4281F093B67 /* ReviewPromptGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19AC93E3AB4472CDDD287F8C /* ReviewPromptGateTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 
 /* Begin PBXFileReference section */
 		0755300B7D2AF93A0C90710C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		19AC93E3AB4472CDDD287F8C /* ReviewPromptGateTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReviewPromptGateTests.swift; sourceTree = "<group>"; };
 		1C90B1D8BF94BCFBDB464163 /* HifzSchedulerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HifzSchedulerTests.swift; sourceTree = "<group>"; };
 		6246C4006D761FF3BFE2DEC3 /* DataProviderContextsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DataProviderContextsTests.swift; sourceTree = "<group>"; };
 		6FE853B82DB165D700410740 /* Adhkar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Adhkar.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -142,6 +144,7 @@
 				94780DD814EC046C5EFFBB59 /* PostPrayerSequenceTests.swift */,
 				9FC7B3662FEEB7B711AA50C0 /* PostPrayerSessionTests.swift */,
 				D7544024D5303E8FD7C3AEC0 /* FrenchContentCoverageTests.swift */,
+				19AC93E3AB4472CDDD287F8C /* ReviewPromptGateTests.swift */,
 			);
 			name = AdhkarTests;
 			path = AdhkarTests;
@@ -325,6 +328,7 @@
 				1E6F8135AFE6C0C0122D6DD0 /* PostPrayerSequenceTests.swift in Sources */,
 				C0E8FF176479AE9047F107D0 /* PostPrayerSessionTests.swift in Sources */,
 				6623176A7FF39EDE7A7DC612 /* FrenchContentCoverageTests.swift in Sources */,
+				E102840A36A9A4281F093B67 /* ReviewPromptGateTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
