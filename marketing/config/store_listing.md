@@ -75,7 +75,7 @@ TOUT CE QU'ON ATTEND D'UNE APP D'ADHKAR
 
 CONÇU AVEC SOIN
 
-Pas de pop-up, pas de monétisation cachée. Une app que je voulais pour ma propre pratique quotidienne, et que je partage maintenant.
+Pas de publicité, pas de monétisation cachée. Une app que je voulais pour ma propre pratique quotidienne, et que je partage maintenant.
 
 — Achraf
 ```
@@ -152,7 +152,7 @@ EVERYTHING YOU EXPECT FROM AN ADHKAR APP
 
 MADE WITH CARE
 
-No pop-ups, no hidden monetization. An app I wanted for my own daily practice, now shared.
+No ads, no hidden monetization. An app I wanted for my own daily practice, now shared.
 
 — Achraf
 ```
@@ -229,7 +229,7 @@ azkar,zikr,muslim,prayer,anxiety,sleep,stress,sadness,grief,hisnulmuslim,remembr
 
 صُنع بعناية
 
-بدون نوافذ منبثقة، بدون اشتراك خفي. تطبيق أردته لممارستي اليومية، وأشاركه الآن.
+بدون إعلانات، بدون اشتراك خفي. تطبيق أردته لممارستي اليومية، وأشاركه الآن.
 
 — أشرف
 ```

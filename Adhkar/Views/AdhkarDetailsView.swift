@@ -322,6 +322,7 @@ private struct DhikrPageView: View {
                             .multilineTextAlignment(.center)
                     }
                     .padding(.horizontal)
+                    .accessibilityElement(children: .combine)
                 }
 
                 counterButton

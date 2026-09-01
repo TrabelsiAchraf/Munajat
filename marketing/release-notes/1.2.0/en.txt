@@ -1,3 +1,3 @@
-• French translations across the dhikr library
+• French translations across nearly the entire dhikr library
 • Latin transliterations so you can recite even without reading Arabic
 • A clear Hisn al-Muslim source label under every dhikr
