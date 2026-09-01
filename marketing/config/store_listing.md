@@ -241,16 +241,47 @@ azkar,zikr,muslim,prayer,anxiety,sleep,stress,sadness,grief,hisnulmuslim,remembr
 
 ---
 
-## 📨 App Review Information — Notes (delta vs 1.1.0)
+## 📨 App Review Information — Notes
 
-Reprendre les notes 1.1.0 (git : `marketing/config/store_listing.md@872135c`) en ajoutant au début de la section KEY FLOWS :
+Texte complet soumis avec la 1.2.0 le 2026-09-01. À coller dans
+**App Store Connect → Version → App Review Information → Notes**.
 
 ```
-Since 1.1.0: the dhikr library gained French translations and Latin
-transliterations (same public-domain Hisn al-Muslim source), a visible
-"Source: Hisn al-Muslim" label on each dhikr, and a standard SKStoreReview
-prompt shown at most after a 2nd completed category and then no more than
-once per 60 days. No new permissions, no new network calls.
+Thanks for reviewing Munajat.
+
+Version 1.2.0 — a content and polish release; no new structural features. The features from the 4.3(a) redesign (contextual home, memorization) and from 1.1.0 (guided post-prayer sequence) are unchanged and still central.
+
+NEW SINCE 1.1.0
+• The dhikr library gained French translations and Latin transliterations (272 of 294 items), taken verbatim from the published French edition of the same source (Hisn al-Muslim / La Citadelle du Musulman). Items without a French entry fall back to English.
+• A visible "Source: Hisn al-Muslim" label above the Arabic reference on every dhikr.
+• A standard SKStoreReview prompt, gated: earliest after the 2nd fully-completed category, then at most once per 60 days — you are unlikely to see it during review.
+• No new permissions, no new network calls, no tracking added.
+
+No sign-in, free, no IAP, all data local. Only network call: "Listen" streams audio from hisnmuslim.com (public-domain source cited in App Info).
+
+KEY FLOWS
+1. Home → tap "How do you feel?" → 15 life-state contexts (Emotions + Life Trials) → pick any (e.g. Anxious) → 3 to 7 curated dhikr with Arabic + translation + source.
+2. Home → tap "After the prayer" → guided walk through the 12 post-salam adhkar of Hisn al-Muslim, in the source's order, each with its own counter (istighfar ×3, the three tasbihat ×33 up to the hundred, the surahs, Ayat al-Kursi). A finished step chains into the next; steps 11 and 12 are labelled "after Fajr" / "after Fajr and Maghrib" and can be skipped. Also reachable via "munajat://tasbih".
+3. Home → any classic category (Morning / Evening / Sleep…) → swipe pages → tap circle to count.
+4. Inside a dhikr → Arabic text, translation, expandable transliteration, "Source: Hisn al-Muslim" with the exact reference → "Listen" (Internet, plays on silent) and "Share" (styled image rendered locally).
+5. Any dhikr → "Memorize" → adds to personal Hifz list, button flips to "In Hifz".
+6. Memorize tab → cards by stage + "X to review today" → "Start session" → see meaning, recall, tap "Reveal" → Arabic shown → self-rate Again/Hard/Good/Easy with SM-2 delays.
+7. Settings → "Morning adhkar" toggle (iOS prompts permission). Same panel has "Memorization reminder".
+8. Favorites: heart on a category → tab shows it. Search: filters live.
+9. Widget: long-press Home Screen → +. Shows current-period dhikr + "X to review" Hifz badge in medium when due. Tap deep-links via "munajat://".
+
+EXPECTED
+• Per-dhikr counters reset daily — intentional. The post-prayer sequence is deliberately NOT backed by them: it is recited after all five prayers, so each session starts from zero.
+• Streak advances as soon as one dhikr is read.
+• Arabic system language flips UI to RTL. French UI shows French translations; a few dhikr fall back to English where the published French edition has no entry.
+• Universal: iPhone + iPad.
+• Hifz: a new card pressed Good returns tomorrow, Easy in 4 days; later intervals scale by an ease factor floored at 1.3.
+
+CONTENT & ACCESSIBILITY
+All texts from "Hisn al-Muslim" (Sheikh Saʿīd al-Qaḥṭānī), distributed as free dawah material; the French translations come verbatim from its published French edition. The 69 dhikr-to-context associations are curated manually from this same source — no AI-generated religious content, no third-party data. Code from scratch in SwiftUI. VoiceOver, Larger Text and Differentiate Without Color all supported in AR/FR/EN.
+
+Thanks,
+Achraf
 ```
 
 ---
