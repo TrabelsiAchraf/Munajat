@@ -4,6 +4,22 @@ Notable changes per release. The user-facing wording lives in
 `marketing/release-notes/<version>/`; this file is for whoever works on the
 code.
 
+## 1.2.0 — 2026-09-XX
+
+### Added
+- French translations (published Hisn al-Muslim edition) and Latin
+  transliterations across the dhikr library, matched Arabic-to-Arabic
+  by `scripts/add_french_translations.py`.
+- App Store review prompt: from the 2nd completion celebration, at most
+  once per 60 days (`ReviewPromptGate`, unit-tested).
+- Readable "Source: Hisn al-Muslim" label above the Arabic reference in
+  the dhikr detail view.
+- `scripts/check_store_listing.py` guards App Store Connect char limits.
+
+### Marketing
+- Store listing rewritten for the situation-first positioning (ASO
+  phase 1). Baseline noted: 8 first-time downloads / 30 days.
+
 ## 1.1.0 — build 270820261735 — 2026-08-27
 
 On TestFlight 2026-08-27. Awaiting App Review.

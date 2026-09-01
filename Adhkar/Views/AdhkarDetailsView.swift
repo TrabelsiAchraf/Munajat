@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import StoreKit
 
 struct AdhkarDetailsView: View {
     let adhkar: AdhkarCategory
@@ -25,6 +26,7 @@ struct AdhkarDetailsView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(AudioPlayer.self) private var audio
     @Environment(StreakService.self) private var streak
+    @Environment(\.requestReview) private var requestReview
 
     /// All persisted counters. We filter to the current category in code so we
     /// don't need a dynamic SwiftData predicate, and we re-check
@@ -77,6 +79,7 @@ struct AdhkarDetailsView: View {
 
     private func markCelebrationShown() {
         UserDefaults.standard.set(Date.now.timeIntervalSince1970, forKey: celebrationStorageKey)
+        ReviewPromptGate.recordCelebration()
     }
 
     var body: some View {
@@ -133,6 +136,10 @@ struct AdhkarDetailsView: View {
             CompletionOverlay(accent: accent) {
                 withAnimation(.easeOut(duration: 0.25)) {
                     showCelebration = false
+                }
+                if ReviewPromptGate.shouldRequestNow() {
+                    ReviewPromptGate.recordRequest()
+                    requestReview()
                 }
             }
             .transition(.opacity.combined(with: .scale(scale: 0.92)))
@@ -305,11 +312,17 @@ private struct DhikrPageView: View {
                 }
 
                 if !dhikr.source.isEmpty {
-                    Text(dhikr.source)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
+                    VStack(spacing: 4) {
+                        Text(L10n.sourceHisnLabel.resolved())
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(.secondary)
+                        Text(dhikr.source)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                    }
+                    .padding(.horizontal)
+                    .accessibilityElement(children: .combine)
                 }
 
                 counterButton
