@@ -312,11 +312,16 @@ private struct DhikrPageView: View {
                 }
 
                 if !dhikr.source.isEmpty {
-                    Text(dhikr.source)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
+                    VStack(spacing: 4) {
+                        Text(L10n.sourceHisnLabel.resolved())
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(.secondary)
+                        Text(dhikr.source)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                    }
+                    .padding(.horizontal)
                 }
 
                 counterButton

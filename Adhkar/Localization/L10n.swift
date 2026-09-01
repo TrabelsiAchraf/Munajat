@@ -57,6 +57,7 @@ enum L10n {
     static let share           = LocalizedText(ar: "مشاركة",    fr: "Partager",         en: "Share")
     static let done            = LocalizedText(ar: "تم",        fr: "Terminé",          en: "Done")
     static let tapToCount      = LocalizedText(ar: "اضغط",      fr: "Tape pour compter", en: "Tap to count")
+    static let sourceHisnLabel = LocalizedText(ar: "المصدر: حصن المسلم", fr: "Source : Hisn al-Muslim", en: "Source: Hisn al-Muslim")
 
     // Hero header (Quran 33:41)
     static let heroVerseTranslation = LocalizedText(
