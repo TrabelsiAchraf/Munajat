@@ -7,6 +7,13 @@
 
 import Foundation
 
+extension L10n {
+    static let rateApp = LocalizedText(ar: "تقييم التطبيق", fr: "Noter l’app", en: "Rate the app")
+    static let shareApp = LocalizedText(ar: "مشاركة مناجاة", fr: "Partager Munajat", en: "Share Munajat")
+    static let settingsCommunity = LocalizedText(ar: "حول مناجاة", fr: "Autour de Munajat", en: "Connect with Munajat")
+    static let shareAppMessage = LocalizedText(ar: "اكتشف مناجاة للأذكار والأدعية اليومية، مجانًا وبدون إعلانات.", fr: "Découvre Munajat : des invocations pour le quotidien, gratuitement et sans publicité.", en: "Discover Munajat: daily dhikr and duas, free and without ads.")
+}
+
 /// Centralised UI strings. Reuses the existing `LocalizedText` (AR/FR/EN)
 /// from Phase 2 — no separate String Catalog needed.
 enum L10n {
@@ -27,12 +34,13 @@ enum L10n {
 
     // Search
     static let searchPrompt        = LocalizedText(ar: "ابحث عن ذكر…", fr: "Recherche un dhikr…", en: "Search a dhikr…")
-    static let searchPlaceholder   = LocalizedText(ar: "ابحث بالعنوان أو الفئة أو النص العربي.", fr: "Recherche par titre, catégorie ou texte arabe.", en: "Search by title, category, or Arabic text.")
+    static let searchPlaceholder   = LocalizedText(ar: "ابحث بالعنوان أو النص أو الترجمة أو النقل الحرفي، دون الحاجة إلى التشكيل.", fr: "Recherche par titre, texte, traduction ou phonétique, même sans accents.", en: "Search titles, text, translations or transliterations, with or without accents.")
     static let searchEmptyResults  = LocalizedText(ar: "لا يوجد نتائج", fr: "Aucun résultat", en: "No results")
     static let searchTryAnother    = LocalizedText(ar: "جرّب كلمة أخرى.", fr: "Essaie un autre mot.", en: "Try another word.")
 
     // Settings
     static let settingsAbout            = LocalizedText(ar: "حول التطبيق", fr: "À propos", en: "About")
+    static let settingsLanguage         = LocalizedText(ar: "اللغة", fr: "Langue", en: "Language")
     static let settingsContentSource    = LocalizedText(ar: "مصدر المحتوى", fr: "Source du contenu", en: "Content source")
     static let settingsContentSourceVal = LocalizedText(ar: "حصن المسلم — سعيد القحطاني", fr: "Hisn al-Muslim — Saʿīd al-Qaḥṭānī", en: "Hisn al-Muslim — Saʿīd al-Qaḥṭānī")
     static let settingsVersion          = LocalizedText(ar: "الإصدار", fr: "Version", en: "Version")

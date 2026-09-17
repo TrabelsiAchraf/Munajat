@@ -53,10 +53,6 @@ struct ReviewSessionSummaryView: View {
         .frame(maxWidth: 380)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black)
-        .task {
-            try? await Task.sleep(for: .seconds(8))
-            onDismiss()
-        }
     }
 
     private func summaryRow(label: String, value: Int, color: Color) -> some View {

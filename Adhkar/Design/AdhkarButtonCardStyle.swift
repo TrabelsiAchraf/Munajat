@@ -29,7 +29,7 @@ struct AdhkarButtonCardStyle: ButtonStyle {
             }
 
             configuration.label
-                .font(.amiri(size: 17))
+                .font(LocalizedText.preferredLanguageCode() == "ar" ? .amiri(size: 17) : .subheadline)
                 .multilineTextAlignment(.center)
                 .lineLimit(3)
                 .minimumScaleFactor(0.7)

@@ -9,14 +9,17 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(NotificationManager.self) private var notifications
+    @State private var selectedLanguage = LocalizedText.preferredLanguageCode()
 
     var body: some View {
         NavigationStack {
             ZStack {
                 AdaptiveBackground()
                 List {
+                    languageSection
                     notificationsSection
                     aboutSection
+                    communitySection
                     legalSection
                 }
                 .scrollContentBackground(.hidden)
@@ -26,6 +29,26 @@ struct SettingsView: View {
     }
 
     // MARK: - Sections
+
+    private var languageSection: some View {
+        Section {
+            Picker(selection: $selectedLanguage) {
+                Text("العربية").tag("ar")
+                Text("Français").tag("fr")
+                Text("English").tag("en")
+            } label: {
+                Label(L10n.settingsLanguage.resolved(), systemImage: "globe")
+            }
+            .pickerStyle(.menu)
+            .onChange(of: selectedLanguage) { _, code in
+                LocalizedText.setPreferredLanguage(code)
+            }
+            .accessibilityIdentifier("settings.languagePicker")
+        } header: {
+            Text(L10n.settingsLanguage.resolved())
+        }
+        .listRowBackground(Color.cardBackground)
+    }
 
     private var notificationsSection: some View {
         Section {
@@ -55,6 +78,21 @@ struct SettingsView: View {
                        value: appVersion)
         } header: {
             Label(L10n.settingsAbout.resolved(), systemImage: "info.circle")
+        }
+        .listRowBackground(Color.cardBackground)
+    }
+
+    private var communitySection: some View {
+        Section {
+            Link(destination: AppStoreLinks.writeReview) {
+                Label(L10n.rateApp.resolved(), systemImage: "star")
+            }
+            .accessibilityIdentifier("settings.rateApp")
+            ShareLink(item: AppStoreLinks.app, message: Text(L10n.shareAppMessage.resolved())) {
+                Label(L10n.shareApp.resolved(), systemImage: "square.and.arrow.up")
+            }
+        } header: {
+            Text(L10n.settingsCommunity.resolved())
         }
         .listRowBackground(Color.cardBackground)
     }
@@ -114,15 +152,19 @@ private struct NotificationRow: View {
                 Task { await notifications.setTime(slot, hour: comps.hour ?? 0, minute: comps.minute ?? 0) }
             }
         )
-        return HStack {
+        return HStack(spacing: 10) {
             Toggle(isOn: isOn) {
                 Text(slot.label.resolved())
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .toggleStyle(.switch)
             if isOn.wrappedValue {
                 DatePicker("", selection: date, displayedComponents: .hourAndMinute)
                     .labelsHidden()
+                    .fixedSize()
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 

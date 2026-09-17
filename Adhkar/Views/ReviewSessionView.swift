@@ -7,6 +7,7 @@ struct ReviewSessionView: View {
     let cards: [HifzCard]
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @Environment(StreakService.self) private var streak
 
     @State private var index: Int = 0
     @State private var revealed: Bool = false
@@ -14,6 +15,7 @@ struct ReviewSessionView: View {
     @State private var learningCount = 0
     @State private var againCount = 0
     @State private var showSummary = false
+    @State private var reviewTrigger: UUID?
 
     private var currentCard: HifzCard? {
         guard cards.indices.contains(index) else { return nil }
@@ -38,6 +40,7 @@ struct ReviewSessionView: View {
                 nextSessionDescription: nextSessionDescription(),
                 onDismiss: { dismiss() }
             )
+            .appReviewPrompt(trigger: reviewTrigger)
         } else if let card = currentCard, let dhikr = currentDhikr {
             sessionBody(card: card, dhikr: dhikr)
         } else {
@@ -224,6 +227,9 @@ struct ReviewSessionView: View {
             index += 1
         } else {
             // Reload widget after session ends.
+            streak.refreshHifzCounts(context: modelContext)
+            ReviewPromptGate.recordCompletion(activityID: "memorization")
+            reviewTrigger = UUID()
             #if os(iOS)
             WidgetCenter.shared.reloadTimelines(ofKind: "CurrentPeriodWidget")
             #endif

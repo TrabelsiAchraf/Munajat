@@ -8,6 +8,10 @@
 import Foundation
 import SwiftUI
 
+extension Notification.Name {
+    static let adhkarLanguageDidChange = Notification.Name("adhkar.languageDidChange")
+}
+
 /// A piece of text available in one or more languages (Arabic, French, English).
 /// Falls back gracefully when the requested language is missing.
 struct LocalizedText: Codable, Hashable, Equatable {
@@ -48,5 +52,10 @@ struct LocalizedText: Codable, Hashable, Equatable {
     /// Arabic flips the whole UI to right-to-left; everything else stays LTR.
     static var preferredLayoutDirection: LayoutDirection {
         preferredLanguageCode() == "ar" ? .rightToLeft : .leftToRight
+    }
+
+    static func setPreferredLanguage(_ code: String) {
+        UserDefaults.standard.set([code], forKey: "AppleLanguages")
+        NotificationCenter.default.post(name: .adhkarLanguageDidChange, object: code)
     }
 }

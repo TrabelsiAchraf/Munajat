@@ -5,7 +5,13 @@ import SwiftData
 struct MemoTabView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \HifzCard.addedAt, order: .reverse) private var allCards: [HifzCard]
-    @State private var showReviewSession = false
+    // Freeze the queue before presentation. Updating a card's due date must
+    // not shrink/reorder the presented session while its index advances.
+    private struct Session: Identifiable {
+        let id = UUID()
+        let cards: [HifzCard]
+    }
+    @State private var session: Session?
 
     private var dueToday: [HifzCard] {
         let endOfDay = Calendar(identifier: .gregorian).date(
@@ -37,12 +43,12 @@ struct MemoTabView: View {
             .navigationBarTitleDisplayMode(.large)
             #endif
             #if os(iOS) || os(visionOS)
-            .fullScreenCover(isPresented: $showReviewSession) {
-                ReviewSessionView(cards: dueToday)
+            .fullScreenCover(item: $session) { session in
+                ReviewSessionView(cards: session.cards)
             }
             #else
-            .sheet(isPresented: $showReviewSession) {
-                ReviewSessionView(cards: dueToday)
+            .sheet(item: $session) { session in
+                ReviewSessionView(cards: session.cards)
             }
             #endif
             #if DEBUG
@@ -57,12 +63,18 @@ struct MemoTabView: View {
                 }
                 if ud.bool(forKey: "marketing.launchReviewSession") {
                     try? await Task.sleep(for: .milliseconds(500))
-                    showReviewSession = true
+                    startSession()
                     ud.set(false, forKey: "marketing.launchReviewSession")
                 }
             }
             #endif
         }
+    }
+
+    private func startSession() {
+        let cards = dueToday
+        guard !cards.isEmpty else { return }
+        session = Session(cards: cards)
     }
 
     private var emptyState: some View {
@@ -102,8 +114,7 @@ struct MemoTabView: View {
                 Spacer()
             }
             Button {
-                guard !dueToday.isEmpty else { return }
-                showReviewSession = true
+                startSession()
             } label: {
                 HStack {
                     Text(dueToday.isEmpty ? L10n.memoAllUpToDate.resolved() : L10n.memoStartSession.resolved())

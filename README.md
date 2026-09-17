@@ -4,7 +4,10 @@
 
 A personal SwiftUI app for daily Islamic adhkar (remembrances) — morning, evening, sleep, prayer, travel, and more. Built around the *Hisn al-Muslim* corpus with Arabic text, translations, audio recitations and per-item counters.
 
-Targets **iOS 18.4 / macOS 15.4 / visionOS** from a single codebase.
+Targets **iOS 17 / macOS 14 / visionOS 1** from a single codebase.
+Published for iPhone and iPad as [Munajat](https://apps.apple.com/app/id6768824373).
+Version 1.3.0 is in preparation; see the [growth audit](docs/growth-audit-2026-09-17.md)
+and [release notes](marketing/release-notes/1.3.0/NOTES.md).
 
 ---
 
@@ -25,13 +28,15 @@ Targets **iOS 18.4 / macOS 15.4 / visionOS** from a single codebase.
 
 - **133 categories / ~294 items** from *Hisn al-Muslim* (rn0x + wafaaelmaandy sources)
 - **Trilingual UI**: Arabic, French, English — switchable at launch via `AppleLanguages`
-- **Streaming audio** for each dhikr (hisnmuslim.com), upgraded to HTTPS at play time to clear iOS ATS
+- **French/English category names** for all 133 categories; offline search across titles, Arabic, translations and transliterations, ignoring accents and Arabic vocalization
+- **Streaming audio** for 279 of 294 entries (hisnmuslim.com), upgraded to HTTPS at play time to clear iOS ATS
 - **Per-item counters** persisted with SwiftData, auto-reset on day change
 - **Per-category progress bar** at the top of each dhikr screen, live-updated as counters reach their targets
 - **Completion celebration**: once-per-day overlay with "ما شاء الله", gold halo, sparkles and success haptic when every dhikr in a category is done
 - **Daily streak**: SwiftData history of opens + best-record tracking, surfaced on the home screen and the widget
 - **Home-screen widget** (iOS) — small + medium, shows the suggested dhikr for the current time of day and the live streak count, tap → deep-links into the right category via `munajat://`
-- **Share dhikr as image**: each detail view exports a 1080×1920 PNG card (gradient + crescent pattern + Amiri body + translation + footer) via `ImageRenderer` + a `Transferable` wrapper, no UIKit
+- **Share dhikr as image**: exports a 1080×1920 PNG on demand via `ImageRenderer` + `Transferable`, with a store link in the share message
+- **Native App Store reviews** after completed activities on two distinct days, at most once per version and 60 days; explicit rating and sharing actions in Settings
 - **Favorites** with UserDefaults migration from the legacy per-key Bool format
 - **Daily reminders** (morning / evening / sleep) via `UNCalendarNotificationTrigger`
 - **Time-aware home**: surfaces the right category for the current hour as a featured card
@@ -126,4 +131,4 @@ CLAUDE.md                        # Project guide (architecture, gotchas, convent
 
 ## Status
 
-Personal project, getting close to App Store submission. Built across seven explicit phases (bug fixes → JSON migration → content import → UX redesign → SwiftData/audio → notifications/i18n → polish/icon), then a store-readiness pass (streak, share-as-image, accessibility, privacy links, macOS cross-platform fixes), Phase 0/4 (Widget Extension + `munajat://` deep links wired via the `xcodeproj` Ruby gem) and finally a completion progress bar + celebration overlay. Open items before submission: hosting the privacy/support pages, registering the App Group in the Developer Portal, capturing App Store screenshots (iPhone 6.9" + iPad 13" × AR/FR/EN), and writing the listing copy.
+Published on the App Store. Version 1.2.0 added French content and an initial review prompt. Version 1.3.0 improves multilingual navigation, search, review coverage, sharing and memorization stability. App Store submission and refreshed screenshots remain release steps; see `marketing/release-notes/1.3.0/NOTES.md`.

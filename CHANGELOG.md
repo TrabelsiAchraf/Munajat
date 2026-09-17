@@ -4,6 +4,30 @@ Notable changes per release. The user-facing wording lives in
 `marketing/release-notes/<version>/`; this file is for whoever works on the
 code.
 
+## 1.3.0 — Unreleased
+
+### Added
+- French and English navigation labels for all 133 categories, shared with
+  the widget via a separate bundled catalog. Religious content is unchanged.
+- Offline search of translations and transliterations, ignoring Latin accents,
+  Arabic vocalization marks and tatweel; category name matches rank first.
+- Explicit App Store rating and app sharing links in Settings.
+
+### Fixed
+- Native review eligibility now includes focused context dhikr, guided
+  post-prayer and memorization sessions. Requires activity on two distinct
+  days, deduplicates activities within a day, keeps the 60-day cooldown and
+  adds a per-version limit. Requests wait for completion UI and cancel on exit.
+- Memorization session cards no longer shrink/reorder as due dates change;
+  widget counts refresh at the end of a session. The summary stays visible
+  until dismissed, so it cannot close during reading or a native review prompt.
+- Shared PNGs render only on export at 1080×1920 instead of eagerly rendering
+  at 3240×5760 on every counter update. Share messages include the store link.
+
+### Marketing
+- Growth audit and measurement plan; trilingual release notes. Removed
+  unsupported uniqueness, universal-audio and learning-speed claims.
+
 ## 1.2.0 — 2026-09-XX
 
 ### Added

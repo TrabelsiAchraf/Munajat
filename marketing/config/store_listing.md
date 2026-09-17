@@ -1,6 +1,8 @@
-# App Store Listing — Munajat 1.2.0
+# App Store Listing — Munajat 1.3.0 (préparation)
 
-Tout le texte à coller dans App Store Connect → My Apps → Munajat → Version 1.2.0 → Localization.
+Tout le texte à coller dans App Store Connect → My Apps → Munajat → Version 1.3.0 → Localization.
+Préparé localement ; pas encore publié. Nom, sous-titre et mots-clés conservés
+pour ne pas brouiller l’observation du repositionnement de septembre.
 Trois langues : **French (Primary), English, Arabic**.
 Vérification des limites : `python3 scripts/check_store_listing.py`.
 
@@ -24,26 +26,26 @@ Adhkar selon ton état du cœur
 
 **Promotional Text** (max 170 chars — éditable sans resoumission)
 ```
-Trouve le dhikr adapté à ce que tu traverses : anxiété, gratitude, insomnie, épreuve… Nouveau : traductions françaises et translittérations pour les invocations.
+Trouve une invocation pour ce que tu vis. Nouveau : catégories en français et recherche dans les traductions et la phonétique. Gratuit, sans compte ni publicité.
 ```
 
 **Description** (max 4000 chars)
 ```
 Trouve le bon dhikr pour ce que tu vis.
 
-Munajat est la seule app d'adhkar organisée autour de ton état du cœur — pas seulement selon l'heure de la journée.
+Munajat t’aide à trouver des invocations selon ton état du cœur et les moments de ta journée.
 
 ——
 
 QUAND TU TE SENS…
 
-Anxieux, reconnaissant, triste, en colère, apeuré, heureux, repentant, plein d'espoir. Et dans les épreuves : maladie, deuil, dette, moment important, conflit, insomnie, doute. Munajat te propose les invocations du Coran et de la Sunna qui correspondent à ce moment précis de ta vie — 15 contextes, soigneusement curés à partir du Hisn al-Muslim (La Citadelle du Musulman).
+Anxieux, reconnaissant, triste, en colère, apeuré, heureux, repentant, plein d'espoir. Et dans les épreuves : maladie, deuil, dette, moment important, conflit, insomnie, doute. Munajat te propose les invocations du Coran et de la Sunna qui correspondent à ce moment précis de ta vie — 15 contextes, soigneusement sélectionnés à partir du Hisn al-Muslim (La Citadelle du Musulman).
 
 ——
 
 EN FRANÇAIS, VRAIMENT
 
-Texte arabe, traduction française, translittération latine pour réciter même sans lire l'arabe, source et récitation audio.
+133 catégories nommées en français. Texte arabe, traduction française et translittération latine pour 272 des 294 entrées. Les autres affichent la traduction disponible. Recherche par titre, traduction ou phonétique, même sans accents. Audio disponible pour la majorité des invocations.
 
 ——
 
@@ -55,19 +57,19 @@ Les adhkar de Hisn al-Muslim après le salâm, guidés étape par étape. Les do
 
 MÉMORISE CE QUI COMPTE
 
-Active le mode Mémoriser sur n'importe quel dhikr. L'application le programme dans une boucle de répétition espacée (algorithme SM-2 simplifié) — cinq minutes par jour, et les essentiels s'ancrent.
+Active le mode Mémoriser sur un dhikr. Révèle le texte, évalue ton rappel et retrouve-le lors d’une prochaine séance de révision espacée, à ton rythme.
 
 ——
 
 TOUT CE QU'ON ATTEND D'UNE APP D'ADHKAR
 
 • 294 invocations du Coran et de la Sunna, la source citée pour chacune — Hisn al-Muslim
-• Audio pour chaque dhikr (nécessite Internet)
+• Récitations audio pour 279 entrées (nécessitent Internet)
 • Textes, compteurs et mémorisation disponibles hors ligne
-• Compteur tactile avec remise à zéro quotidienne, streak pour soutenir la pratique
+• Compteur tactile avec remise à zéro quotidienne, suivi des jours d’utilisation
 • Partage de n'importe quel dhikr sous forme de carte illustrée
 • Widget d'écran d'accueil avec le dhikr du moment
-• Trilingue : arabe, français, anglais — layout droite-à-gauche en arabe
+• Navigation en arabe, français et anglais — lecture de droite à gauche en arabe
 • Typographie Amiri et Amiri Quran pour les versets coraniques
 • 100 % local : aucun compte, aucun pistage, aucune publicité
 
@@ -101,14 +103,14 @@ Adhkar for how you feel
 
 **Promotional Text** (max 170 chars)
 ```
-Find the right dhikr for what you're going through — anxiety, gratitude, sleeplessness, hardship. Now with French translations and Latin transliterations.
+Find a dua for what you’re going through. Now with English category names and search across translations and transliterations. Free, no account, no ads.
 ```
 
 **Description** (max 4000 chars)
 ```
 Find the right dhikr for what you're going through.
 
-Munajat is the only adhkar app organized around the state of your heart — not just the time of day.
+Munajat helps you find invocations for the state of your heart and the moments of your day.
 
 ——
 
@@ -120,7 +122,7 @@ Anxious, grateful, sad, angry, fearful, happy, regretful, hopeful. And through l
 
 READ IT, RECITE IT
 
-Arabic text, translations, Latin transliteration so you can recite even without reading Arabic, sources, and audio recitation.
+Browse 133 categories with English names. Read Arabic text with translations and Latin transliteration where available, plus cited sources. Search category names, translations and transliterations. Audio is available for most entries.
 
 ——
 
@@ -132,14 +134,14 @@ The adhkar of Hisn al-Muslim after the salam, guided step by step. The twelve in
 
 MEMORIZE WHAT MATTERS
 
-Tap Memorize on any dhikr. The app schedules it in a spaced-repetition loop (simplified SM-2) — five minutes a day, and the essentials anchor.
+Tap Memorize on a dhikr. Reveal the text, rate your recall and return to it in a spaced review session, at your own pace.
 
 ——
 
 EVERYTHING YOU EXPECT FROM AN ADHKAR APP
 
 • 294 invocations from the Quran and Sunnah, each with its cited source — Hisn al-Muslim
-• Audio for every dhikr (requires Internet)
+• Audio recitations for 279 entries (require Internet)
 • Texts, counters and memorization work offline
 • Tap-to-count with daily auto-reset, streaks to support the habit
 • Share any dhikr as a beautifully rendered card
@@ -178,14 +180,14 @@ azkar,zikr,muslim,prayer,anxiety,sleep,stress,sadness,grief,hisnulmuslim,remembr
 
 **Promotional Text** (max 170 chars)
 ```
-اعثر على الذكر المناسب لما تعيشه — قلق، شكر، أرق، ابتلاء. جديد: ترجمات فرنسية ونقل حرفي لاتيني للأدعية.
+اعثر على الذكر المناسب لما تعيشه. جديد: بحث في النصوص والترجمات والنقل الحرفي، دون الحاجة إلى كتابة التشكيل. مجانًا وبدون حساب أو إعلانات.
 ```
 
 **Description** (max 4000 chars)
 ```
 اعثر على الذكر المناسب لما تعيشه.
 
-مناجاة هو تطبيق الأذكار الوحيد الذي ينتظم حسب حالة قلبك، لا حسب الساعة فقط.
+يساعدك مناجاة على إيجاد الأذكار المناسبة لحالة قلبك ولأوقات يومك.
 
 ——
 
@@ -197,7 +199,7 @@ azkar,zikr,muslim,prayer,anxiety,sleep,stress,sadness,grief,hisnulmuslim,remembr
 
 اقرأه ورتّله
 
-النص العربي، والترجمة (فرنسية وإنجليزية)، والنقل الحرفي اللاتيني، والمصدر، والتلاوة الصوتية.
+النص العربي مع الترجمة والنقل الحرفي اللاتيني حيث يتوفران، والمصادر. تتوفر التلاوة الصوتية لمعظم الأدعية. ابحث في العناوين والنصوص والترجمات دون الحاجة إلى كتابة التشكيل.
 
 ——
 
@@ -209,14 +211,14 @@ azkar,zikr,muslim,prayer,anxiety,sleep,stress,sadness,grief,hisnulmuslim,remembr
 
 احفظ ما يهمك
 
-اضغط «احفظ» على أي ذكر ليدخل دورة مراجعة متباعدة (SM-2 مبسّطة) — خمس دقائق يومياً وتترسّخ الأذكار الأساسية.
+اضغط «احفظ» على الذكر، ثم اكشف النص وقيّم استذكارك، وارجع إليه في جلسات مراجعة متباعدة حسب وتيرتك.
 
 ——
 
 كل ما تنتظره من تطبيق أذكار
 
 • ٢٩٤ دعاء من القرآن والسنة، مع ذكر المصدر لكل دعاء — حصن المسلم
-• تلاوة لكل ذكر (تتطلب الإنترنت)
+• تلاوات صوتية لـ٢٧٩ نصًا (تتطلب الإنترنت)
 • النصوص والعدّادات والحفظ تعمل دون اتصال
 • عدّاد لمسي يُعاد ضبطه يومياً، وسلسلة يومية للمواظبة
 • مشاركة أي ذكر على هيئة بطاقة جميلة
@@ -243,8 +245,9 @@ azkar,zikr,muslim,prayer,anxiety,sleep,stress,sadness,grief,hisnulmuslim,remembr
 
 ## 📨 App Review Information — Notes
 
-Texte complet soumis avec la 1.2.0 le 2026-09-01. À coller dans
-**App Store Connect → Version → App Review Information → Notes**.
+Le bloc ci-dessous est l’historique **1.2.0 soumis le 2026-09-01** ; ne pas
+le recopier pour la 1.3.0. Les notes de review actuelles sont dans
+`marketing/release-notes/1.3.0/NOTES.md`.
 
 ```
 Thanks for reviewing Munajat.
@@ -288,4 +291,4 @@ Achraf
 
 ## 🆕 What's New in This Version
 
-Voir `marketing/release-notes/1.2.0/` (un `.txt` par langue + NOTES.md).
+Voir `marketing/release-notes/1.3.0/` (un `.txt` par langue + NOTES.md).

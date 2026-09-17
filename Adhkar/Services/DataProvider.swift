@@ -29,10 +29,30 @@ enum DataProvider {
         let data = try Data(contentsOf: url)
         do {
             let file = try JSONDecoder().decode(AdhkarFile.self, from: data)
-            return file.categories.sorted { $0.order < $1.order }
+            let titles = try loadCategoryTitles(from: bundle)
+            return file.categories.map { category in
+                let localized = titles[category.id]
+                return AdhkarCategory(
+                    id: category.id, type: category.type,
+                    title: LocalizedText(ar: category.title.ar,
+                                         fr: localized?.fr ?? category.title.fr,
+                                         en: localized?.en ?? category.title.en),
+                    order: category.order, section: category.section,
+                    adhkarList: category.adhkarList
+                )
+            }.sorted { $0.order < $1.order }
         } catch {
             throw LoadError.decodingFailed(error)
         }
+    }
+
+    /// Navigation labels live separately so corpus regeneration cannot erase
+    /// them or modify any religious text, translation, source or stable ID.
+    static func loadCategoryTitles(from bundle: Bundle = .main) throws -> [String: LocalizedText] {
+        guard let url = bundle.url(forResource: "category-titles", withExtension: "json") else {
+            throw CocoaError(.fileNoSuchFile)
+        }
+        return try JSONDecoder().decode([String: LocalizedText].self, from: Data(contentsOf: url))
     }
 
     private static func loadCategories() -> [AdhkarCategory] {

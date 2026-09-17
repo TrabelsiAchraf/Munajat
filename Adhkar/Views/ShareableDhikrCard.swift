@@ -10,28 +10,34 @@ import CoreGraphics
 import ImageIO
 import UniformTypeIdentifiers
 
-/// Transferable wrapper around a rendered `CGImage` so `ShareLink` can offer
-/// it as a PNG on every platform without importing UIKit or AppKit.
+/// Render only when the share sheet requests the export. Rendering inside a
+/// view's body recreated a 3240×5760 bitmap on every counter tap.
 struct ShareableDhikrImage: Transferable {
-    let cgImage: CGImage
-    let suggestedName: String
+    let category: AdhkarCategory
+    let dhikr: Adhkar
+
+    var suggestedName: String { "munajat_\(dhikr.id)" }
+
+    enum ExportError: Error { case renderingFailed }
 
     static var transferRepresentation: some TransferRepresentation {
         DataRepresentation(exportedContentType: .png) { item in
-            let data = NSMutableData()
-            guard let dest = CGImageDestinationCreateWithData(
-                data,
-                UTType.png.identifier as CFString,
-                1,
-                nil
-            ) else {
-                return Data()
-            }
-            CGImageDestinationAddImage(dest, item.cgImage, nil)
-            CGImageDestinationFinalize(dest)
-            return data as Data
+            try await item.pngData()
         }
         .suggestedFileName { item in "\(item.suggestedName).png" }
+    }
+
+    @MainActor
+    func pngData() throws -> Data {
+        let renderer = ImageRenderer(content: ShareableDhikrCard(category: category, dhikr: dhikr))
+        renderer.scale = 1 // The card already specifies its 1080×1920 pixel canvas.
+        guard let cgImage = renderer.cgImage else { throw ExportError.renderingFailed }
+        let data = NSMutableData()
+        guard let dest = CGImageDestinationCreateWithData(data, UTType.png.identifier as CFString, 1, nil)
+        else { throw ExportError.renderingFailed }
+        CGImageDestinationAddImage(dest, cgImage, nil)
+        guard CGImageDestinationFinalize(dest) else { throw ExportError.renderingFailed }
+        return data as Data
     }
 }
 

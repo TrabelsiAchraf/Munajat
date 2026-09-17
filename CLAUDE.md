@@ -46,6 +46,23 @@ Matching is two-phase Jaccard on token sets (chapter→chapter, then item→item
 
 ## Architecture (non-obvious bits)
 
+### Growth and reviews (1.3.0)
+- `Resources/category-titles.json` provides French/English navigation labels for
+  all 133 categories. `DataProvider` merges them on load; Arabic corpus titles,
+  religious texts and IDs are unchanged. Keep this resource shared with the widget.
+- `AdhkarSearch` indexes category titles, Arabic, all translations and
+  transliterations with accent/vocalization normalization.
+- `ReviewPromptGate` counts completed activities on two distinct days, deduplicated
+  by activity ID per day. It preserves the 1.2 cooldown keys, adds one attempt per
+  app version, and remains limited to one attempt per 60 days. `AppReviewPrompt`
+  delays the StoreKit call until completion UI settles and cancels on disappearance.
+- `ShareableDhikrImage` renders its PNG lazily in the Transferable export, at scale
+  1 for the already 1080×1920 canvas. Never render a share bitmap in a view body.
+- `MemoTabView.Session` freezes the due list for item-based modal presentation;
+  never pass the live `dueToday` list, which shrinks as cards are scheduled.
+- App Store ID: `6768824373`; current bundle ID: `com.tadevv.munajat`.
+- Audit and remaining priorities: `docs/growth-audit-2026-09-17.md`.
+
 ### Synchronized folders (Xcode 26+)
 The project uses `PBXFileSystemSynchronizedRootGroup`. **Any file dropped anywhere under `Adhkar/` auto-bundles** as either source or resource based on extension — the walk is recursive. Don't edit `project.pbxproj` to add files or folders — drop them in and they appear.
 

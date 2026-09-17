@@ -133,7 +133,7 @@ private struct FeaturedSection: View {
                         .font(.caption.weight(.semibold))
                         .foregroundStyle((category.section ?? .other).accentColor)
                     Text(category.displayTitle)
-                        .font(.amiri(size: 19, bold: true))
+                        .font(LocalizedText.preferredLanguageCode() == "ar" ? .amiri(size: 19, bold: true) : .headline)
                         .foregroundStyle(.primary)
                         .lineLimit(2)
                     Text("\(category.adhkarList.count) \(itemsWord)")

@@ -9,19 +9,10 @@ import SwiftUI
 
 struct SearchView: View {
     @State private var query = ""
-    private let allCategories = DataProvider.adharCategories
+    private let search = AdhkarSearch(categories: DataProvider.adharCategories)
 
     private var results: [AdhkarCategory] {
-        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return [] }
-        let lower = trimmed.lowercased()
-        return allCategories.filter { cat in
-            if cat.displayTitle.lowercased().contains(lower) { return true }
-            if cat.title.ar?.contains(trimmed) == true { return true }
-            if cat.title.fr?.lowercased().contains(lower) == true { return true }
-            if cat.title.en?.lowercased().contains(lower) == true { return true }
-            return cat.adhkarList.contains { $0.dhikr.contains(trimmed) }
-        }
+        search.results(for: query)
     }
 
     var body: some View {
@@ -42,7 +33,7 @@ struct SearchView: View {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(cat.displayTitle)
                                         .lineLimit(2)
-                                    Text("\(cat.adhkarList.count) ذكر")
+                                    Text("\(cat.adhkarList.count) \(L10n.itemsCountSuffix.resolved())")
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 }

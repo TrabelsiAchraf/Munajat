@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SwiftData
-import StoreKit
 
 struct AdhkarDetailsView: View {
     let adhkar: AdhkarCategory
@@ -23,10 +22,10 @@ struct AdhkarDetailsView: View {
     @State private var resetToken = UUID()
     @State private var selectedIndex: Int = 0
     @State private var showCelebration = false
+    @State private var reviewTrigger: UUID?
     @Environment(\.modelContext) private var modelContext
     @Environment(AudioPlayer.self) private var audio
     @Environment(StreakService.self) private var streak
-    @Environment(\.requestReview) private var requestReview
 
     /// All persisted counters. We filter to the current category in code so we
     /// don't need a dynamic SwiftData predicate, and we re-check
@@ -79,7 +78,7 @@ struct AdhkarDetailsView: View {
 
     private func markCelebrationShown() {
         UserDefaults.standard.set(Date.now.timeIntervalSince1970, forKey: celebrationStorageKey)
-        ReviewPromptGate.recordCelebration()
+        ReviewPromptGate.recordCompletion(activityID: "category.\(adhkar.id)")
     }
 
     var body: some View {
@@ -112,6 +111,7 @@ struct AdhkarDetailsView: View {
         }
         .safeAreaInset(edge: .top, spacing: 0) { progressHeader }
         .navigationTitle(navTitleOverride?.resolved() ?? adhkar.displayTitle)
+        .appReviewPrompt(trigger: reviewTrigger)
         #if os(iOS) || os(visionOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
@@ -137,10 +137,7 @@ struct AdhkarDetailsView: View {
                 withAnimation(.easeOut(duration: 0.25)) {
                     showCelebration = false
                 }
-                if ReviewPromptGate.shouldRequestNow() {
-                    ReviewPromptGate.recordRequest()
-                    requestReview()
-                }
+                reviewTrigger = UUID()
             }
             .transition(.opacity.combined(with: .scale(scale: 0.92)))
             .zIndex(1)
@@ -204,7 +201,7 @@ struct AdhkarDetailsView: View {
                     position: index + 1,
                     total: visibleItems.count,
                     accent: accent,
-                    onCompletion: { streak.recordDhikrCompleted(context: modelContext) }
+                    onCompletion: { recordItemCompletion(dhikr) }
                 )
                 .id("\(dhikr.id)-\(resetToken)")
                 .tag(index)
@@ -222,7 +219,7 @@ struct AdhkarDetailsView: View {
                         position: index + 1,
                         total: visibleItems.count,
                         accent: accent,
-                        onCompletion: { streak.recordDhikrCompleted(context: modelContext) }
+                        onCompletion: { recordItemCompletion(dhikr) }
                     )
                     .id("\(dhikr.id)-\(resetToken)")
                 }
@@ -230,6 +227,14 @@ struct AdhkarDetailsView: View {
             .padding(.vertical)
         }
         #endif
+    }
+
+    private func recordItemCompletion(_ dhikr: Adhkar) {
+        streak.recordDhikrCompleted(context: modelContext)
+        if focusedItemId != nil {
+            ReviewPromptGate.recordCompletion(activityID: "item.\(dhikr.id)")
+            reviewTrigger = UUID()
+        }
     }
 
     private func resetAllCounters() {
@@ -433,25 +438,16 @@ private struct DhikrPageView: View {
         }
     }
 
-    @ViewBuilder
     private var shareButton: some View {
-        if let shareable = makeShareableImage() {
-            ShareLink(
-                item: shareable,
-                preview: SharePreview(
-                    category.displayTitle,
-                    image: Image(decorative: shareable.cgImage, scale: 3, orientation: .up)
-                )
-            ) {
-                shareLabel
-            }
-            .tint(accent)
-            .accessibilityLabel(L10n.share.resolved())
-        } else {
-            ShareLink(item: shareText) { shareLabel }
-                .tint(accent)
-                .accessibilityLabel(L10n.share.resolved())
+        ShareLink(
+            item: ShareableDhikrImage(category: category, dhikr: dhikr),
+            message: Text("\(L10n.shareAppMessage.resolved()) \(AppStoreLinks.app.absoluteString)"),
+            preview: SharePreview(category.displayTitle, image: Image(systemName: "moon.stars.fill"))
+        ) {
+            shareLabel
         }
+        .tint(accent)
+        .accessibilityLabel(L10n.share.resolved())
     }
 
     private var shareLabel: some View {
@@ -461,19 +457,6 @@ private struct DhikrPageView: View {
             .padding(.vertical, 10)
             .background(Color.cardBackground)
             .clipShape(Capsule())
-    }
-
-    @MainActor
-    private func makeShareableImage() -> ShareableDhikrImage? {
-        let renderer = ImageRenderer(
-            content: ShareableDhikrCard(category: category, dhikr: dhikr)
-        )
-        renderer.scale = 3
-        guard let cg = renderer.cgImage else { return nil }
-        let name = category.displayTitle
-            .replacingOccurrences(of: "/", with: "-")
-            .replacingOccurrences(of: " ", with: "_")
-        return ShareableDhikrImage(cgImage: cg, suggestedName: "munajat_\(name)")
     }
 
     private func audioButton(url: URL) -> some View {
@@ -497,13 +480,6 @@ private struct DhikrPageView: View {
     private var dhikrAudioURL: URL? {
         guard let s = dhikr.audio, !s.isEmpty else { return nil }
         return URL(string: s)
-    }
-
-    private var shareText: String {
-        var parts: [String] = [dhikr.dhikr]
-        if let t = dhikr.translation?.resolved(), !t.isEmpty { parts.append(t) }
-        if !dhikr.source.isEmpty { parts.append("— \(dhikr.source)") }
-        return parts.joined(separator: "\n\n")
     }
 
     // MARK: - Persistence

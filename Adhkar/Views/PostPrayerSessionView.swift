@@ -17,6 +17,7 @@ struct PostPrayerSessionView: View {
     @State private var session = PostPrayerSession(steps: PostPrayerSequence.steps)
     @SceneStorage("postPrayer.snapshot") private var storedSnapshot: Data?
     @State private var completionRecorded = false
+    @State private var reviewTrigger: UUID?
     /// Swallows taps while a step change is cross-fading, so a quick double tap
     /// on a single-repetition step cannot blow through two dhikr at once.
     @State private var isAdvancing = false
@@ -78,6 +79,7 @@ struct PostPrayerSessionView: View {
         .sensoryFeedback(.success, trigger: session.index)
         .onAppear(perform: restore)
         .onDisappear { audio.stop() }
+        .appReviewPrompt(trigger: reviewTrigger)
         // The model counts; the view decides when to move on. Holding the
         // filled ring for a beat is the whole point: on a single-repetition
         // step, counting and advancing in the same gesture swapped the counter
@@ -98,6 +100,8 @@ struct PostPrayerSessionView: View {
             guard complete, !completionRecorded else { return }
             completionRecorded = true
             streak.recordDhikrCompleted(context: modelContext)
+            ReviewPromptGate.recordCompletion(activityID: "postPrayer")
+            reviewTrigger = UUID()
             storedSnapshot = nil
         }
     }
@@ -217,6 +221,7 @@ struct PostPrayerSessionView: View {
             Text(L10n.postPrayerDone.resolved())
                 .font(.title3.weight(.bold))
             Button(L10n.postPrayerRestart.resolved()) {
+                reviewTrigger = nil
                 session = PostPrayerSession(steps: PostPrayerSequence.steps)
                 completionRecorded = false
             }

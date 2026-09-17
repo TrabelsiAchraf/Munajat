@@ -23,6 +23,7 @@ SHARED_FILES = %w[
   Design/Font+Arabic.swift
   Design/IslamicPattern.swift
   Resources/adhkar.json
+  Resources/category-titles.json
   Resources/contexts.json
   Resources/Amiri-Regular.ttf
   Resources/Amiri-Bold.ttf

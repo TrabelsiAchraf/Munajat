@@ -14,6 +14,7 @@ struct AdhkarApp: App {
     @State private var audio = AudioPlayer()
     @State private var notifications = NotificationManager()
     @State private var streak = StreakService()
+    @State private var languageCode = LocalizedText.preferredLanguageCode()
 
     init() {
         FontRegistrar.registerBundledFonts()
@@ -64,8 +65,12 @@ struct AdhkarApp: App {
                 .environment(audio)
                 .environment(notifications)
                 .environment(streak)
-                .environment(\.layoutDirection, LocalizedText.preferredLayoutDirection)
+                .environment(\.layoutDirection, languageCode == "ar" ? .rightToLeft : .leftToRight)
+                .id(languageCode)
                 .preferredColorScheme(.dark)
+                .onReceive(NotificationCenter.default.publisher(for: .adhkarLanguageDidChange)) { notification in
+                    if let code = notification.object as? String { languageCode = code }
+                }
                 .onOpenURL { url in
                     guard url.scheme == "munajat" else { return }
                     switch url.host {
