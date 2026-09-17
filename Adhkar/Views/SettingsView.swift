@@ -18,8 +18,9 @@ struct SettingsView: View {
                 List {
                     languageSection
                     notificationsSection
-                    aboutSection
-                    communitySection
+                aboutSection
+                communitySection
+                    contactSection
                     legalSection
                 }
                 .scrollContentBackground(.hidden)
@@ -93,6 +94,20 @@ struct SettingsView: View {
             }
         } header: {
             Text(L10n.settingsCommunity.resolved())
+        }
+        .listRowBackground(Color.cardBackground)
+    }
+
+    private var contactSection: some View {
+        Section {
+            NavigationLink {
+                ContactUsView()
+            } label: {
+                Label(L10n.contactTitle.resolved(), systemImage: "paperplane")
+            }
+            .accessibilityIdentifier("settings.contactUs")
+        } header: {
+            Text(L10n.contactTitle.resolved())
         }
         .listRowBackground(Color.cardBackground)
     }

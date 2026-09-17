@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		01667841FF6CBC822707B3F1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0755300B7D2AF93A0C90710C /* Foundation.framework */; };
 		1E6F8135AFE6C0C0122D6DD0 /* PostPrayerSequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94780DD814EC046C5EFFBB59 /* PostPrayerSequenceTests.swift */; };
+		589CB2123191ABCF326BCED4 /* ContactRateLimiterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B632E0F664DBC9293894D /* ContactRateLimiterTests.swift */; };
 		5B8DDF50899A54DAA0716CEF /* MunajatWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 77C1C60B13211E97703D7121 /* MunajatWidget.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		6623176A7FF39EDE7A7DC612 /* FrenchContentCoverageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7544024D5303E8FD7C3AEC0 /* FrenchContentCoverageTests.swift */; };
 		7A510AE6DFD393EC5899F7CB /* ShareableDhikrImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97417ECEBC075F5AFA3C843D /* ShareableDhikrImageTests.swift */; };
@@ -56,6 +57,7 @@
 		0755300B7D2AF93A0C90710C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		19AC93E3AB4472CDDD287F8C /* ReviewPromptGateTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReviewPromptGateTests.swift; sourceTree = "<group>"; };
 		1C90B1D8BF94BCFBDB464163 /* HifzSchedulerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HifzSchedulerTests.swift; sourceTree = "<group>"; };
+		371B632E0F664DBC9293894D /* ContactRateLimiterTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactRateLimiterTests.swift; sourceTree = "<group>"; };
 		47E26DABE0995CD386648CB7 /* AdhkarSearchTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AdhkarSearchTests.swift; sourceTree = "<group>"; };
 		6246C4006D761FF3BFE2DEC3 /* DataProviderContextsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DataProviderContextsTests.swift; sourceTree = "<group>"; };
 		6FE853B82DB165D700410740 /* Adhkar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Adhkar.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,6 +100,8 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		51D90147447D5D064B5A0941 /* MunajatWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = MunajatWidget;
 			sourceTree = "<group>";
 		};
@@ -150,6 +154,7 @@
 				19AC93E3AB4472CDDD287F8C /* ReviewPromptGateTests.swift */,
 				47E26DABE0995CD386648CB7 /* AdhkarSearchTests.swift */,
 				97417ECEBC075F5AFA3C843D /* ShareableDhikrImageTests.swift */,
+				371B632E0F664DBC9293894D /* ContactRateLimiterTests.swift */,
 			);
 			path = AdhkarTests;
 			sourceTree = SOURCE_ROOT;
@@ -335,6 +340,7 @@
 				E102840A36A9A4281F093B67 /* ReviewPromptGateTests.swift in Sources */,
 				F0E7CEB34AAAA7BC4B96C480 /* AdhkarSearchTests.swift in Sources */,
 				7A510AE6DFD393EC5899F7CB /* ShareableDhikrImageTests.swift in Sources */,
+				589CB2123191ABCF326BCED4 /* ContactRateLimiterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
