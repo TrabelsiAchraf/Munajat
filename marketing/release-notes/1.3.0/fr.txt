@@ -3,5 +3,7 @@ Retrouve plus facilement tes invocations :
 • La recherche inclut les traductions et la phonétique, même sans accents.
 • Les séances de mémorisation conservent leur liste de cartes jusqu’à la fin.
 • Le partage des invocations est plus léger et peut inclure un lien vers Munajat.
+• Choisis la langue de l’interface directement dans Réglages : arabe, français ou anglais.
+• Une nouvelle rubrique Contact permet de nous écrire facilement depuis l’application.
 
 Toujours gratuit, sans compte et sans publicité.

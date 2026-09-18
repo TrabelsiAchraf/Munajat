@@ -3,5 +3,7 @@ Find your daily duas more easily:
 • Search translations and transliterations, with or without accents.
 • Memorization sessions keep a stable card list until the end.
 • Sharing a dhikr is lighter and can include a link to Munajat.
+• Choose your interface language directly in Settings: Arabic, French, or English.
+• A new Contact section makes it easier to send us feedback from the app.
 
 Still free, with no account and no ads.
