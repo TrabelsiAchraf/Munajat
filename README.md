@@ -9,6 +9,15 @@ Published for iPhone and iPad as [Munajat](https://apps.apple.com/app/id67688243
 Version 1.3.0 is in preparation; see the [growth audit](docs/growth-audit-2026-09-17.md)
 and [release notes](marketing/release-notes/1.3.0/NOTES.md).
 
+## Links
+
+- Website: <https://trabelsiachraf.com/munajat-site/>
+- Support: <https://trabelsiachraf.com/munajat-site/support.html>
+- Privacy: <https://trabelsiachraf.com/munajat-site/privacy.html>
+- Accessibility: <https://trabelsiachraf.com/munajat-site/accessibility.html>
+- App Store: <https://apps.apple.com/app/id6768824373>
+- Website source: <https://github.com/TrabelsiAchraf/munajat-site>
+
 ---
 
 ## Screenshots
@@ -71,7 +80,7 @@ and [release notes](marketing/release-notes/1.3.0/NOTES.md).
 
 ## Build & run
 
-The project ships with `.mcp.json` configured for [XcodeBuildMCP](https://github.com/xcode-build-mcp/xcodebuildmcp) — preferred over raw `xcodebuild` for build / install / launch / screenshot / unit tests.
+The project ships with `.mcp.json` configured for [XcodeBuildMCP](https://github.com/cameroncooke/XcodeBuildMCP) — preferred over raw `xcodebuild` for build / install / launch / screenshot / unit tests.
 
 Fallback raw command:
 
